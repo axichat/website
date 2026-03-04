@@ -307,7 +307,7 @@ const footerLinks = {
   sections: [
     { label: "Top", href: "#top" },
     { label: "Features", href: "#features" },
-    { label: "Roadmap", href: "#about" },
+    { label: "About", href: "#about" },
     { label: "FAQ", href: "#faq" },
     { label: "Contact", href: "#contact" },
   ],
@@ -796,6 +796,24 @@ function DownloadButton({ href, os, file, borderColor, icon }: DownloadItem) {
   );
 }
 
+function UsernameCta({ href, className }: { href: string; className?: string }) {
+  return (
+    <a
+      href={href}
+      className={cn(
+        "inline-flex flex-wrap items-center justify-center gap-x-1 rounded-xl px-4 py-2 font-semibold transition",
+        "focus:outline-none focus:ring-2 focus:ring-black/25",
+        className
+      )}
+      aria-label="Get your username at axi.im now"
+    >
+      <span>Get your</span>
+      <span className="username-shimmer">username@axi.im</span>
+      <span>now</span>
+    </a>
+  );
+}
+
 function MockupFrame({
   src,
   alt,
@@ -1116,17 +1134,15 @@ export default function App() {
 
             <nav className="hidden items-center gap-6 md:flex">
               <NavLink href="#features">Features</NavLink>
-              <NavLink href="#about">Roadmap</NavLink>
+              <NavLink href="#about">About</NavLink>
               <NavLink href="#faq">FAQ</NavLink>
               <NavLink href="#contact">Contact</NavLink>
             </nav>
 
-            <a
+            <UsernameCta
               href={downloads.android}
-              className="rounded-xl border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition hover:bg-black/85"
-            >
-              Download
-            </a>
+              className="shrink-0 border border-black bg-black text-[10px] text-white hover:bg-black/85 sm:text-xs"
+            />
           </div>
         </Container>
       </header>
@@ -1135,8 +1151,8 @@ export default function App() {
         <section className="border-b border-black/10 py-20 sm:py-24">
           <Container>
             <div className="grid items-center gap-[1.05rem] lg:gap-[1.4rem] lg:grid-cols-[0.95fr_1.05fr]">
-              <div className="max-w-2xl">
-                <div className="mb-6 inline-flex flex-wrap items-center gap-x-3 gap-y-1 rounded-2xl border border-black/15 bg-white px-4 py-2.5 text-black/65">
+              <div className="mx-auto max-w-2xl text-center lg:mx-0 lg:text-left">
+                <div className="mx-auto mb-6 inline-flex flex-wrap items-center gap-x-3 gap-y-1 rounded-2xl border border-black/15 bg-white px-4 py-2.5 text-black/65 lg:mx-0">
                   <span className="inline-flex h-2 w-2 rounded-full bg-black" />
                   <span className="text-xs font-medium tracking-[0.02em]">Latest version</span>
                   <span className="font-mono text-base font-semibold text-black sm:text-lg">{latestVersion}</span>
@@ -1144,15 +1160,15 @@ export default function App() {
                 </div>
 
                 <h1 className="text-balance text-5xl font-semibold tracking-tight sm:text-7xl font-display">{heroHeadline}</h1>
-                <p className="mt-5 max-w-xl text-pretty text-base leading-relaxed text-black/70 sm:text-lg">{heroSubhead}</p>
+                <p className="mx-auto mt-5 max-w-xl text-pretty text-base leading-relaxed text-black/70 sm:text-lg lg:mx-0">{heroSubhead}</p>
 
-                <div className="mt-10 grid gap-3 sm:max-w-md">
+                <div className="mx-auto mt-10 grid gap-3 sm:max-w-md lg:mx-0">
                   {downloadButtons.map((item) => (
                     <DownloadButton key={item.os} {...item} />
                   ))}
                 </div>
 
-                <div className="mt-4 text-xs text-black/55">{heroNote}</div>
+                <div className="mt-4 text-xs text-black/55 lg:text-left">{heroNote}</div>
               </div>
 
               <div className="w-full lg:w-[110%] lg:-ml-[5%]">
@@ -1226,9 +1242,29 @@ export default function App() {
                   return (
                     <article
                       key={feature.title}
-                      className="grid items-center gap-8 border-b border-black/10 pb-14 last:border-b-0 last:pb-0 lg:grid-cols-[0.82fr_1fr_0.82fr]"
+                      className="grid items-start gap-8 border-b border-black/10 pb-14 last:border-b-0 last:pb-0 lg:gap-6 xl:gap-8 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)_minmax(0,20rem)] xl:grid-cols-[minmax(0,24rem)_minmax(0,1fr)_minmax(0,24rem)] 2xl:grid-cols-[minmax(0,28rem)_minmax(0,1fr)_minmax(0,28rem)] lg:items-center"
                     >
-                      <div className={cn("mx-auto w-full max-w-[20rem] transition-transform duration-300", leftOffsetClass)}>
+                      <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:hidden">
+                        <MockupFrame
+                          src={leftSideMockup.src}
+                          alt={leftSideMockup.alt}
+                          aspect={leftSideMockup.aspect}
+                          useWebp={leftSideMockup.useWebp}
+                        />
+                        <MockupFrame
+                          src={rightSideMockup.src}
+                          alt={rightSideMockup.alt}
+                          aspect={rightSideMockup.aspect}
+                          useWebp={rightSideMockup.useWebp}
+                        />
+                      </div>
+
+                      <div
+                        className={cn(
+                          "hidden lg:block w-full max-w-full justify-self-start transition-transform duration-300 lg:-translate-x-2 xl:-translate-x-8 2xl:-translate-x-12",
+                          leftOffsetClass
+                        )}
+                      >
                         <MockupFrame
                           src={leftSideMockup.src}
                           alt={leftSideMockup.alt}
@@ -1239,7 +1275,12 @@ export default function App() {
 
                       {textBlock}
 
-                      <div className={cn("mx-auto w-full max-w-[20rem] transition-transform duration-300", rightOffsetClass)}>
+                      <div
+                        className={cn(
+                          "hidden lg:block w-full max-w-full justify-self-end transition-transform duration-300 lg:translate-x-2 xl:translate-x-8 2xl:translate-x-12",
+                          rightOffsetClass
+                        )}
+                      >
                         <MockupFrame
                           src={rightSideMockup.src}
                           alt={rightSideMockup.alt}
@@ -1254,10 +1295,14 @@ export default function App() {
                 return (
                   <article
                     key={feature.title}
-                    className="grid items-center gap-8 border-b border-black/10 pb-14 last:border-b-0 last:pb-0 lg:grid-cols-[1fr_0.82fr]"
+                    className="grid items-start gap-8 border-b border-black/10 pb-14 last:border-b-0 last:pb-0 lg:gap-6 xl:gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,20rem)] xl:grid-cols-[minmax(0,1fr)_minmax(0,24rem)] 2xl:grid-cols-[minmax(0,1fr)_minmax(0,28rem)] lg:items-center"
                   >
-                    {textBlock}
-                    <div className={cn("mx-auto w-full max-w-[20rem] transition-transform duration-300", index % 2 === 0 ? "lg:translate-y-2" : "lg:-translate-y-1")}>
+                    <div
+                      className={cn(
+                        "mx-auto w-full max-w-full transition-transform duration-300 lg:order-2 lg:justify-self-end lg:translate-x-2 xl:translate-x-8 2xl:translate-x-12",
+                        index % 2 === 0 ? "lg:translate-y-2" : "lg:-translate-y-1"
+                      )}
+                    >
                       <MockupFrame
                         src={feature.mockups[0].src}
                         alt={feature.mockups[0].alt}
@@ -1265,6 +1310,7 @@ export default function App() {
                         useWebp={feature.mockups[0].useWebp}
                       />
                     </div>
+                    <div className="lg:order-1">{textBlock}</div>
                   </article>
                 );
               })}
@@ -1335,6 +1381,17 @@ export default function App() {
               >
                 https://gitlab.com/axichat/axichat
               </a>
+            </div>
+          </Container>
+        </section>
+
+        <section className="border-t border-black/10 py-12 sm:py-16">
+          <Container>
+            <div className="rounded-3xl border border-black/10 bg-black/[0.03] px-6 py-10 text-center">
+              <UsernameCta
+                href={downloads.android}
+                className="border border-black bg-black px-6 py-3 text-sm text-white hover:bg-black/85 sm:text-base"
+              />
             </div>
           </Container>
         </section>
