@@ -340,8 +340,9 @@ const footerLinks = {
     { label: "License", href: withBasePath("LICENSE.txt") },
   ],
   links: [
-    { label: "GitHub", href: "https://github.com/axichat/axichat" },
-    { label: "Latest release", href: "https://github.com/axichat/axichat/releases/latest" },
+    { label: "GitHub", href: "https://github.com/axichat/axichat", external: true },
+    { label: "Latest release", href: "https://github.com/axichat/axichat/releases/latest", external: true },
+    { label: "Donate", href: withBasePath("donate/"), external: false },
   ],
 };
 
@@ -854,7 +855,57 @@ function MockupFrame({
   );
 }
 
+function isDonateRoutePath(pathname: string) {
+  return /\/donate(?:\/index\.html)?\/?$/.test(pathname);
+}
+
+function DonatePage() {
+  return (
+    <div className="grid min-h-screen place-items-center bg-white px-6 text-black">
+      <main className="w-full max-w-2xl text-center">
+        <h1 className="font-display text-4xl font-semibold tracking-tight sm:text-5xl">I'm glad you like Axichat!</h1>
+        <p className="mt-4 text-black/80">
+          Your support helps me maintain the app and servers. No pressure... even if you don't donate I'll probably
+          maintain it anyway.
+        </p>
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+          <a href="https://www.buymeacoffee.com/axichat" target="_blank" rel="noreferrer">
+            <img
+              src="https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20coffee&emoji=&slug=axichat&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff"
+              alt="Buy me a coffee"
+              style={{ border: 0, height: 48 }}
+              loading="eager"
+              decoding="async"
+            />
+          </a>
+          <a
+            href="https://ko-fi.com/S6S01VF1Z1"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-block transition hover:brightness-95"
+          >
+            <img
+              src="https://storage.ko-fi.com/cdn/kofi6.png?v=6"
+              alt="Buy Me a Coffee at ko-fi.com"
+              style={{ border: 0, height: 48 }}
+              loading="lazy"
+              decoding="async"
+            />
+          </a>
+        </div>
+        <a className="mt-6 inline-block border-b border-black/35 text-black/85 transition hover:border-black/65 hover:text-black" href={withBasePath("")}>
+          Back to main site
+        </a>
+      </main>
+    </div>
+  );
+}
+
 export default function App() {
+  if (typeof window !== "undefined" && isDonateRoutePath(window.location.pathname)) {
+    return <DonatePage />;
+  }
+
   const heroVideoRef = React.useRef<HTMLVideoElement | null>(null);
   const [autoplayBlocked, setAutoplayBlocked] = React.useState(false);
   const [heroPoster, setHeroPoster] = React.useState<string>("");
@@ -1482,8 +1533,8 @@ export default function App() {
                       <a
                         key={link.href}
                         href={link.href}
-                        target="_blank"
-                        rel="noreferrer"
+                        target={link.external ? "_blank" : undefined}
+                        rel={link.external ? "noreferrer" : undefined}
                         className="inline-flex items-center gap-2 text-sm text-black/70 transition hover:text-black"
                       >
                         {link.label === "GitHub" ? <GitHubIcon className="h-4 w-4" /> : null}

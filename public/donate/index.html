@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Support Axichat</title>
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background: #fff;
+        color: #111;
+        font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+      }
+      main {
+        width: min(92vw, 44rem);
+        text-align: center;
+      }
+      h1 {
+        margin: 0 0 1rem;
+        font-size: clamp(2rem, 4vw, 3rem);
+        letter-spacing: 0.01em;
+      }
+      p {
+        margin: 0 0 2rem;
+        color: rgba(17, 17, 17, 0.8);
+        font-size: 1rem;
+        line-height: 1.5;
+      }
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 0.75rem;
+      }
+      .kofi-link {
+        display: inline-block;
+        transition: filter 0.2s ease;
+      }
+      .kofi-link:hover {
+        filter: brightness(0.95);
+      }
+      .home-link {
+        display: inline-block;
+        margin-top: 1.5rem;
+        color: rgba(17, 17, 17, 0.8);
+        text-decoration: none;
+        border-bottom: 1px solid rgba(17, 17, 17, 0.35);
+      }
+      .home-link:hover {
+        color: #111;
+        border-bottom-color: rgba(17, 17, 17, 0.65);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>I'm glad you like Axichat!</h1>
+      <p>Your support helps me maintain the app and servers. No pressure... even if you don't donate I'll probably maintain it anyway.</p>
+      <div class="actions">
+        <a href="https://www.buymeacoffee.com/axichat" target="_blank" rel="noreferrer">
+          <img
+            src="https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20coffee&emoji=&slug=axichat&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff"
+            alt="Buy me a coffee"
+            height="48"
+            style="border: 0; height: 48px;"
+          />
+        </a>
+        <a class="kofi-link" href="https://ko-fi.com/S6S01VF1Z1" target="_blank" rel="noreferrer">
+          <img
+            src="https://storage.ko-fi.com/cdn/kofi6.png?v=6"
+            alt="Buy Me a Coffee at ko-fi.com"
+            height="48"
+            style="border: 0; height: 48px;"
+            border="0"
+          />
+        </a>
+      </div>
+      <div>
+        <a class="home-link" href="../">Back to main site</a>
+      </div>
+    </main>
+  </body>
+</html>
