@@ -58,6 +58,7 @@ const downloads = {
   windows: "https://github.com/axichat/axichat/releases/latest/download/axichat-windows.zip",
   linux: "https://github.com/axichat/axichat/releases/latest/download/axichat-linux.tar.gz",
 };
+const latestStableReleaseHref = "https://github.com/axichat/axichat/releases/latest";
 
 const heroHeadline = "Goodbye, Email";
 const heroSubhead = "The best of instant messaging, email, and calendar all in one.";
@@ -1158,7 +1159,7 @@ export default function App() {
             </nav>
 
             <UsernameCta
-              href={downloads.android}
+              href={latestStableReleaseHref}
               className="shrink-0 border border-black bg-black text-[10px] text-white hover:bg-black/85 sm:text-xs"
             />
           </div>
@@ -1410,7 +1411,7 @@ export default function App() {
           <Container>
             <div className="rounded-3xl border border-black/10 bg-black/[0.03] px-6 py-10 text-center">
               <UsernameCta
-                href={downloads.android}
+                href={latestStableReleaseHref}
                 className="border border-black bg-black px-6 py-3 text-sm text-white hover:bg-black/85 sm:text-base"
               />
             </div>
