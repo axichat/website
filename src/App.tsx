@@ -217,6 +217,23 @@ const faqItems: { question: string; answer: React.ReactNode }[] = [
     ),
   },
   {
+    question: "Can I self-host?",
+    answer: (
+      <p>
+        Yes. We provide scripts and guidelines to set up your own chat and email server for the axichat client{" "}
+        <a
+          href="https://github.com/axichat/selfhost"
+          target="_blank"
+          rel="noreferrer"
+          className="underline underline-offset-4"
+        >
+          here
+        </a>
+        .
+      </p>
+    ),
+  },
+  {
     question: "If Axichat uses XMPP, is it federated?",
     answer: (
       <p>
