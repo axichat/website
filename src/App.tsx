@@ -49,6 +49,10 @@ type ServiceHealth = "online" | "offline";
 type ServiceIndicatorState = ServiceHealth | "unknown";
 type LogoTone = "light" | "dark";
 
+function withBasePath(path: string) {
+  return `${import.meta.env.BASE_URL}${path.replace(/^\/+/, "")}`;
+}
+
 const downloads = {
   android: "https://github.com/axichat/axichat/releases/latest/download/app-production-release.apk",
   windows: "https://github.com/axichat/axichat/releases/latest/download/axichat-windows.zip",
@@ -58,7 +62,8 @@ const downloads = {
 const heroHeadline = "Goodbye, Email";
 const heroSubhead = "The best of instant messaging, email, and calendar all in one.";
 const heroNote = "Verify checksums and signatures in GitHub release notes.";
-const heroVideoSrc = "/videos/hero.mp4";
+const heroDevNote = "Axichat is still in active development, so things may break.";
+const heroVideoSrc = withBasePath("videos/hero.mp4");
 
 const featureRows: FeatureRow[] = [
   {
@@ -79,12 +84,12 @@ const featureRows: FeatureRow[] = [
     ],
     mockups: [
       {
-        src: "/images/screenshots/mobile/01.png",
+        src: withBasePath("images/screenshots/mobile/01.png"),
         alt: "Axichat mobile screenshot 1 showing unified inbox flow",
         aspect: "aspect-[9/16]",
       },
       {
-        src: "/images/screenshots/mobile/02.png",
+        src: withBasePath("images/screenshots/mobile/02.png"),
         alt: "Axichat mobile screenshot 2 showing unified inbox flow",
         aspect: "aspect-[9/16]",
       },
@@ -105,12 +110,12 @@ const featureRows: FeatureRow[] = [
     ],
     mockups: [
       {
-        src: "/images/screenshots/mobile/05.png",
+        src: withBasePath("images/screenshots/mobile/05.png"),
         alt: "Axichat mobile screenshot 5 showing calendar workflow",
         aspect: "aspect-[9/16]",
       },
       {
-        src: "/images/screenshots/mobile/04.png",
+        src: withBasePath("images/screenshots/mobile/04.png"),
         alt: "Axichat mobile screenshot 4 showing calendar workflow",
         aspect: "aspect-[9/16]",
       },
@@ -130,12 +135,12 @@ const featureRows: FeatureRow[] = [
     ],
     mockups: [
       {
-        src: "/images/screenshots/mobile/06.png",
+        src: withBasePath("images/screenshots/mobile/06.png"),
         alt: "Axichat mobile screenshot 6 showing mobile parity experience",
         aspect: "aspect-[9/16]",
       },
       {
-        src: "/images/screenshots/mobile/03.png",
+        src: withBasePath("images/screenshots/mobile/03.png"),
         alt: "Axichat mobile screenshot 3 showing mobile parity experience",
         aspect: "aspect-[9/16]",
       },
@@ -312,9 +317,9 @@ const footerLinks = {
     { label: "Contact", href: "#contact" },
   ],
   legal: [
-    { label: "Terms", href: "/axichat_terms.pdf" },
-    { label: "Privacy", href: "/axichat_privacy.pdf" },
-    { label: "License", href: "/LICENSE.txt" },
+    { label: "Terms", href: withBasePath("axichat_terms.pdf") },
+    { label: "Privacy", href: withBasePath("axichat_privacy.pdf") },
+    { label: "License", href: withBasePath("LICENSE.txt") },
   ],
   links: [
     { label: "GitHub", href: "https://github.com/axichat/axichat" },
@@ -325,8 +330,8 @@ const footerLinks = {
 const containerClassName = "mx-auto w-full max-w-[96rem] px-6";
 const pngExtension = ".png";
 const webpExtension = ".webp";
-const brandLogoBlack = "/images/brand/axichat_logo_black.png";
-const brandLogoWhite = "/images/brand/axichat_logo_white.png";
+const brandLogoBlack = withBasePath("images/brand/axichat_logo_black.png");
+const brandLogoWhite = withBasePath("images/brand/axichat_logo_white.png");
 const releaseCacheStorageKey = "axichat.latest-release.v1";
 const releaseCacheTtlMs = 5 * 60 * 1000;
 let inFlightLatestReleaseLookup: Promise<ReleaseCacheRecord> | null = null;
@@ -505,20 +510,14 @@ function BrandIcon({ className, alt, src }: { className?: string; alt: string; s
 function AndroidIcon({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden>
-      <path
-        d="M8.2 6.2 6.6 4.6M15.8 6.2l1.6-1.6"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-      />
-      <path
-        d="M7 9.2c0-2.8 2.2-5 5-5s5 2.2 5 5v7.2a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V9.2Z"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinejoin="round"
-      />
-      <path d="M9 11v.2M15 11v.2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-      <path d="M6.5 10.5v5.5M17.5 10.5v5.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+      <path d="M7.4 7.15 5.9 4.85M16.6 7.15l1.5-2.3" stroke="#34A853" strokeWidth="1.45" strokeLinecap="round" />
+      <rect x="6.1" y="7.4" width="11.8" height="8.4" rx="2.8" fill="#34A853" />
+      <rect x="4.3" y="9.1" width="1.8" height="5.6" rx="0.9" fill="#34A853" />
+      <rect x="17.9" y="9.1" width="1.8" height="5.6" rx="0.9" fill="#34A853" />
+      <rect x="8.05" y="15.2" width="1.8" height="4.2" rx="0.9" fill="#34A853" />
+      <rect x="14.15" y="15.2" width="1.8" height="4.2" rx="0.9" fill="#34A853" />
+      <circle cx="9.6" cy="10.8" r="0.72" fill="#fff" />
+      <circle cx="14.4" cy="10.8" r="0.72" fill="#fff" />
     </svg>
   );
 }
@@ -534,28 +533,17 @@ function WindowsIcon({ className }: { className?: string }) {
   );
 }
 
-function TuxIcon({ className }: { className?: string }) {
+function LinuxIcon({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden>
-      <path
-        d="M12 3.2c-2.6 0-4.4 2.2-4.4 5 0 1.1.2 1.9.6 2.8-.5.7-1.2 1.9-1.2 3.6 0 3.2 2.2 6 5 6s5-2.8 5-6c0-1.7-.7-2.9-1.2-3.6.4-.9.6-1.7.6-2.8 0-2.8-1.8-5-4.4-5Z"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinejoin="round"
-      />
-      <path d="M10 9.6h.01M14 9.6h.01" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
-      <path
-        d="M9.2 15.8c.8 1 1.7 1.5 2.8 1.5s2-.5 2.8-1.5"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-      />
-      <path
-        d="M8 18.5c-1.4 0-2.6-.9-3.2-2.3M16 18.5c1.4 0 2.6-.9 3.2-2.3"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-      />
+      <path d="M12 3.2c-3.15 0-5.5 2.8-5.5 6.15 0 1.2.28 2.25.82 3.3-.9.9-1.67 2.2-1.67 3.85 0 2.78 1.95 4.95 4.15 4.95.98 0 1.8-.37 2.2-1.03.4.66 1.22 1.03 2.2 1.03 2.2 0 4.15-2.17 4.15-4.95 0-1.65-.77-2.95-1.67-3.85.54-1.05.82-2.1.82-3.3 0-3.35-2.35-6.15-5.5-6.15Z" fill="#111" />
+      <ellipse cx="12" cy="14.35" rx="3.8" ry="4.75" fill="#fff" />
+      <circle cx="10.35" cy="9.95" r="0.72" fill="#fff" />
+      <circle cx="13.65" cy="9.95" r="0.72" fill="#fff" />
+      <path d="M12 11.15 10.9 12.3h2.2L12 11.15Z" fill="#F59E0B" />
+      <path d="M8.1 18.5c.8 1.02 1.95 1.72 3.05 1.72 1.1 0 2.25-.7 3.05-1.72" stroke="#111" strokeWidth="1.05" strokeLinecap="round" />
+      <ellipse cx="9.15" cy="20.15" rx="2.05" ry="1.2" fill="#F59E0B" />
+      <ellipse cx="14.85" cy="20.15" rx="2.05" ry="1.2" fill="#F59E0B" />
     </svg>
   );
 }
@@ -811,6 +799,19 @@ function UsernameCta({ href, className }: { href: string; className?: string }) 
       <span className="username-shimmer">username@axi.im</span>
       <span>now</span>
     </a>
+  );
+}
+
+function UsernameTagline({ className }: { className?: string }) {
+  return (
+    <p
+      className={cn("text-balance text-2xl font-display font-semibold tracking-tight text-black sm:text-3xl", className)}
+      aria-label="Get your username at axi.im now"
+    >
+      <span className="text-black/80">Get your </span>
+      <span className="username-shimmer">username@axi.im</span>
+      <span className="text-black/80"> now</span>
+    </p>
   );
 }
 
@@ -1093,7 +1094,7 @@ export default function App() {
       os: "Android",
       file: ".apk",
       borderColor: "#0f9d58",
-      icon: <AndroidIcon className="h-5 w-5 text-black" />,
+      icon: <AndroidIcon className="h-5 w-5" />,
     },
     {
       href: downloads.windows,
@@ -1107,7 +1108,7 @@ export default function App() {
       os: "Linux",
       file: ".tar.gz",
       borderColor: "#111111",
-      icon: <TuxIcon className="h-5 w-5 text-black" />,
+      icon: <LinuxIcon className="h-5 w-5" />,
     },
   ];
 
@@ -1150,7 +1151,7 @@ export default function App() {
       <main id="top">
         <section className="border-b border-black/10 py-20 sm:py-24">
           <Container>
-            <div className="grid items-center gap-[1.05rem] lg:gap-[1.4rem] lg:grid-cols-[0.95fr_1.05fr]">
+            <div className="grid items-center gap-y-10 gap-x-6 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:gap-x-[clamp(0.55rem,1.9vw,1.9rem)] xl:gap-x-[clamp(0.9rem,2.3vw,2.5rem)]">
               <div className="mx-auto max-w-2xl text-center lg:mx-0 lg:text-left">
                 <div className="mx-auto mb-6 inline-flex flex-wrap items-center gap-x-3 gap-y-1 rounded-2xl border border-black/15 bg-white px-4 py-2.5 text-black/65 lg:mx-0">
                   <span className="inline-flex h-2 w-2 rounded-full bg-black" />
@@ -1162,7 +1163,10 @@ export default function App() {
                 <h1 className="text-balance text-5xl font-semibold tracking-tight sm:text-7xl font-display">{heroHeadline}</h1>
                 <p className="mx-auto mt-5 max-w-xl text-pretty text-base leading-relaxed text-black/70 sm:text-lg lg:mx-0">{heroSubhead}</p>
 
-                <div className="mx-auto mt-10 grid gap-3 sm:max-w-md lg:mx-0">
+                <UsernameTagline className="mx-auto mt-8 max-w-xl lg:mx-0" />
+                <div className="mt-2 text-sm font-medium text-black/65 lg:text-left">{heroDevNote}</div>
+
+                <div className="mx-auto mt-8 grid gap-3 sm:max-w-md lg:mx-0">
                   {downloadButtons.map((item) => (
                     <DownloadButton key={item.os} {...item} />
                   ))}
@@ -1171,7 +1175,7 @@ export default function App() {
                 <div className="mt-4 text-xs text-black/55 lg:text-left">{heroNote}</div>
               </div>
 
-              <div className="w-full lg:w-[110%] lg:-ml-[5%]">
+              <div className="mx-auto w-full max-w-[44rem] lg:mx-0 lg:max-w-none">
                 <div className="relative w-full overflow-hidden rounded-3xl shadow-[0_24px_60px_rgba(0,0,0,0.14)]">
                   <video
                     ref={heroVideoRef}
@@ -1409,7 +1413,7 @@ export default function App() {
                 </div>
                 <div className="col-span-2 flex flex-col gap-2">
                   <div className="text-xs text-black/60">© {new Date().getFullYear()} Axichat LLC</div>
-                  <a href="/LICENSE.txt" className="text-xs text-black/60 transition hover:text-black">
+                  <a href={withBasePath("LICENSE.txt")} className="text-xs text-black/60 transition hover:text-black">
                     AGPL-3.0
                   </a>
                   <div className="mt-2 rounded-xl border border-black/10 bg-white px-3 py-2">
