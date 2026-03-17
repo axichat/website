@@ -120,27 +120,29 @@ main {
     background-position: 0% 50%;
   }
   100% {
-    background-position: 200% 50%;
+    background-position: -200% 50%;
   }
 }
 
 .username-shimmer {
   display: inline-block;
-  background-image: linear-gradient(
+  background-image: repeating-linear-gradient(
     90deg,
     #ff5f6d 0%,
-    #ffb347 18%,
-    #fee440 34%,
-    #00f5d4 50%,
-    #60a5fa 66%,
-    #c084fc 82%,
-    #ff5f6d 100%
+    #ffb347 14%,
+    #fee440 28%,
+    #00f5d4 42%,
+    #60a5fa 56%,
+    #c084fc 70%,
+    #ff5f6d 84%,
+    #ffb347 100%
   );
-  background-size: 240% 100%;
+  background-size: 200% 100%;
+  background-repeat: repeat;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  animation: username-shimmer 4.5s linear infinite;
+  animation: username-shimmer 5.5s linear infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {

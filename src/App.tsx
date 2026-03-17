@@ -33,6 +33,31 @@ type RoadmapLane = {
   items: RoadmapItem[];
 };
 
+type UseCaseCard = {
+  title: string;
+  audience: string;
+  summary: string;
+  bullets: string[];
+  highlight: string;
+};
+
+type BlogPost = {
+  slug: string;
+  title: string;
+  category: string;
+  summary: string;
+  publishedAt: string;
+  readingTime: string;
+  body: React.ReactNode;
+};
+
+type AppRoute =
+  | { kind: "home" }
+  | { kind: "use-cases" }
+  | { kind: "blog" }
+  | { kind: "blog-post"; post: BlogPost }
+  | { kind: "donate" };
+
 type ReleaseInfo = {
   tag_name?: string;
   name?: string;
@@ -65,6 +90,9 @@ const heroSubhead = "The best of instant messaging, email, and calendar all in o
 const heroNote = "Verify checksums and signatures in GitHub release notes.";
 const heroDevNote = "Axichat is still in active development, so things may break.";
 const heroVideoSrc = withBasePath("videos/hero.mp4");
+const fdroidDownloadHref = "https://f-droid.org/packages/im.axi.axichat";
+const fdroidBadgeSrc = "https://f-droid.org/badge/get-it-on.png";
+const heroStoreBadgeHeightPx = 80;
 
 const featureRows: FeatureRow[] = [
   {
@@ -254,22 +282,18 @@ const faqItems: { question: string; answer: React.ReactNode }[] = [
         <p>Both Spike and Axichat are tremendous improvements over traditional email clients. However,</p>
         <ul className="mt-3 list-disc space-y-2 pl-5">
           <li>
-            Spike is targeted more toward business teams. Axichat works well for teams too, but is also great for
-            personal email and day-to-day individual use.
-          </li>
-          <li>
             Spike still limits itself to the email protocol (SMTP). Axichat leverages both SMTP and XMPP, which is a
             protocol designed for instant messaging and enables us to provide a significantly richer IM experience,
             especially when you are talking to another Axichat user.
           </li>
           <li>
+            Spike is targeted more toward business teams. Axichat works well for teams too, but is also great for
+            personal email and day-to-day individual use.
+          </li>
+          <li>
             Spike is closed source, so you have no idea what software you're actually using or what it's really doing
             behind the scenes. Axichat is open source, so you can see for yourself exactly what you're running and know
             that nothing suspicious is going on.
-          </li>
-          <li>
-            Axichat is completely free to use with the only limit being server-side storage. Spike has free tiers, but
-            charges for most of their plans.
           </li>
           <li>
             Axichat was made with Dart + Flutter and Spike was not. This allows us to implement a much more
@@ -326,13 +350,143 @@ const roadmapLanes: RoadmapLane[] = [
   },
 ];
 
+const useCases: UseCaseCard[] = [
+  {
+    title: "Replace the overloaded personal inbox",
+    audience: "For people juggling newsletters, friend groups, and real tasks in the same mailbox",
+    summary:
+      "Axichat works best when your email inbox is doing too many jobs at once and you want the important conversations to feel immediate again.",
+    bullets: [
+      "Keep quick back-and-forth conversations out of slow email threads",
+      "Reply, forward, and search from one place instead of bouncing across apps",
+      "Turn messages into reminders or calendar events before they get buried",
+    ],
+    highlight: "Best fit when you already live in email but wish the good parts behaved like chat.",
+  },
+  {
+    title: "Run a small team without another bloated workspace",
+    audience: "For small teams that coordinate in side threads, calendar invites, and last-minute follow-ups",
+    summary:
+      "Axichat gives teams a lighter operational layer than a full corporate suite while still handling the real work of conversation, scheduling, and follow-through.",
+    bullets: [
+      "Use group chat for fast coordination and email for everyone else",
+      "Share calendars and availability without switching products",
+      "Keep the same workflow on desktop and mobile when people are moving around",
+    ],
+    highlight: "Strong fit for founder-led teams and tight groups that do not want another heavyweight collaboration stack.",
+  },
+  {
+    title: "Self-host a calmer communications stack",
+    audience: "For privacy-conscious organizations and technical communities that want control",
+    summary:
+      "Axichat is built on open protocols, so it fits teams that care about transparency, portability, and avoiding closed infrastructure lock-in.",
+    bullets: [
+      "Use open standards instead of proprietary sync layers",
+      "Keep the option to self-host the surrounding services",
+      "Audit the client because the project is open source",
+    ],
+    highlight: "Best when sovereignty matters more than flashy vendor integrations.",
+  },
+  {
+    title: "Keep planning attached to the conversation",
+    audience: "For people who move from message to meeting to task in minutes",
+    summary:
+      "Axichat shines when the work is not just talking, but deciding what happens next and putting it on the calendar before context disappears.",
+    bullets: [
+      "Create events and tasks from natural-language text",
+      "Track reminders next to the message that created them",
+      "Use one timeline for chat, email, and scheduling context",
+    ],
+    highlight: "Useful when planning is part of the message flow, not a separate admin task.",
+  },
+];
+
+const blogPosts: BlogPost[] = [
+  {
+    slug: "why-axichat-starts-with-open-protocols",
+    title: "Why Axichat starts with open protocols",
+    category: "Product",
+    summary:
+      "The short version: open protocols keep the product honest, portable, and easier to trust.",
+    publishedAt: "2026-02-18",
+    readingTime: "4 min read",
+    body: (
+      <>
+        <p>
+          Axichat is built on SMTP and XMPP because communication software should not trap people inside a private
+          protocol just to make the interface feel modern.
+        </p>
+        <p className="mt-4">
+          Open protocols force a certain discipline. They make interoperability, export, and migration part of the
+          product surface instead of a vague promise buried in marketing copy.
+        </p>
+        <p className="mt-4">
+          That tradeoff is not always the easiest engineering path, but it is the right one if the goal is long-term
+          user control rather than short-term lock-in.
+        </p>
+      </>
+    ),
+  },
+  {
+    slug: "email-should-not-feel-this-slow",
+    title: "Email should not feel this slow",
+    category: "UX",
+    summary:
+      "Most people do not hate written communication. They hate the latency, clutter, and context loss in old email clients.",
+    publishedAt: "2026-01-22",
+    readingTime: "3 min read",
+    body: (
+      <>
+        <p>
+          Traditional inboxes make fast conversations feel heavier than they really are. Replies hide under thread
+          chrome, scheduling context lives somewhere else, and the message you need is rarely where you last saw it.
+        </p>
+        <p className="mt-4">
+          Axichat approaches the problem from the opposite direction. Preserve the universality of email, but present
+          the flow more like a conversation product people actually want to use every day.
+        </p>
+        <p className="mt-4">
+          The goal is not to turn everything into chat. The goal is to remove unnecessary slowness from communication
+          that is already conversational.
+        </p>
+      </>
+    ),
+  },
+  {
+    slug: "what-will-live-in-this-blog",
+    title: "What will live in this blog",
+    category: "Meta",
+    summary:
+      "This blog is for release context, protocol decisions, UX notes, and the occasional argument for building calmer tools.",
+    publishedAt: "2025-12-10",
+    readingTime: "2 min read",
+    body: (
+      <>
+        <p>
+          The point of the blog is not content marketing. It is to explain decisions that matter to users and
+          contributors: what shipped, what changed, and why certain architectural choices are non-negotiable.
+        </p>
+        <p className="mt-4">
+          Expect release notes with real context, deeper writeups on product direction, and practical posts for people
+          deciding whether Axichat fits their workflow.
+        </p>
+      </>
+    ),
+  },
+];
+
 const footerLinks = {
   sections: [
     { label: "Top", href: "#top" },
     { label: "Features", href: "#features" },
-    { label: "About", href: "#about" },
     { label: "FAQ", href: "#faq" },
+    { label: "About", href: "#about" },
     { label: "Contact", href: "#contact" },
+  ],
+  pages: [
+    { label: "Use Cases", href: withBasePath("use-cases/") },
+    { label: "Blog", href: withBasePath("blog/") },
+    { label: "Donate", href: withBasePath("donate/") },
   ],
   legal: [
     { label: "Terms", href: withBasePath("axichat_terms.pdf") },
@@ -342,11 +496,11 @@ const footerLinks = {
   links: [
     { label: "GitHub", href: "https://github.com/axichat/axichat", external: true },
     { label: "Latest release", href: "https://github.com/axichat/axichat/releases/latest", external: true },
-    { label: "Donate", href: withBasePath("donate/"), external: false },
+    { label: "GitLab", href: "https://gitlab.com/axichat/axichat", external: true },
   ],
 };
 
-const containerClassName = "mx-auto w-full max-w-[96rem] px-6";
+const containerClassName = "mx-auto w-full max-w-[84rem] px-6";
 const pngExtension = ".png";
 const webpExtension = ".webp";
 const brandLogoBlack = withBasePath("images/brand/axichat_logo_black.png");
@@ -357,6 +511,82 @@ let inFlightLatestReleaseLookup: Promise<ReleaseCacheRecord> | null = null;
 
 function cn(...classes: ClassValue[]) {
   return classes.filter(Boolean).join(" ");
+}
+
+function normalizeAppPath(pathname: string) {
+  const basePath = import.meta.env.BASE_URL;
+  const normalizedBase = basePath.endsWith("/") && basePath.length > 1 ? basePath.slice(0, -1) : basePath;
+  if (normalizedBase && normalizedBase !== "/" && pathname.startsWith(normalizedBase)) {
+    const trimmedPath = pathname.slice(normalizedBase.length);
+    return trimmedPath.startsWith("/") ? trimmedPath : `/${trimmedPath}`;
+  }
+  return pathname;
+}
+
+function isRootRoutePath(pathname: string) {
+  return pathname === "/" || pathname === "" || pathname === "/index.html";
+}
+
+function resolveRoute(pathname: string): AppRoute {
+  const normalizedPathname = normalizeAppPath(pathname);
+
+  if (isDonateRoutePath(normalizedPathname)) {
+    return { kind: "donate" };
+  }
+
+  const blogPostMatch = normalizedPathname.match(/^\/blog\/([^/]+)(?:\/index\.html)?\/?$/);
+  if (blogPostMatch) {
+    const post = blogPosts.find((entry) => entry.slug === blogPostMatch[1]);
+    if (post) {
+      return { kind: "blog-post", post };
+    }
+  }
+
+  if (/^\/blog(?:\/index\.html)?\/?$/.test(normalizedPathname)) {
+    return { kind: "blog" };
+  }
+
+  if (/^\/use-cases(?:\/index\.html)?\/?$/.test(normalizedPathname)) {
+    return { kind: "use-cases" };
+  }
+
+  if (isRootRoutePath(normalizedPathname)) {
+    return { kind: "home" };
+  }
+
+  return { kind: "home" };
+}
+
+function formatBlogDate(value: string) {
+  const publishedAt = new Date(value);
+  if (Number.isNaN(publishedAt.getTime())) {
+    return value;
+  }
+  return new Intl.DateTimeFormat("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  }).format(publishedAt);
+}
+
+function toHomeSectionHref(hash: string, isHomeRoute: boolean) {
+  return isHomeRoute ? hash : `${withBasePath("")}${hash}`;
+}
+
+function pageTitleForRoute(route: AppRoute) {
+  if (route.kind === "use-cases") {
+    return "Axichat - Use Cases";
+  }
+  if (route.kind === "blog") {
+    return "Axichat - Blog";
+  }
+  if (route.kind === "blog-post") {
+    return `${route.post.title} - Axichat Blog`;
+  }
+  if (route.kind === "donate") {
+    return "Support Axichat";
+  }
+  return "Axichat - Goodbye, Email";
 }
 
 function isReleaseCacheRecord(value: unknown): value is ReleaseCacheRecord {
@@ -567,11 +797,12 @@ function LinuxIcon({ className }: { className?: string }) {
   );
 }
 
-function ArrowRight({ className }: { className?: string }) {
+function DownloadIcon({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden>
-      <path d="M5 12h14" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-      <path d="m13 5 7 7-7 7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+      <path d="M12 4.5v9.75" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+      <path d="m8.75 11.5 3.25 3.25 3.25-3.25" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+      <path d="M5.5 18.5h13" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
     </svg>
   );
 }
@@ -780,25 +1011,32 @@ function NavLink({ href, children }: { href: string; children: React.ReactNode }
   );
 }
 
-function DownloadButton({ href, os, file, borderColor, icon }: DownloadItem) {
+function DownloadButton({
+  href,
+  os,
+  file,
+  borderColor,
+  icon,
+  widthPx,
+}: DownloadItem & { widthPx: number }) {
   return (
     <a
       href={href}
       className={cn(
-        "group relative flex min-h-14 w-full items-center justify-between gap-4 rounded-2xl border bg-white px-5",
+        "group relative flex h-14 max-w-full self-center items-center justify-between gap-2 rounded-lg border bg-white px-3.5",
         "transition hover:bg-black/[0.02]",
         "focus:outline-none focus:ring-2 focus:ring-black/25"
       )}
-      style={{ borderColor }}
+      style={{ borderColor, width: `${widthPx}px` }}
     >
-      <div className="flex items-center gap-3">
-        <div className="grid h-9 w-9 place-items-center rounded-xl border border-black/15 bg-white text-black">{icon}</div>
+      <div className="flex min-w-0 items-center gap-2">
+        <div className="grid h-6 w-6 place-items-center rounded-md border border-black/15 bg-white text-black">{icon}</div>
         <div className="leading-tight">
-          <div className="whitespace-nowrap text-sm font-semibold text-black">Download {os}</div>
-          <div className="whitespace-nowrap text-xs text-black/60">{file}</div>
+          <div className="whitespace-nowrap text-xs font-semibold text-black">{os}</div>
+          <div className="whitespace-nowrap text-[10px] text-black/60">{file}</div>
         </div>
       </div>
-      <ArrowRight className="h-5 w-5 text-black/60 transition-transform group-hover:translate-x-0.5" />
+      <DownloadIcon className="h-3.5 w-3.5 shrink-0 text-black/60 transition group-hover:text-black/85" />
     </a>
   );
 }
@@ -815,7 +1053,10 @@ function UsernameCta({ href, className }: { href: string; className?: string }) 
       aria-label="Get your username at axi.im now"
     >
       <span>Get your</span>
-      <span className="username-shimmer">username@axi.im</span>
+      <span className="inline-flex items-baseline gap-0">
+        <span>username</span>
+        <span className="username-shimmer">@axi.im</span>
+      </span>
       <span>now</span>
     </a>
   );
@@ -828,7 +1069,10 @@ function UsernameTagline({ className }: { className?: string }) {
       aria-label="Get your username at axi.im now"
     >
       <span className="text-black/80">Get your </span>
-      <span className="username-shimmer">username@axi.im</span>
+      <span className="inline-flex items-baseline gap-0">
+        <span className="text-black/80">username</span>
+        <span className="username-shimmer">@axi.im</span>
+      </span>
       <span className="text-black/80"> now</span>
     </p>
   );
@@ -852,6 +1096,726 @@ function MockupFrame({
         <img src={src} alt={alt} className="h-full w-full object-contain" loading="lazy" />
       </picture>
     </div>
+  );
+}
+
+function MenuIcon({ className, open }: { className?: string; open: boolean }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden>
+      <path
+        d={open ? "M6 6 18 18" : "M4.5 7.25h15"}
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+      />
+      <path
+        d={open ? "M18 6 6 18" : "M4.5 12h15"}
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+      />
+      {!open ? <path d="M4.5 16.75h15" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" /> : null}
+    </svg>
+  );
+}
+
+function PageIntro({
+  kicker,
+  title,
+  subtitle,
+  actions,
+}: {
+  kicker?: string;
+  title: string;
+  subtitle: React.ReactNode;
+  actions?: React.ReactNode;
+}) {
+  return (
+    <section className="border-b border-black/10 py-16 sm:py-24">
+      <Container>
+        <div className="max-w-3xl">
+          {kicker ? <div className="text-xs font-semibold uppercase tracking-[0.24em] text-black/55">{kicker}</div> : null}
+          <h1 className="mt-3 text-balance font-display text-4xl font-semibold tracking-tight text-black sm:text-6xl">
+            {title}
+          </h1>
+          <div className="mt-4 text-base leading-relaxed text-black/72 sm:text-lg">{subtitle}</div>
+          {actions ? <div className="mt-8 flex flex-wrap items-center gap-3">{actions}</div> : null}
+        </div>
+      </Container>
+    </section>
+  );
+}
+
+function SiteHeader({
+  brandLogoSrc,
+  isHomeRoute,
+  mobileMenuOpen,
+  onToggleMobileMenu,
+  onCloseMobileMenu,
+}: {
+  brandLogoSrc: string;
+  isHomeRoute: boolean;
+  mobileMenuOpen: boolean;
+  onToggleMobileMenu: () => void;
+  onCloseMobileMenu: () => void;
+}) {
+  const primaryNavItems = [
+    { label: "Features", href: toHomeSectionHref("#features", isHomeRoute) },
+    { label: "Use Cases", href: withBasePath("use-cases/") },
+    { label: "Blog", href: withBasePath("blog/") },
+    { label: "FAQ", href: toHomeSectionHref("#faq", isHomeRoute) },
+    { label: "About", href: toHomeSectionHref("#about", isHomeRoute) },
+    { label: "Contact", href: toHomeSectionHref("#contact", isHomeRoute) },
+  ];
+
+  const mobileMenuItems = [...primaryNavItems, { label: "Download", href: toHomeSectionHref("#hero-downloads", isHomeRoute) }];
+  const homeHref = toHomeSectionHref("#top", isHomeRoute);
+
+  return (
+    <header className="sticky top-0 z-50 border-b border-black/10 bg-white/90 backdrop-blur">
+      <Container>
+        <div className="flex h-16 items-center justify-between gap-3">
+          <a href={homeHref} className="flex min-w-0 items-center gap-3">
+            <BrandIcon alt="Axichat" src={brandLogoSrc} className="h-14 w-14 shrink-0" />
+            <div
+              className="truncate text-2xl leading-none tracking-[0.015em]"
+              style={{ fontFamily: "Gabarito, ui-sans-serif, system-ui", fontWeight: 500 }}
+            >
+              Axichat
+            </div>
+          </a>
+
+          <nav className="hidden items-center gap-5 lg:flex">
+            {primaryNavItems.map((item) => (
+              <NavLink key={item.label} href={item.href}>
+                {item.label}
+              </NavLink>
+            ))}
+          </nav>
+
+          <div className="flex items-center gap-2">
+            <a
+              href="https://github.com/axichat/axichat"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Open Axichat on GitHub"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-black/15 bg-white text-black transition hover:bg-black/[0.03] focus:outline-none focus:ring-2 focus:ring-black/25"
+            >
+              <GitHubIcon className="h-5 w-5" />
+            </a>
+
+            <UsernameCta
+              href={latestStableReleaseHref}
+              className="hidden shrink-0 border border-black bg-black text-[10px] text-white hover:bg-black/85 lg:inline-flex lg:text-xs"
+            />
+
+            <button
+              type="button"
+              onClick={onToggleMobileMenu}
+              aria-expanded={mobileMenuOpen}
+              aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+              className="inline-flex items-center gap-2 rounded-xl border border-black/15 bg-white px-3 py-2 text-sm font-semibold text-black transition hover:bg-black/[0.03] focus:outline-none focus:ring-2 focus:ring-black/25 lg:hidden"
+            >
+              <span>Menu</span>
+              <MenuIcon className="h-4 w-4" open={mobileMenuOpen} />
+            </button>
+          </div>
+        </div>
+
+        <div
+          className={cn(
+            "overflow-hidden transition-[max-height,opacity,padding] duration-200 lg:hidden",
+            mobileMenuOpen ? "max-h-[32rem] border-t border-black/10 py-4 opacity-100" : "max-h-0 py-0 opacity-0"
+          )}
+        >
+          <nav className="flex flex-col gap-1">
+            {mobileMenuItems.map((item) => (
+              <a
+                key={item.label}
+                href={item.href}
+                onClick={onCloseMobileMenu}
+                className="rounded-xl px-3 py-2 text-sm text-black/75 transition hover:bg-black/[0.03] hover:text-black"
+              >
+                {item.label}
+              </a>
+            ))}
+          </nav>
+        </div>
+      </Container>
+    </header>
+  );
+}
+
+function HomePage({
+  autoplayBlocked,
+  downloadButtons,
+  heroDownloadWidthPx,
+  heroPoster,
+  heroVideoRef,
+  latestReleaseDate,
+  latestVersion,
+  onFdroidBadgeLoad,
+  onPlayVideo,
+}: {
+  autoplayBlocked: boolean;
+  downloadButtons: DownloadItem[];
+  heroDownloadWidthPx: number;
+  heroPoster: string;
+  heroVideoRef: React.RefObject<HTMLVideoElement>;
+  latestReleaseDate: string;
+  latestVersion: string;
+  onFdroidBadgeLoad: (event: React.SyntheticEvent<HTMLImageElement>) => void;
+  onPlayVideo: () => void;
+}) {
+  return (
+    <>
+      <section className="border-b border-black/10 py-12 sm:py-20 lg:py-40">
+        <Container>
+          <div className="grid items-start gap-y-7 gap-x-6 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:items-center lg:gap-y-10 lg:gap-x-[clamp(0.55rem,1.9vw,1.9rem)] xl:gap-x-[clamp(0.9rem,2.3vw,2.5rem)]">
+            <div className="mx-auto max-w-2xl text-center lg:mx-0 lg:text-left">
+              <div className="mx-auto mb-5 inline-flex flex-wrap items-center gap-x-3 gap-y-1 rounded-2xl border border-black/15 bg-white px-4 py-2.5 text-black/65 lg:mx-0">
+                <span className="inline-flex h-2 w-2 rounded-full bg-black" />
+                <span className="text-xs font-medium tracking-[0.02em]">Latest version</span>
+                <span className="font-mono text-base font-semibold text-black sm:text-lg">{latestVersion}</span>
+                {latestReleaseDate ? <span className="text-xs text-black/55">Released {latestReleaseDate}</span> : null}
+              </div>
+
+              <h1 className="text-balance text-5xl font-semibold tracking-tight sm:text-7xl font-display">{heroHeadline}</h1>
+              <p className="mx-auto mt-4 max-w-xl text-balance text-xl font-display font-semibold tracking-tight text-black/55 sm:mt-5 sm:text-3xl lg:mx-0">
+                {heroSubhead}
+              </p>
+
+              <UsernameTagline className="mx-auto mt-6 max-w-xl sm:mt-8 lg:mx-0" />
+
+              <div
+                id="hero-downloads"
+                className="mx-auto mt-4 inline-grid grid-cols-1 items-center justify-items-center gap-3 sm:grid-cols-2 lg:mx-0 lg:justify-items-start"
+              >
+                <a
+                  href={fdroidDownloadHref}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-block max-w-full transition focus:outline-none focus:ring-2 focus:ring-black/25"
+                  style={{ width: `${heroDownloadWidthPx}px` }}
+                >
+                  <img
+                    src={fdroidBadgeSrc}
+                    alt="Get it on F-Droid"
+                    className="block w-auto"
+                    style={{ height: `${heroStoreBadgeHeightPx}px` }}
+                    onLoad={onFdroidBadgeLoad}
+                  />
+                </a>
+                {downloadButtons.map((item) => (
+                  <DownloadButton key={item.os} widthPx={heroDownloadWidthPx} {...item} />
+                ))}
+              </div>
+
+              <div className="mt-3 text-xs text-black/55 lg:text-left">{heroDevNote}</div>
+              <div className="mt-2 text-xs text-black/55 lg:text-left">{heroNote}</div>
+            </div>
+
+            <div className="mx-auto w-full max-w-[44rem] lg:mx-0 lg:max-w-none">
+              <div className="relative w-full overflow-hidden rounded-3xl shadow-[0_24px_60px_rgba(0,0,0,0.14)]">
+                <video
+                  ref={heroVideoRef}
+                  className="block h-auto w-full"
+                  autoPlay
+                  loop
+                  muted
+                  defaultMuted
+                  playsInline
+                  preload="auto"
+                  poster={heroPoster || undefined}
+                >
+                  <source src={heroVideoSrc} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+                {autoplayBlocked ? (
+                  <button
+                    type="button"
+                    onClick={onPlayVideo}
+                    className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 rounded-full border border-black bg-white px-6 py-3 text-sm font-semibold text-black"
+                  >
+                    Play Video
+                  </button>
+                ) : null}
+              </div>
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      <section id="features" className="py-28 sm:py-40">
+        <Container>
+          <div className="space-y-28">
+            {featureRows.map((feature, index) => {
+              const textBlock = (
+                <div>
+                  <h3 className="text-4xl sm:text-5xl font-display font-semibold tracking-tight text-black">{feature.title}</h3>
+                  <p className="mt-4 text-sm leading-relaxed text-black/70">{feature.summary}</p>
+
+                  <ul className="mt-5 list-disc space-y-2 pl-5 text-sm text-black/75 marker:text-black/70">
+                    {feature.bullets.map((bullet) => (
+                      <li key={bullet}>{bullet}</li>
+                    ))}
+                  </ul>
+                </div>
+              );
+
+              if (feature.mockups.length === 2) {
+                const rightSideMockup = feature.mockups.find((mockup) => mockup.src.endsWith("/01.png")) ?? feature.mockups[1];
+                const leftSideMockup =
+                  feature.mockups.find((mockup) => mockup.src !== rightSideMockup.src) ?? feature.mockups[0];
+                const leftOffsetClass = index % 2 === 0 ? "lg:-translate-y-2" : "lg:translate-y-2";
+                const rightOffsetClass = index % 2 === 0 ? "lg:translate-y-3" : "lg:-translate-y-1";
+
+                return (
+                  <article
+                    key={feature.title}
+                    className="grid items-start gap-12 pb-28 last:pb-0 lg:gap-8 xl:gap-10 lg:grid-cols-[minmax(0,18rem)_minmax(0,1fr)_minmax(0,18rem)] xl:grid-cols-[minmax(0,21rem)_minmax(0,1fr)_minmax(0,21rem)] 2xl:grid-cols-[minmax(0,24rem)_minmax(0,1fr)_minmax(0,24rem)] lg:items-center"
+                  >
+                    <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:hidden">
+                      <MockupFrame
+                        src={leftSideMockup.src}
+                        alt={leftSideMockup.alt}
+                        aspect={leftSideMockup.aspect}
+                        useWebp={leftSideMockup.useWebp}
+                      />
+                      <MockupFrame
+                        src={rightSideMockup.src}
+                        alt={rightSideMockup.alt}
+                        aspect={rightSideMockup.aspect}
+                        useWebp={rightSideMockup.useWebp}
+                      />
+                    </div>
+
+                    <div
+                      className={cn(
+                        "hidden w-full max-w-full justify-self-start transition-transform duration-300 lg:block lg:-translate-x-2 xl:-translate-x-8 2xl:-translate-x-12",
+                        leftOffsetClass
+                      )}
+                    >
+                      <MockupFrame
+                        src={leftSideMockup.src}
+                        alt={leftSideMockup.alt}
+                        aspect={leftSideMockup.aspect}
+                        useWebp={leftSideMockup.useWebp}
+                      />
+                    </div>
+
+                    {textBlock}
+
+                    <div
+                      className={cn(
+                        "hidden w-full max-w-full justify-self-end transition-transform duration-300 lg:block lg:translate-x-2 xl:translate-x-8 2xl:translate-x-12",
+                        rightOffsetClass
+                      )}
+                    >
+                      <MockupFrame
+                        src={rightSideMockup.src}
+                        alt={rightSideMockup.alt}
+                        aspect={rightSideMockup.aspect}
+                        useWebp={rightSideMockup.useWebp}
+                      />
+                    </div>
+                  </article>
+                );
+              }
+
+              return (
+                <article
+                  key={feature.title}
+                  className="grid items-start gap-12 pb-28 last:pb-0 lg:gap-8 xl:gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,18rem)] xl:grid-cols-[minmax(0,1fr)_minmax(0,21rem)] 2xl:grid-cols-[minmax(0,1fr)_minmax(0,24rem)] lg:items-center"
+                >
+                  <div
+                    className={cn(
+                      "mx-auto w-full max-w-full transition-transform duration-300 lg:order-2 lg:justify-self-end lg:translate-x-2 xl:translate-x-8 2xl:translate-x-12",
+                      index % 2 === 0 ? "lg:translate-y-2" : "lg:-translate-y-1"
+                    )}
+                  >
+                    <MockupFrame
+                      src={feature.mockups[0].src}
+                      alt={feature.mockups[0].alt}
+                      aspect={feature.mockups[0].aspect}
+                      useWebp={feature.mockups[0].useWebp}
+                    />
+                  </div>
+                  <div className="lg:order-1">{textBlock}</div>
+                </article>
+              );
+            })}
+          </div>
+        </Container>
+      </section>
+
+      <section id="faq" className="border-y border-black/10 py-28 sm:py-40">
+        <Container>
+          <SectionHeader title="FAQ" />
+          <div className="flex flex-col gap-4">
+            {faqItems.map((item) => (
+              <div key={item.question} className="rounded-2xl border border-black/10 bg-white px-5 py-4">
+                <div className="text-sm font-semibold text-black">{item.question}</div>
+                <div className="mt-3 text-sm leading-relaxed text-black/70">{item.answer}</div>
+              </div>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      <section id="about" className="py-28 sm:py-40">
+        <Container>
+          <SectionHeader
+            title="About"
+            subtitle="Built in New Zealand for people who want control over communication, scheduling, and time."
+          />
+
+          <div className="grid gap-4 md:grid-cols-2">
+            {roadmapLanes.map((lane) => (
+              <RoadmapLaneCard key={lane.title} lane={lane} />
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      <section id="contact" className="border-t border-black/10 py-28 sm:py-40">
+        <Container>
+          <SectionHeader
+            title="Contact"
+            subtitle={
+              <>
+                <span>For help and inquiries, email </span>
+                <a href="mailto:support@axi.chat" className="underline underline-offset-4">
+                  support@axi.chat
+                </a>
+                <span>. For bugs and feature requests, use </span>
+                <a
+                  href="https://github.com/axichat/axichat/issues"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="underline underline-offset-4"
+                >
+                  GitHub Issues
+                </a>
+                <span>.</span>
+              </>
+            }
+          />
+
+          <div className="inline-flex items-center gap-2 text-sm text-black/70">
+            <GitLabIcon className="h-4 w-4" />
+            <a
+              href="https://gitlab.com/axichat/axichat"
+              target="_blank"
+              rel="noreferrer"
+              className="underline underline-offset-4"
+            >
+              https://gitlab.com/axichat/axichat
+            </a>
+          </div>
+        </Container>
+      </section>
+
+      <section className="border-t border-black/10 py-24 sm:py-32">
+        <Container>
+          <div className="rounded-3xl border border-black/10 bg-black/[0.03] px-6 py-10 text-center">
+            <UsernameCta
+              href="#hero-downloads"
+              className="border border-black bg-black px-6 py-3 text-sm text-white hover:bg-black/85 sm:text-base"
+            />
+          </div>
+        </Container>
+      </section>
+    </>
+  );
+}
+
+function UseCasesPage() {
+  return (
+    <>
+      <PageIntro
+        kicker="Use Cases"
+        title="Where Axichat fits best"
+        subtitle="Axichat is strongest where chat, email, and calendar are constantly leaking into each other. These are the workflows it is designed to simplify."
+        actions={
+          <>
+            <a
+              href={withBasePath("blog/")}
+              className="inline-flex items-center rounded-xl border border-black/15 bg-white px-4 py-2 text-sm font-semibold text-black transition hover:bg-black/[0.03]"
+            >
+              Read the blog
+            </a>
+            <a
+              href={toHomeSectionHref("#hero-downloads", false)}
+              className="inline-flex items-center rounded-xl border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition hover:bg-black/85"
+            >
+              Download Axichat
+            </a>
+          </>
+        }
+      />
+
+      <section className="py-16 sm:py-24">
+        <Container>
+          <div className="grid gap-6 xl:grid-cols-2">
+            {useCases.map((useCase) => (
+              <article
+                key={useCase.title}
+                className="rounded-[2rem] border border-black/10 bg-white p-6 shadow-[0_20px_60px_rgba(0,0,0,0.05)] sm:p-7"
+              >
+                <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-black/45">{useCase.audience}</div>
+                <h2 className="mt-4 text-3xl font-display font-semibold tracking-tight text-black">{useCase.title}</h2>
+                <p className="mt-4 text-sm leading-relaxed text-black/72">{useCase.summary}</p>
+                <ul className="mt-5 list-disc space-y-2 pl-5 text-sm text-black/75 marker:text-black/70">
+                  {useCase.bullets.map((bullet) => (
+                    <li key={bullet}>{bullet}</li>
+                  ))}
+                </ul>
+                <div className="mt-6 rounded-2xl border border-black/10 bg-black/[0.03] px-4 py-3 text-sm font-medium text-black/80">
+                  {useCase.highlight}
+                </div>
+              </article>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      <section className="border-t border-black/10 py-16 sm:py-24">
+        <Container>
+          <div className="grid gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-start">
+            <div>
+              <div className="text-xs font-semibold uppercase tracking-[0.24em] text-black/55">Best When</div>
+              <h2 className="mt-3 text-3xl font-display font-semibold tracking-tight text-black sm:text-4xl">
+                You want fewer tools in the loop
+              </h2>
+            </div>
+            <div className="grid gap-3">
+              {[
+                "Your current workflow depends on jumping between chat, inbox, and calendar just to finish one task.",
+                "You care about open protocols, self-hosting options, or being able to explain what the software is actually doing.",
+                "You want communication software that feels fast without forcing everyone into another closed SaaS workspace.",
+              ].map((item) => (
+                <div key={item} className="rounded-2xl border border-black/10 bg-white px-5 py-4 text-sm leading-relaxed text-black/75">
+                  {item}
+                </div>
+              ))}
+            </div>
+          </div>
+        </Container>
+      </section>
+    </>
+  );
+}
+
+function BlogIndexPage() {
+  return (
+    <>
+      <PageIntro
+        kicker="Blog"
+        title="Notes on product direction, releases, and protocol choices"
+        subtitle="This is where Axichat can explain what changed and why it matters, without reducing everything to release bullet points."
+        actions={
+          <a
+            href={withBasePath("use-cases/")}
+            className="inline-flex items-center rounded-xl border border-black/15 bg-white px-4 py-2 text-sm font-semibold text-black transition hover:bg-black/[0.03]"
+          >
+            Explore use cases
+          </a>
+        }
+      />
+
+      <section className="py-16 sm:py-24">
+        <Container>
+          <div className="grid gap-5">
+            {blogPosts.map((post) => (
+              <article
+                key={post.slug}
+                className="rounded-[2rem] border border-black/10 bg-white p-6 shadow-[0_20px_60px_rgba(0,0,0,0.05)] sm:p-7"
+              >
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-medium text-black/55">
+                  <span className="rounded-full border border-black/10 bg-black/[0.03] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-black/65">
+                    {post.category}
+                  </span>
+                  <span>{formatBlogDate(post.publishedAt)}</span>
+                  <span>{post.readingTime}</span>
+                </div>
+                <h2 className="mt-4 text-3xl font-display font-semibold tracking-tight text-black">{post.title}</h2>
+                <p className="mt-3 max-w-3xl text-sm leading-relaxed text-black/72">{post.summary}</p>
+                <a
+                  href={withBasePath(`blog/${post.slug}/`)}
+                  className="mt-6 inline-flex items-center rounded-xl border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition hover:bg-black/85"
+                >
+                  Read article
+                </a>
+              </article>
+            ))}
+          </div>
+        </Container>
+      </section>
+    </>
+  );
+}
+
+function BlogPostPage({ post }: { post: BlogPost }) {
+  return (
+    <>
+      <section className="border-b border-black/10 py-16 sm:py-24">
+        <Container>
+          <div className="max-w-3xl">
+            <a
+              href={withBasePath("blog/")}
+              className="inline-flex items-center text-sm font-medium text-black/60 transition hover:text-black"
+            >
+              Back to blog
+            </a>
+            <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-medium text-black/55">
+              <span className="rounded-full border border-black/10 bg-black/[0.03] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-black/65">
+                {post.category}
+              </span>
+              <span>{formatBlogDate(post.publishedAt)}</span>
+              <span>{post.readingTime}</span>
+            </div>
+            <h1 className="mt-4 text-balance font-display text-4xl font-semibold tracking-tight text-black sm:text-6xl">
+              {post.title}
+            </h1>
+            <p className="mt-4 max-w-2xl text-base leading-relaxed text-black/72 sm:text-lg">{post.summary}</p>
+          </div>
+        </Container>
+      </section>
+
+      <section className="py-16 sm:py-24">
+        <Container>
+          <article className="max-w-3xl rounded-[2rem] border border-black/10 bg-white px-6 py-8 text-base leading-8 text-black/80 shadow-[0_20px_60px_rgba(0,0,0,0.05)] sm:px-8">
+            {post.body}
+          </article>
+        </Container>
+      </section>
+
+      <section className="border-t border-black/10 py-16 sm:py-24">
+        <Container>
+          <div className="rounded-[2rem] border border-black/10 bg-black/[0.03] px-6 py-8">
+            <div className="text-xs font-semibold uppercase tracking-[0.24em] text-black/55">Next</div>
+            <h2 className="mt-3 text-3xl font-display font-semibold tracking-tight text-black">Keep exploring</h2>
+            <div className="mt-6 flex flex-wrap items-center gap-3">
+              <a
+                href={withBasePath("blog/")}
+                className="inline-flex items-center rounded-xl border border-black/15 bg-white px-4 py-2 text-sm font-semibold text-black transition hover:bg-black/[0.03]"
+              >
+                More posts
+              </a>
+              <a
+                href={withBasePath("use-cases/")}
+                className="inline-flex items-center rounded-xl border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition hover:bg-black/85"
+              >
+                Use cases
+              </a>
+            </div>
+          </div>
+        </Container>
+      </section>
+    </>
+  );
+}
+
+function SiteFooter({
+  brandLogoSrc,
+  isHomeRoute,
+  serverStatus,
+}: {
+  brandLogoSrc: string;
+  isHomeRoute: boolean;
+  serverStatus: { email: ServiceIndicatorState; chat: ServiceIndicatorState };
+}) {
+  return (
+    <footer className="border-t border-black/10 py-12">
+      <Container>
+        <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
+          <div className="grid max-w-sm grid-cols-[3.5rem_1fr] gap-x-3 gap-y-2">
+            <BrandIcon alt="Axichat" src={brandLogoSrc} className="h-14 w-14 self-start -ml-[7px]" />
+            <div
+              className="self-center text-2xl leading-none tracking-[0.015em]"
+              style={{ fontFamily: "Gabarito, ui-sans-serif, system-ui", fontWeight: 500 }}
+            >
+              Axichat
+            </div>
+            <div className="col-span-2 flex flex-col gap-2">
+              <div className="text-xs text-black/60">© {new Date().getFullYear()} Axichat LLC</div>
+              <a href={withBasePath("LICENSE.txt")} className="text-xs text-black/60 transition hover:text-black">
+                AGPL-3.0
+              </a>
+              <div className="mt-2 rounded-xl border border-black/10 bg-white px-3 py-2">
+                <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-black/55">Server Status</div>
+                <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-black/70">
+                  <span className="inline-flex items-center gap-2">
+                    <span className={cn("h-2 w-2 rounded-full", statusDotClass(serverStatus.email))} />
+                    <span>Email</span>
+                    <span className="font-semibold text-black">{statusLabel(serverStatus.email)}</span>
+                  </span>
+                  <span className="inline-flex items-center gap-2">
+                    <span className={cn("h-2 w-2 rounded-full", statusDotClass(serverStatus.chat))} />
+                    <span>Chat</span>
+                    <span className="font-semibold text-black">{statusLabel(serverStatus.chat)}</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="space-y-3">
+              <div className="text-xs font-semibold uppercase tracking-[0.24em] text-black/60">Sections</div>
+              <div className="flex flex-col gap-2">
+                {footerLinks.sections.map((link) => (
+                  <NavLink key={link.href} href={toHomeSectionHref(link.href, isHomeRoute)}>
+                    {link.label}
+                  </NavLink>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <div className="text-xs font-semibold uppercase tracking-[0.24em] text-black/60">Pages</div>
+              <div className="flex flex-col gap-2">
+                {footerLinks.pages.map((link) => (
+                  <a key={link.href} href={link.href} className="text-sm text-black/70 transition hover:text-black">
+                    {link.label}
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <div className="text-xs font-semibold uppercase tracking-[0.24em] text-black/60">Legal</div>
+              <div className="flex flex-col gap-2">
+                {footerLinks.legal.map((link) => (
+                  <a key={link.href} href={link.href} className="text-sm text-black/70 transition hover:text-black">
+                    {link.label}
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <div className="text-xs font-semibold uppercase tracking-[0.24em] text-black/60">Links</div>
+              <div className="flex flex-col gap-2">
+                {footerLinks.links.map((link) => (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    target={link.external ? "_blank" : undefined}
+                    rel={link.external ? "noreferrer" : undefined}
+                    className="inline-flex items-center gap-2 text-sm text-black/70 transition hover:text-black"
+                  >
+                    {link.label === "GitHub" ? <GitHubIcon className="h-4 w-4" /> : null}
+                    {link.label}
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </Container>
+    </footer>
   );
 }
 
@@ -902,22 +1866,45 @@ function DonatePage() {
 }
 
 export default function App() {
-  if (typeof window !== "undefined" && isDonateRoutePath(window.location.pathname)) {
+  const route = resolveRoute(typeof window !== "undefined" ? window.location.pathname : "/");
+
+  if (route.kind === "donate") {
     return <DonatePage />;
   }
 
+  const isHomeRoute = route.kind === "home";
+  const routeKey = route.kind === "blog-post" ? route.post.slug : route.kind;
   const heroVideoRef = React.useRef<HTMLVideoElement | null>(null);
   const [autoplayBlocked, setAutoplayBlocked] = React.useState(false);
   const [heroPoster, setHeroPoster] = React.useState<string>("");
   const [logoTone, setLogoTone] = React.useState<LogoTone>("dark");
   const [latestVersion, setLatestVersion] = React.useState<string>("loading...");
   const [latestReleaseDate, setLatestReleaseDate] = React.useState<string>("");
+  const [heroDownloadWidthPx, setHeroDownloadWidthPx] = React.useState(206);
+  const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
   const [serverStatus, setServerStatus] = React.useState<{ email: ServiceIndicatorState; chat: ServiceIndicatorState }>(
     {
       email: "unknown",
       chat: "unknown",
     }
   );
+
+  React.useEffect(() => {
+    document.title = pageTitleForRoute(route);
+  }, [route, routeKey]);
+
+  React.useEffect(() => {
+    if (!mobileMenuOpen) {
+      return;
+    }
+    const handleHashChange = () => {
+      setMobileMenuOpen(false);
+    };
+    window.addEventListener("hashchange", handleHashChange);
+    return () => {
+      window.removeEventListener("hashchange", handleHashChange);
+    };
+  }, [mobileMenuOpen]);
 
   React.useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
@@ -1029,6 +2016,10 @@ export default function App() {
   }, []);
 
   React.useEffect(() => {
+    if (!isHomeRoute) {
+      return;
+    }
+
     let disposed = false;
     const probeVideo = document.createElement("video");
     probeVideo.src = heroVideoSrc;
@@ -1075,9 +2066,13 @@ export default function App() {
       probeVideo.removeAttribute("src");
       probeVideo.load();
     };
-  }, []);
+  }, [isHomeRoute]);
 
   React.useEffect(() => {
+    if (!isHomeRoute) {
+      return;
+    }
+
     const video = heroVideoRef.current;
     if (!video) {
       return;
@@ -1155,7 +2150,7 @@ export default function App() {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
       window.removeEventListener("focus", handleWindowFocus);
     };
-  }, []);
+  }, [isHomeRoute]);
 
   const downloadButtons: DownloadItem[] = [
     {
@@ -1168,7 +2163,7 @@ export default function App() {
     {
       href: downloads.windows,
       os: "Windows",
-      file: ".zip (Axichat.exe)",
+      file: ".zip",
       borderColor: "#0078d4",
       icon: <WindowsIcon className="h-5 w-5 text-black" />,
     },
@@ -1181,6 +2176,55 @@ export default function App() {
     },
   ];
 
+  const handleFdroidBadgeLoad = React.useCallback((event: React.SyntheticEvent<HTMLImageElement>) => {
+    const { naturalWidth, naturalHeight } = event.currentTarget;
+    if (!naturalWidth || !naturalHeight) {
+      return;
+    }
+    const measuredWidth = Math.round((naturalWidth / naturalHeight) * heroStoreBadgeHeightPx);
+    const boundedWidth = Math.max(160, Math.min(320, measuredWidth));
+    setHeroDownloadWidthPx((current) => (current === boundedWidth ? current : boundedWidth));
+  }, []);
+
+  const handlePlayVideo = React.useCallback(() => {
+    const video = heroVideoRef.current;
+    if (!video) {
+      return;
+    }
+
+    void video
+      .play()
+      .then(() => {
+        setAutoplayBlocked(false);
+      })
+      .catch(() => {
+        setAutoplayBlocked(true);
+      });
+  }, []);
+
+  let pageContent: React.ReactNode;
+  if (route.kind === "use-cases") {
+    pageContent = <UseCasesPage />;
+  } else if (route.kind === "blog") {
+    pageContent = <BlogIndexPage />;
+  } else if (route.kind === "blog-post") {
+    pageContent = <BlogPostPage post={route.post} />;
+  } else {
+    pageContent = (
+      <HomePage
+        autoplayBlocked={autoplayBlocked}
+        downloadButtons={downloadButtons}
+        heroDownloadWidthPx={heroDownloadWidthPx}
+        heroPoster={heroPoster}
+        heroVideoRef={heroVideoRef}
+        latestReleaseDate={latestReleaseDate}
+        latestVersion={latestVersion}
+        onFdroidBadgeLoad={handleFdroidBadgeLoad}
+        onPlayVideo={handlePlayVideo}
+      />
+    );
+  }
+
   return (
     <div className="relative min-h-screen bg-white text-black font-body">
       <div className="pointer-events-none absolute inset-0 -z-10">
@@ -1189,365 +2233,21 @@ export default function App() {
         <div className="absolute right-0 top-0 h-80 w-80 rounded-full bg-black/[0.03] blur-3xl" />
       </div>
 
-      <header className="sticky top-0 z-50 border-b border-black/10 bg-white/90 backdrop-blur">
-        <Container>
-          <div className="flex h-16 items-center justify-between">
-            <a href="#top" className="flex items-center gap-3">
-              <BrandIcon alt="Axichat" src={brandLogoSrc} className="h-14 w-14" />
-              <div
-                className="text-2xl leading-none tracking-[0.015em]"
-                style={{ fontFamily: "Gabarito, ui-sans-serif, system-ui", fontWeight: 500 }}
-              >
-                Axichat
-              </div>
-            </a>
+      <SiteHeader
+        brandLogoSrc={brandLogoSrc}
+        isHomeRoute={isHomeRoute}
+        mobileMenuOpen={mobileMenuOpen}
+        onToggleMobileMenu={() => {
+          setMobileMenuOpen((current) => !current);
+        }}
+        onCloseMobileMenu={() => {
+          setMobileMenuOpen(false);
+        }}
+      />
 
-            <nav className="hidden items-center gap-6 md:flex">
-              <NavLink href="#features">Features</NavLink>
-              <NavLink href="#about">About</NavLink>
-              <NavLink href="#faq">FAQ</NavLink>
-              <NavLink href="#contact">Contact</NavLink>
-            </nav>
+      <main id="top">{pageContent}</main>
 
-            <UsernameCta
-              href={latestStableReleaseHref}
-              className="shrink-0 border border-black bg-black text-[10px] text-white hover:bg-black/85 sm:text-xs"
-            />
-          </div>
-        </Container>
-      </header>
-
-      <main id="top">
-        <section className="border-b border-black/10 py-20 sm:py-24">
-          <Container>
-            <div className="grid items-center gap-y-10 gap-x-6 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:gap-x-[clamp(0.55rem,1.9vw,1.9rem)] xl:gap-x-[clamp(0.9rem,2.3vw,2.5rem)]">
-              <div className="mx-auto max-w-2xl text-center lg:mx-0 lg:text-left">
-                <div className="mx-auto mb-6 inline-flex flex-wrap items-center gap-x-3 gap-y-1 rounded-2xl border border-black/15 bg-white px-4 py-2.5 text-black/65 lg:mx-0">
-                  <span className="inline-flex h-2 w-2 rounded-full bg-black" />
-                  <span className="text-xs font-medium tracking-[0.02em]">Latest version</span>
-                  <span className="font-mono text-base font-semibold text-black sm:text-lg">{latestVersion}</span>
-                  {latestReleaseDate ? <span className="text-xs text-black/55">Released {latestReleaseDate}</span> : null}
-                </div>
-
-                <h1 className="text-balance text-5xl font-semibold tracking-tight sm:text-7xl font-display">{heroHeadline}</h1>
-                <p className="mx-auto mt-5 max-w-xl text-pretty text-base leading-relaxed text-black/70 sm:text-lg lg:mx-0">{heroSubhead}</p>
-
-                <UsernameTagline className="mx-auto mt-8 max-w-xl lg:mx-0" />
-                <div className="mt-2 text-sm font-medium text-black/65 lg:text-left">{heroDevNote}</div>
-
-                <div className="mx-auto mt-8 grid gap-3 sm:max-w-md lg:mx-0">
-                  {downloadButtons.map((item) => (
-                    <DownloadButton key={item.os} {...item} />
-                  ))}
-                </div>
-
-                <div className="mt-4 text-xs text-black/55 lg:text-left">{heroNote}</div>
-              </div>
-
-              <div className="mx-auto w-full max-w-[44rem] lg:mx-0 lg:max-w-none">
-                <div className="relative w-full overflow-hidden rounded-3xl shadow-[0_24px_60px_rgba(0,0,0,0.14)]">
-                  <video
-                    ref={heroVideoRef}
-                    className="block h-auto w-full"
-                    autoPlay
-                    loop
-                    muted
-                    defaultMuted
-                    playsInline
-                    preload="auto"
-                    poster={heroPoster || undefined}
-                  >
-                    <source src={heroVideoSrc} type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
-                  {autoplayBlocked ? (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        const video = heroVideoRef.current;
-                        if (!video) {
-                          return;
-                        }
-                        void video
-                          .play()
-                          .then(() => {
-                            setAutoplayBlocked(false);
-                          })
-                          .catch(() => {
-                            setAutoplayBlocked(true);
-                          });
-                      }}
-                      className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 rounded-full border border-black bg-white px-6 py-3 text-sm font-semibold text-black"
-                    >
-                      Play Video
-                    </button>
-                  ) : null}
-                </div>
-              </div>
-            </div>
-          </Container>
-        </section>
-
-        <section id="features" className="py-16 sm:py-20">
-          <Container>
-            <div className="space-y-14">
-              {featureRows.map((feature, index) => {
-                const textBlock = (
-                  <div>
-                    <h3 className="text-3xl sm:text-4xl font-display font-semibold tracking-tight text-black">{feature.title}</h3>
-                    <p className="mt-4 text-sm leading-relaxed text-black/70">{feature.summary}</p>
-
-                    <ul className="mt-5 list-disc space-y-2 pl-5 text-sm text-black/75 marker:text-black/70">
-                      {feature.bullets.map((bullet) => (
-                        <li key={bullet}>{bullet}</li>
-                      ))}
-                    </ul>
-                  </div>
-                );
-
-                if (feature.mockups.length === 2) {
-                  const rightSideMockup =
-                    feature.mockups.find((mockup) => mockup.src.endsWith("/01.png")) ??
-                    feature.mockups[1];
-                  const leftSideMockup = feature.mockups.find((mockup) => mockup.src !== rightSideMockup.src) ?? feature.mockups[0];
-                  const leftOffsetClass = index % 2 === 0 ? "lg:-translate-y-2" : "lg:translate-y-2";
-                  const rightOffsetClass = index % 2 === 0 ? "lg:translate-y-3" : "lg:-translate-y-1";
-                  return (
-                    <article
-                      key={feature.title}
-                      className="grid items-start gap-8 border-b border-black/10 pb-14 last:border-b-0 last:pb-0 lg:gap-6 xl:gap-8 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)_minmax(0,20rem)] xl:grid-cols-[minmax(0,24rem)_minmax(0,1fr)_minmax(0,24rem)] 2xl:grid-cols-[minmax(0,28rem)_minmax(0,1fr)_minmax(0,28rem)] lg:items-center"
-                    >
-                      <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:hidden">
-                        <MockupFrame
-                          src={leftSideMockup.src}
-                          alt={leftSideMockup.alt}
-                          aspect={leftSideMockup.aspect}
-                          useWebp={leftSideMockup.useWebp}
-                        />
-                        <MockupFrame
-                          src={rightSideMockup.src}
-                          alt={rightSideMockup.alt}
-                          aspect={rightSideMockup.aspect}
-                          useWebp={rightSideMockup.useWebp}
-                        />
-                      </div>
-
-                      <div
-                        className={cn(
-                          "hidden lg:block w-full max-w-full justify-self-start transition-transform duration-300 lg:-translate-x-2 xl:-translate-x-8 2xl:-translate-x-12",
-                          leftOffsetClass
-                        )}
-                      >
-                        <MockupFrame
-                          src={leftSideMockup.src}
-                          alt={leftSideMockup.alt}
-                          aspect={leftSideMockup.aspect}
-                          useWebp={leftSideMockup.useWebp}
-                        />
-                      </div>
-
-                      {textBlock}
-
-                      <div
-                        className={cn(
-                          "hidden lg:block w-full max-w-full justify-self-end transition-transform duration-300 lg:translate-x-2 xl:translate-x-8 2xl:translate-x-12",
-                          rightOffsetClass
-                        )}
-                      >
-                        <MockupFrame
-                          src={rightSideMockup.src}
-                          alt={rightSideMockup.alt}
-                          aspect={rightSideMockup.aspect}
-                          useWebp={rightSideMockup.useWebp}
-                        />
-                      </div>
-                    </article>
-                  );
-                }
-
-                return (
-                  <article
-                    key={feature.title}
-                    className="grid items-start gap-8 border-b border-black/10 pb-14 last:border-b-0 last:pb-0 lg:gap-6 xl:gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,20rem)] xl:grid-cols-[minmax(0,1fr)_minmax(0,24rem)] 2xl:grid-cols-[minmax(0,1fr)_minmax(0,28rem)] lg:items-center"
-                  >
-                    <div
-                      className={cn(
-                        "mx-auto w-full max-w-full transition-transform duration-300 lg:order-2 lg:justify-self-end lg:translate-x-2 xl:translate-x-8 2xl:translate-x-12",
-                        index % 2 === 0 ? "lg:translate-y-2" : "lg:-translate-y-1"
-                      )}
-                    >
-                      <MockupFrame
-                        src={feature.mockups[0].src}
-                        alt={feature.mockups[0].alt}
-                        aspect={feature.mockups[0].aspect}
-                        useWebp={feature.mockups[0].useWebp}
-                      />
-                    </div>
-                    <div className="lg:order-1">{textBlock}</div>
-                  </article>
-                );
-              })}
-            </div>
-          </Container>
-        </section>
-
-        <section id="faq" className="border-y border-black/10 py-16 sm:py-20">
-          <Container>
-            <SectionHeader title="FAQ" />
-            <div className="flex flex-col gap-4">
-              {faqItems.map((item) => (
-                <div key={item.question} className="rounded-2xl border border-black/10 bg-white px-5 py-4">
-                  <div className="text-sm font-semibold text-black">{item.question}</div>
-                  <div className="mt-3 text-sm leading-relaxed text-black/70">{item.answer}</div>
-                </div>
-              ))}
-            </div>
-          </Container>
-        </section>
-
-        <section id="about" className="py-16 sm:py-20">
-          <Container>
-            <SectionHeader
-              title="About"
-              subtitle="Built in New Zealand for people who want control over communication, scheduling, and time."
-            />
-
-            <div className="grid gap-4 md:grid-cols-2">
-              {roadmapLanes.map((lane) => (
-                <RoadmapLaneCard key={lane.title} lane={lane} />
-              ))}
-            </div>
-          </Container>
-        </section>
-
-        <section id="contact" className="border-t border-black/10 py-16 sm:py-20">
-          <Container>
-            <SectionHeader
-              title="Contact"
-              subtitle={
-                <>
-                  <span>For help and inquiries, email </span>
-                  <a href="mailto:support@axichat.com" className="underline underline-offset-4">
-                    support@axichat.com
-                  </a>
-                  <span>. For bugs and feature requests, use </span>
-                  <a
-                    href="https://github.com/axichat/axichat/issues"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="underline underline-offset-4"
-                  >
-                    GitHub Issues
-                  </a>
-                  <span>.</span>
-                </>
-              }
-            />
-
-            <div className="inline-flex items-center gap-2 text-sm text-black/70">
-              <GitLabIcon className="h-4 w-4" />
-              <a
-                href="https://gitlab.com/axichat/axichat"
-                target="_blank"
-                rel="noreferrer"
-                className="underline underline-offset-4"
-              >
-                https://gitlab.com/axichat/axichat
-              </a>
-            </div>
-          </Container>
-        </section>
-
-        <section className="border-t border-black/10 py-12 sm:py-16">
-          <Container>
-            <div className="rounded-3xl border border-black/10 bg-black/[0.03] px-6 py-10 text-center">
-              <UsernameCta
-                href={latestStableReleaseHref}
-                className="border border-black bg-black px-6 py-3 text-sm text-white hover:bg-black/85 sm:text-base"
-              />
-            </div>
-          </Container>
-        </section>
-
-        <footer className="border-t border-black/10 py-10">
-          <Container>
-            <div className="flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
-              <div className="grid max-w-sm grid-cols-[3.5rem_1fr] gap-x-3 gap-y-2">
-                <BrandIcon alt="Axichat" src={brandLogoSrc} className="h-14 w-14 self-start -ml-[7px]" />
-                <div
-                  className="self-center text-2xl leading-none tracking-[0.015em]"
-                  style={{ fontFamily: "Gabarito, ui-sans-serif, system-ui", fontWeight: 500 }}
-                >
-                  Axichat
-                </div>
-                <div className="col-span-2 flex flex-col gap-2">
-                  <div className="text-xs text-black/60">© {new Date().getFullYear()} Axichat LLC</div>
-                  <a href={withBasePath("LICENSE.txt")} className="text-xs text-black/60 transition hover:text-black">
-                    AGPL-3.0
-                  </a>
-                  <div className="mt-2 rounded-xl border border-black/10 bg-white px-3 py-2">
-                    <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-black/55">Server Status</div>
-                    <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-black/70">
-                      <span className="inline-flex items-center gap-2">
-                        <span className={cn("h-2 w-2 rounded-full", statusDotClass(serverStatus.email))} />
-                        <span>Email</span>
-                        <span className="font-semibold text-black">{statusLabel(serverStatus.email)}</span>
-                      </span>
-                      <span className="inline-flex items-center gap-2">
-                        <span className={cn("h-2 w-2 rounded-full", statusDotClass(serverStatus.chat))} />
-                        <span>Chat</span>
-                        <span className="font-semibold text-black">{statusLabel(serverStatus.chat)}</span>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-3">
-                <div className="space-y-3">
-                  <div className="text-xs font-semibold uppercase tracking-[0.24em] text-black/60">Sections</div>
-                  <div className="flex flex-col gap-2">
-                    {footerLinks.sections.map((link) => (
-                      <NavLink key={link.href} href={link.href}>
-                        {link.label}
-                      </NavLink>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="space-y-3">
-                  <div className="text-xs font-semibold uppercase tracking-[0.24em] text-black/60">Legal</div>
-                  <div className="flex flex-col gap-2">
-                    {footerLinks.legal.map((link) => (
-                      <a key={link.href} href={link.href} className="text-sm text-black/70 transition hover:text-black">
-                        {link.label}
-                      </a>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="space-y-3">
-                  <div className="text-xs font-semibold uppercase tracking-[0.24em] text-black/60">Links</div>
-                  <div className="flex flex-col gap-2">
-                    {footerLinks.links.map((link) => (
-                      <a
-                        key={link.href}
-                        href={link.href}
-                        target={link.external ? "_blank" : undefined}
-                        rel={link.external ? "noreferrer" : undefined}
-                        className="inline-flex items-center gap-2 text-sm text-black/70 transition hover:text-black"
-                      >
-                        {link.label === "GitHub" ? <GitHubIcon className="h-4 w-4" /> : null}
-                        {link.label}
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Container>
-        </footer>
-      </main>
+      <SiteFooter brandLogoSrc={brandLogoSrc} isHomeRoute={isHomeRoute} serverStatus={serverStatus} />
     </div>
   );
 }
