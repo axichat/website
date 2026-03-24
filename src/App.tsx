@@ -41,6 +41,12 @@ type UseCaseCard = {
   highlight: string;
 };
 
+type FaqItem = {
+  id?: string;
+  question: string;
+  answer: React.ReactNode;
+};
+
 type BlogPost = {
   slug: string;
   title: string;
@@ -93,6 +99,9 @@ const heroVideoSrc = withBasePath("videos/hero.mp4");
 const fdroidDownloadHref = "https://f-droid.org/packages/im.axi.axichat";
 const fdroidBadgeSrc = "https://f-droid.org/badge/get-it-on.png";
 const heroStoreBadgeHeightPx = 80;
+const showPublicFdroidButton = false;
+const unregisterFaqId = "unregister";
+const unregisterFaqHash = `#${unregisterFaqId}`;
 
 const featureRows: FeatureRow[] = [
   {
@@ -177,7 +186,7 @@ const featureRows: FeatureRow[] = [
   },
 ];
 
-const faqItems: { question: string; answer: React.ReactNode }[] = [
+const faqItems: FaqItem[] = [
   {
     question: "Can I use my Axichat address just like a normal email address?",
     answer: (
@@ -305,13 +314,19 @@ const faqItems: { question: string; answer: React.ReactNode }[] = [
     ),
   },
   {
+    id: unregisterFaqId,
     question: "What if I don't like Axichat?",
     answer: (
       <>
         <p>First, do no harm.</p>
         <p className="mt-3">
-          You can easily export all your emails, chats and contacts out of Axichat and delete your account through
-          the app.
+          You can easily export all your emails, chats and contacts out of Axichat and delete your account through the
+          app.
+        </p>
+        <p className="mt-3">
+          If you want to unregister entirely, open your profile page in the app and go to <strong>Account</strong>
+          {" > "}
+          <strong>Unregister</strong>.
         </p>
       </>
     ),
@@ -1252,6 +1267,7 @@ function HomePage({
   heroDownloadWidthPx,
   heroPoster,
   heroVideoRef,
+  highlightUnregisterFaq,
   latestReleaseDate,
   latestVersion,
   onFdroidBadgeLoad,
@@ -1262,6 +1278,7 @@ function HomePage({
   heroDownloadWidthPx: number;
   heroPoster: string;
   heroVideoRef: React.RefObject<HTMLVideoElement>;
+  highlightUnregisterFaq: boolean;
   latestReleaseDate: string;
   latestVersion: string;
   onFdroidBadgeLoad: (event: React.SyntheticEvent<HTMLImageElement>) => void;
@@ -1291,21 +1308,23 @@ function HomePage({
                 id="hero-downloads"
                 className="mx-auto mt-4 inline-grid grid-cols-1 items-center justify-items-center gap-3 sm:grid-cols-2 lg:mx-0 lg:justify-items-start"
               >
-                <a
-                  href={fdroidDownloadHref}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-block max-w-full transition focus:outline-none focus:ring-2 focus:ring-black/25"
-                  style={{ width: `${heroDownloadWidthPx}px` }}
-                >
-                  <img
-                    src={fdroidBadgeSrc}
-                    alt="Get it on F-Droid"
-                    className="block w-auto"
-                    style={{ height: `${heroStoreBadgeHeightPx}px` }}
-                    onLoad={onFdroidBadgeLoad}
-                  />
-                </a>
+                {showPublicFdroidButton ? (
+                  <a
+                    href={fdroidDownloadHref}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-block max-w-full transition focus:outline-none focus:ring-2 focus:ring-black/25"
+                    style={{ width: `${heroDownloadWidthPx}px` }}
+                  >
+                    <img
+                      src={fdroidBadgeSrc}
+                      alt="Get it on F-Droid"
+                      className="block w-auto"
+                      style={{ height: `${heroStoreBadgeHeightPx}px` }}
+                      onLoad={onFdroidBadgeLoad}
+                    />
+                  </a>
+                ) : null}
                 {downloadButtons.map((item) => (
                   <DownloadButton key={item.os} widthPx={heroDownloadWidthPx} {...item} />
                 ))}
@@ -1454,7 +1473,14 @@ function HomePage({
           <SectionHeader title="FAQ" />
           <div className="flex flex-col gap-4">
             {faqItems.map((item) => (
-              <div key={item.question} className="rounded-2xl border border-black/10 bg-white px-5 py-4">
+              <div
+                key={item.question}
+                id={item.id}
+                className={cn(
+                  "scroll-mt-24 rounded-2xl border border-black/10 bg-white px-5 py-4 transition-shadow",
+                  item.id === unregisterFaqId && highlightUnregisterFaq ? "animate-[faq-unregister-highlight_1.8s_ease-out]" : ""
+                )}
+              >
                 <div className="text-sm font-semibold text-black">{item.question}</div>
                 <div className="mt-3 text-sm leading-relaxed text-black/70">{item.answer}</div>
               </div>
@@ -1881,6 +1907,7 @@ export default function App() {
   const [latestVersion, setLatestVersion] = React.useState<string>("loading...");
   const [latestReleaseDate, setLatestReleaseDate] = React.useState<string>("");
   const [heroDownloadWidthPx, setHeroDownloadWidthPx] = React.useState(206);
+  const [activeHash, setActiveHash] = React.useState<string>(typeof window !== "undefined" ? window.location.hash : "");
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
   const [serverStatus, setServerStatus] = React.useState<{ email: ServiceIndicatorState; chat: ServiceIndicatorState }>(
     {
@@ -1905,6 +1932,18 @@ export default function App() {
       window.removeEventListener("hashchange", handleHashChange);
     };
   }, [mobileMenuOpen]);
+
+  React.useEffect(() => {
+    const syncHash = () => {
+      setActiveHash(window.location.hash);
+    };
+
+    syncHash();
+    window.addEventListener("hashchange", syncHash);
+    return () => {
+      window.removeEventListener("hashchange", syncHash);
+    };
+  }, []);
 
   React.useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
@@ -2014,6 +2053,42 @@ export default function App() {
       window.clearInterval(interval);
     };
   }, []);
+
+  React.useEffect(() => {
+    if (!isHomeRoute) {
+      return;
+    }
+
+    if (activeHash !== unregisterFaqHash) {
+      return;
+    }
+
+    let frameId = 0;
+    let timeoutId = 0;
+    const scrollToFaq = () => {
+      const target = document.getElementById(unregisterFaqId);
+      if (!target) {
+        return;
+      }
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+    };
+
+    frameId = window.requestAnimationFrame(() => {
+      timeoutId = window.setTimeout(scrollToFaq, 80);
+    });
+
+    return () => {
+      window.cancelAnimationFrame(frameId);
+      window.clearTimeout(timeoutId);
+    };
+  }, [activeHash, isHomeRoute, routeKey]);
+
+  React.useEffect(() => {
+    if (typeof window === "undefined" || window.location.hash === activeHash) {
+      return;
+    }
+    setActiveHash(window.location.hash);
+  }, [activeHash, routeKey]);
 
   React.useEffect(() => {
     if (!isHomeRoute) {
@@ -2217,6 +2292,7 @@ export default function App() {
         heroDownloadWidthPx={heroDownloadWidthPx}
         heroPoster={heroPoster}
         heroVideoRef={heroVideoRef}
+        highlightUnregisterFaq={isHomeRoute && activeHash === unregisterFaqHash}
         latestReleaseDate={latestReleaseDate}
         latestVersion={latestVersion}
         onFdroidBadgeLoad={handleFdroidBadgeLoad}
@@ -2227,6 +2303,22 @@ export default function App() {
 
   return (
     <div className="relative min-h-screen bg-white text-black font-body">
+      <style>{`
+        @keyframes faq-unregister-highlight {
+          0% {
+            background-color: rgba(255, 243, 199, 0);
+            box-shadow: 0 0 0 0 rgba(196, 138, 10, 0);
+          }
+          18% {
+            background-color: rgba(255, 243, 199, 0.95);
+            box-shadow: 0 0 0 10px rgba(196, 138, 10, 0.16);
+          }
+          100% {
+            background-color: rgba(255, 243, 199, 0);
+            box-shadow: 0 0 0 0 rgba(196, 138, 10, 0);
+          }
+        }
+      `}</style>
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute inset-0 surface-grid opacity-60" />
         <div className="absolute -left-24 top-20 h-72 w-72 rounded-full bg-black/5 blur-3xl animate-floatSlow" />
