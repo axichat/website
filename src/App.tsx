@@ -160,7 +160,7 @@ const featureRows: FeatureRow[] = [
     ],
   },
   {
-    title: "Reach anyone, even if they dont use Axichat",
+    title: "Reach anyone, even before they switch to Axichat",
     summary:
       "Use Axichat just like you would a normal email client.",
     bullets: [
@@ -258,7 +258,7 @@ const faqItems: FaqItem[] = [
     question: "Can I self-host?",
     answer: (
       <p>
-        Yes. We provide scripts and guidelines to set up your own chat and email server for the axichat client{" "}
+        Yes. We provide scripts and guidelines to set up your own chat and email server for the Axichat client{" "}
         <a
           href="https://github.com/axichat/selfhost"
           target="_blank"
