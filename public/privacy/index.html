@@ -12,24 +12,25 @@
         margin: 0;
         background: #ffffff;
         color: #111111;
-        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-family: "Gabarito", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       }
       main {
-        width: min(96vw, 72rem);
+        width: min(96vw, 74rem);
         margin: 0 auto;
-        padding: 2rem 1.25rem 3rem;
+        padding: 2rem 1.25rem 4rem;
       }
       h1 {
         margin: 0;
-        font-size: clamp(2rem, 4vw, 3.25rem);
-        line-height: 1.05;
-        letter-spacing: -0.02em;
+        font-size: clamp(2.2rem, 4vw, 3.6rem);
+        line-height: 1.02;
+        letter-spacing: -0.03em;
       }
-      p {
-        max-width: 52rem;
-        font-size: 1rem;
-        line-height: 1.65;
-        color: rgba(17, 17, 17, 0.78);
+      .intro {
+        max-width: 46rem;
+        margin-top: 1rem;
+        font-size: 1.02rem;
+        line-height: 1.7;
+        color: rgba(17, 17, 17, 0.74);
       }
       .actions {
         display: flex;
@@ -42,8 +43,8 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        border-radius: 0.85rem;
-        padding: 0.8rem 1.1rem;
+        border-radius: 0.9rem;
+        padding: 0.85rem 1.15rem;
         font-size: 0.95rem;
         font-weight: 600;
         text-decoration: none;
@@ -54,31 +55,75 @@
         color: #ffffff;
       }
       .link {
-        border: 1px solid rgba(17, 17, 17, 0.14);
+        border: 1px solid rgba(17, 17, 17, 0.12);
         background: #ffffff;
         color: #111111;
       }
-      .document {
-        overflow-x: auto;
-        border: 1px solid rgba(17, 17, 17, 0.1);
-        border-radius: 1.5rem;
-        background: rgba(17, 17, 17, 0.03);
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.06);
-        padding: 1.5rem;
-        white-space: pre-wrap;
-        word-break: break-word;
-        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      .paper {
+        border: 1px solid rgba(17, 17, 17, 0.08);
+        border-radius: 1.75rem;
+        background: #ffffff;
+        box-shadow: 0 22px 70px rgba(0, 0, 0, 0.06);
+        padding: clamp(1.25rem, 2.6vw, 2.5rem);
+      }
+      .meta {
+        display: grid;
+        gap: 0.35rem;
+        margin-bottom: 1.75rem;
+        padding-bottom: 1.25rem;
+        border-bottom: 1px solid rgba(17, 17, 17, 0.08);
         font-size: 0.95rem;
-        line-height: 1.65;
+        line-height: 1.55;
+        color: rgba(17, 17, 17, 0.62);
+      }
+      .content {
+        max-width: 58rem;
+        font-family: Georgia, Cambria, "Times New Roman", serif;
+        font-size: 1.08rem;
+        line-height: 1.78;
+        color: rgba(17, 17, 17, 0.88);
+      }
+      .content h2,
+      .content h3 {
+        font-family: "Gabarito", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         color: #111111;
+        line-height: 1.15;
+        letter-spacing: -0.02em;
+      }
+      .content h2 {
+        margin: 2.25rem 0 0.9rem;
+        font-size: 1.8rem;
+      }
+      .content h3 {
+        margin: 1.8rem 0 0.75rem;
+        font-size: 1.28rem;
+      }
+      .content p {
+        margin: 0 0 1rem;
+      }
+      .content ul {
+        margin: 0 0 1.15rem 1.25rem;
+        padding: 0;
+      }
+      .content li {
+        margin: 0.5rem 0;
       }
       @media (max-width: 640px) {
         main {
           padding-top: 1.5rem;
         }
-        .document {
-          padding: 1rem;
-          font-size: 0.9rem;
+        .paper {
+          border-radius: 1.2rem;
+        }
+        .content {
+          font-size: 1rem;
+          line-height: 1.72;
+        }
+        .content h2 {
+          font-size: 1.45rem;
+        }
+        .content h3 {
+          font-size: 1.15rem;
         }
       }
     </style>
@@ -86,269 +131,15 @@
   <body>
     <main>
       <h1>Axichat Privacy Policy</h1>
-      <p>This page publishes the Axichat privacy policy as HTML text. The original PDF is still available if you need the source document.</p>
+      <p class="intro">This page publishes the Axichat privacy policy as HTML text. The original PDF is still available if you need the source document.</p>
       <div class="actions">
         <a class="button" href="../axichat_privacy.pdf">Open PDF</a>
         <a class="link" href="../">Back to main site</a>
       </div>
-      <article class="document">Axichat Privacy Policy
-Effective date: January 09, 2026
-Axichat LLC (“Axichat”, “we”, “us”)
-Contact: support@axichat.com
-Overview
-This Privacy Policy explains how Axichat LLC collects, uses, shares, and protects
-informationwhenyouuseAxichatsoftwareandAxichat-hostedservices(together,
-the “Services”).
-Axichat is an open source client application. You can use the client with
-Axichat-hosted servers or with third-party XMPP and email providers that you
-choose. This Policy describes (1) data processing performed by Axichat-hosted
-services and (2) limited data processing performed by the Axichat client when
-we distribute official builds.
-If you do not want Axichat LLC to process your information as described here,
-do not use Axichat-hosted services. You may still be able to use the open source
-client with a third-party provider, which will have its own privacy policy.
-Data minimization: We aim to collect and retain only the minimum infor-
-mation we reasonably need to operate, secure, and support the Services you
-choose to use. We do not sell personal information. We share information only
-as described in this Policy (for example, to deliver your communications, operate
-the Services, or comply with law).
-1. Scope
-This Policy applies to information processed by Axichat when you:
-• use Axichat-hosted XMPP messaging services (including message delivery,
-offline storage, contacts/rosters, and message archive management (MAM)
-if enabled);
-• use Axichat-hosted email services (including SMTP submission, mailbox
-storage, and related protocols if enabled);
-• use attachment upload/download features provided by Axichat-hosted
-servers;
-• use our websites, documentation, and support channels (for example, when
-you contact support@axichat.com); or
-• download and use official Axichat client builds that we distribute.
-For Axichat-hosted services, Axichat LLC is the data controller (or similar
-term under applicable law) for the information described in this Policy. Our
-infrastructure and service providers act as processors/service providers when
-they process information on our behalf.
-1
-This Policy does not apply to third-party services that you connect to through
-the Axichat client (for example, a non-Axichat XMPP server, a third-party email
-provider, or third-party websites). Those third parties have their own privacy
-policies and terms.
-2. Information We Collect
-We collect information in three main ways: (a) information you provide, (b)
-information generated when you use the Services, and (c) information from
-service providers we use to operate the Services.
-2.1 Information you provide
-• Account information (for Axichat-hosted services), such as a username,
-password or other authentication secret (for example, a salted hash or
-verifier), and account settings.
-• Email address (if you provide one), for example for password recovery or
-service communications.
-• Profile and presence information, such as display name, avatar/profile
-picture, status message, and contact/roster information you create or
-manage.
-• Content you send, receive, or store using the Services, such as XMPP
-messages, group chat messages, email messages, mailboxes, attachments,
-voice notes, images, videos, and documents.
-• Support communications, such as the content of messages you send to our
-support team and any information you include in those communications.
-2.2 Information generated when you use the Services
-• Usage and device information, such as IP address, timestamps, client
-version, and authentication and security logs.
-• Message and email metadata, such as sender and recipient identifiers, time
-sent/received, message IDs, and delivery status. This metadata is generally
-required for routing and delivery.
-• Diagnostic information, such as error logs, to maintain reliability and trou-
-bleshootissues(weaimtominimizediagnosticdataanddonotintentionally
-include message or email content in logs).
-2.3 Push notifications
-If you enable push notifications:
-• On iOS, we process Apple Push Notification service (APNs) device tokens
-and related metadata to route notifications. Apple processes push delivery
-according to its own policies.
-• On Android, we may support UnifiedPush in the future. UnifiedPush
-typically uses a “distributor” app that you choose. If you use UnifiedPush,
-2
-the distributor will receive notification payloads to deliver them to your
-device and may process device and connection data according to its own
-policy.
-Push notifications are designed to notify you that activity occurred (for example,
-a new message). Depending on your device settings and platform behavior, a
-notification may display a sender name, subject line, or other preview information
-on your device.
-2.4 Contacts and address book
-The Axichat client may request access to your device contacts if you enable
-contact-related features. Depending on the feature and your settings, contact
-data may be processed locally on your device and/or used to help you find and
-connect with people you know. You can deny contact permissions in your device
-settings.
-2.5 Information from infrastructure and hosting providers
-We host our servers using third-party infrastructure providers (for example, cloud
-hosting or VPS providers). These providers may process limited information
-(for example, IP addresses and system logs) as part of providing infrastructure,
-security, and network services on our behalf.
-2.6 Website data (cookies and server logs)
-If you visit our website, we (and our hosting providers) may collect standard
-web server logs (for example, IP address, browser type, pages requested, and
-timestamps). We may use strictly necessary cookies or similar technologies to
-operate the site (for example, to support basic functionality, security, or prefer-
-ences). We do not use third-party advertising cookies or cross-site behavioral
-advertising trackers.
-3. How We Use Information
-We use information to operate, maintain, and improve the Services. In particular,
-we use information to:
-• Provide the Services, including account creation, authentication, message
-and email delivery, offline storage, message archiving (if enabled), mailbox
-storage, and attachment storage and retrieval.
-• Maintain safety and security, including spam prevention, abuse detection,
-preventing unauthorized access, rate limiting, and protecting the integrity
-and availability of the Services.
-• Provide customer support, troubleshoot issues, and respond to your re-
-quests.
-• Communicate with you about the Services (for example, security notices,
-important updates, and support responses).
-3
-• Comply with legal obligations and enforce our Terms of Service.
-We do not use the content of your messages or emails to show you advertising.
-We do not sell your personal information.
-We generally do not review the content of messages or emails. However, because
-Axichat-hosted services do not provide end-to-end encryption, message and email
-content may be processed in decrypted form on Axichat servers in order to
-deliver, store, and retrieve your communications. We may access content only
-when reasonably necessary to provide support, investigate abuse or security
-issues, or comply with legal obligations.
-4. How We Share Information
-We do not sell your personal information. We do not share personal information
-with third parties for cross-context behavioral advertising.
-We share information only in the following situations: - when you use the
-Services to communicate with others (for example, to deliver messages, emails,
-and attachments to your intended recipients and any servers involved in routing);
-- with service providers that help us operate the Services (for example, hosting,
-storage, and push notification delivery), who are permitted to process information
-only on our behalf; - for legal reasons (for example, to comply with applicable law
-or valid legal process); or - in connection with a merger, acquisition, bankruptcy,
-or sale of assets (as described below).
-4.1 With other users and recipients
-When you send a message or email, we share your content and associated
-metadata with the intended recipients and with any servers involved in message
-routing (for example, the recipient’s XMPP server or email provider).
-Federation note (XMPP): Axichat-hosted XMPP services are intended primarily
-for communication between Axichat accounts. Server-to-server federation may be
-disabled, limited, or available depending on configuration. If you communicate
-with a user on another domain, that other domain’s server will process your
-communications.
-4.2 With service providers
-We use service providers to help operate the Services (for example, hosting,
-storage, and push notification delivery). Service providers are permitted to
-process information only to provide services to us and for no other purpose.
-For push notifications, Apple (APNs) and, if you use it in the future, a Unified-
-Push distributor, process data to deliver notifications.
-4
-4.3 For legal reasons
-We may disclose information if we believe in good faith that disclosure is
-reasonably necessary to (a) comply with applicable law, regulation, or legal
-process, (b) protect the rights, property, or safety of Axichat, our users, or
-others, or (c) detect, prevent, or address fraud, security, or technical issues.
-4.4 Business transfers
-If we are involved in a merger, acquisition, financing, reorganization, bankruptcy,
-or sale of assets, information may be transferred as part of that transaction. We
-will provide notice if your information becomes subject to a different privacy
-policy.
-5. Security
-We use administrative, technical, and physical safeguards designed to protect
-information. Security measures may include access controls, logging, and encryp-
-tion.
-• Encryption in transit: We use transport encryption (such as TLS) where
-supported and configured for XMPP and email protocols.
-• Encryption at rest: We intend to encrypt stored data (including databases,
-mailboxes, and attachment storage) using disk and/or application-level
-encryption in production environments.
-• No end-to-end encryption: Axichat-hosted services do not provide end-
-to-end encryption. This means Axichat servers may process message and
-email content in decrypted form for delivery and storage.
-Development and testing environments: During limited development and testing,
-data may be stored without encryption at rest. We try to minimize the data
-used for testing and restrict access.
-No method of transmission or storage is 100% secure. You are responsible for
-protecting your account credentials and your devices.
-6. Data Retention
-We retain information for as long as necessary to provide the Services and
-for legitimate business purposes such as security, dispute resolution, and legal
-compliance.
-• Account data is retained while your account is active. If you delete your
-account, we delete or anonymize account data within a reasonable period,
-subject to legal and operational requirements.
-• Offline messages are generally stored only until delivery.
-• Message archives (MAM), stored attachments, and email mailboxes may
-be retained until you delete them, change your settings, or delete your
-account (subject to storage limits and server configuration).
-5
-• Serverlogsandsecurityrecordsareretainedforalimitedperiodtomaintain
-security and reliability.
-Deleted messages: Deleting your account or deleting messages from your device
-does not necessarily delete copies that have already been delivered to other users.
-Recipients may retain messages in their own archives, mailboxes, or devices.
-Backups: We may maintain encrypted backups for a limited period. Deleted
-data may persist in backups until those backups are cycled out.
-7. Your Choices and Rights
-7.1 Account controls
-You can update certain account settings within the Axichat client and, where
-supported by your server, manage features such as message archiving and profile
-visibility. You can also change your password and delete your account using
-available account controls (or by contacting support@axichat.com if self-service
-controls are unavailable).
-7.2 Access, deletion, and export
-You may request access to, deletion of, or a copy/export of certain information
-we hold about you by contacting support@axichat.com. We may ask you to
-verify your identity before fulfilling requests.
-7.3 California privacy disclosures
-If you are a California resident, and to the extent Axichat is subject to applicable
-California privacy laws, you may have rights to request access to, deletion of,
-or correction of certain personal information, and to opt out of the sale or
-sharing of personal information as defined by those laws. Axichat does not sell
-personal information, and we do not share personal information for cross-context
-behavioral advertising.
-To make a request, contact support@axichat.com. We will verify your request
-and respond as required by applicable law.
-California “Shine the Light”: We do not share personal information with third
-parties for their own direct marketing purposes. If you have questions, contact
-support@axichat.com.
-7.4 Do Not Track
-Some browsers offer a “Do Not Track” (DNT) signal. Because there is no
-consistent industry standard for DNT, our Services do not respond to DNT
-signals. We do not use third-party advertising trackers in the Axichat client. Our
-infrastructure providers may log network requests for security and performance.
-6
-7.5 EEA/UK/Swiss users (where applicable)
-If you are located in the European Economic Area (EEA), the United Kingdom,
-or Switzerland, you may have additional rights under applicable data protection
-laws, including the right to access, correct, delete, restrict, or object to certain
-processing, and the right to data portability. You also may have the right to
-lodge a complaint with your local supervisory authority.
-Our legal bases for processing (where applicable) include: (a) providing the
-Services under our contract with you, (b) our legitimate interests in operating
-and securing the Services, and (c) your consent where we ask for it (for example,
-for certain optional features).
-8. International Transfers
-Axichat is based in the United States. If you use Axichat-hosted services, your
-information may be processed in the United States and other locations where
-we or our service providers operate. We use safeguards intended to protect your
-information when it is transferred internationally, where required by law.
-9. Age Restriction
-Axichat is not intended for individuals under 18 years of age. We do not
-knowingly collect personal information from anyone under 18. If you believe that
-a minor has provided us with personal information, contact support@axichat.com
-so we can take appropriate action.
-10. Changes to This Policy
-We may update this Privacy Policy from time to time. We will post the updated
-version at axichat.com and update the effective date. If changes are material,
-we may provide additional notice through the Services or by email.
-11. Contact Us
-If you have questions, requests, or complaints about this Privacy Policy or our
-privacy practices, contact:
-Email: support@axichat.com
-Mail: Axichat LLC, Attn: Privacy, 1908 Thomes Ave STE 12716, WY 82001,
-USA
-7</article>
+      <article class="paper">
+        <div class="meta"><div>Axichat Privacy Policy</div><div>Effective date: January 09, 2026</div><div>Axichat LLC (“Axichat”, “we”, “us”)</div><div>Contact: support@axichat.com</div></div>
+        <div class="content"><h2>Overview</h2><p>This Privacy Policy explains how Axichat LLC collects, uses, shares, and protects information when you use Axichat software and Axichat-hosted services (together, the “Services”). Axichat is an open source client application. You can use the client with Axichat-hosted servers or with third-party XMPP and email providers that you choose. This Policy describes (1) data processing performed by Axichat-hosted services and (2) limited data processing performed by the Axichat client when we distribute official builds. If you do not want Axichat LLC to process your information as described here, do not use Axichat-hosted services. You may still be able to use the open source client with a third-party provider, which will have its own privacy policy. Data minimization: We aim to collect and retain only the minimum information we reasonably need to operate, secure, and support the Services you choose to use. We do not sell personal information. We share information only as described in this Policy (for example, to deliver your communications, operate the Services, or comply with law).</p><h2>1. Scope</h2><p>This Policy applies to information processed by Axichat when you:</p><ul><li>use Axichat-hosted XMPP messaging services (including message delivery, offline storage, contacts/rosters, and message archive management (MAM) if enabled);</li><li>use Axichat-hosted email services (including SMTP submission, mailbox storage, and related protocols if enabled);</li><li>use attachment upload/download features provided by Axichat-hosted servers;</li><li>use our websites, documentation, and support channels (for example, when you contact support@axichat.com); or</li><li>download and use official Axichat client builds that we distribute. For Axichat-hosted services, Axichat LLC is the data controller (or similar term under applicable law) for the information described in this Policy. Our infrastructure and service providers act as processors/service providers when they process information on our behalf. This Policy does not apply to third-party services that you connect to through the Axichat client (for example, a non-Axichat XMPP server, a third-party email provider, or third-party websites). Those third parties have their own privacy policies and terms.</li></ul><h2>2. Information We Collect</h2><p>We collect information in three main ways: (a) information you provide, (b) information generated when you use the Services, and (c) information from service providers we use to operate the Services. 2.1 Information you provide</p><ul><li>Account information (for Axichat-hosted services), such as a username, password or other authentication secret (for example, a salted hash or verifier), and account settings.</li><li>Email address (if you provide one), for example for password recovery or service communications.</li><li>Profile and presence information, such as display name, avatar/profile picture, status message, and contact/roster information you create or manage.</li><li>Content you send, receive, or store using the Services, such as XMPP messages, group chat messages, email messages, mailboxes, attachments, voice notes, images, videos, and documents.</li><li>Support communications, such as the content of messages you send to our support team and any information you include in those communications. 2.2 Information generated when you use the Services</li><li>Usage and device information, such as IP address, timestamps, client version, and authentication and security logs.</li><li>Message and email metadata, such as sender and recipient identifiers, time sent/received, message IDs, and delivery status. This metadata is generally required for routing and delivery.</li><li>Diagnostic information, such as error logs, to maintain reliability and troubleshootissues (we aim to minimize diagnostic data and do not intentionally include message or email content in logs). 2.3 Push notifications If you enable push notifications:</li><li>On i OS, we process Apple Push Notification service (APNs) device tokens and related metadata to route notifications. Apple processes push delivery according to its own policies.</li><li>On Android, we may support Unified Push in the future. Unified Push typically uses a “distributor” app that you choose. If you use Unified Push, the distributor will receive notification payloads to deliver them to your device and may process device and connection data according to its own policy. Push notifications are designed to notify you that activity occurred (for example, a new message). Depending on your device settings and platform behavior, a notification may display a sender name, subject line, or other preview information on your device. 2.4 Contacts and address book The Axichat client may request access to your device contacts if you enable contact-related features. Depending on the feature and your settings, contact data may be processed locally on your device and/or used to help you find and connect with people you know. You can deny contact permissions in your device settings. 2.5 Information from infrastructure and hosting providers We host our servers using third-party infrastructure providers (for example, cloud hosting or VPS providers). These providers may process limited information (for example, IP addresses and system logs) as part of providing infrastructure, security, and network services on our behalf. 2.6 Website data (cookies and server logs) If you visit our website, we (and our hosting providers) may collect standard web server logs (for example, IP address, browser type, pages requested, and timestamps). We may use strictly necessary cookies or similar technologies to operate the site (for example, to support basic functionality, security, or preferences). We do not use third-party advertising cookies or cross-site behavioral advertising trackers.</li></ul><h2>3. How We Use Information</h2><p>We use information to operate, maintain, and improve the Services. In particular, we use information to:</p><ul><li>Provide the Services, including account creation, authentication, message and email delivery, offline storage, message archiving (if enabled), mailbox storage, and attachment storage and retrieval.</li><li>Maintain safety and security, including spam prevention, abuse detection, preventing unauthorized access, rate limiting, and protecting the integrity and availability of the Services.</li><li>Provide customer support, troubleshoot issues, and respond to your requests.</li><li>Communicate with you about the Services (for example, security notices, important updates, and support responses).</li><li>Comply with legal obligations and enforce our Terms of Service. We do not use the content of your messages or emails to show you advertising. We do not sell your personal information. We generally do not review the content of messages or emails. However, because Axichat-hosted services do not provide end-to-end encryption, message and email content may be processed in decrypted form on Axichat servers in order to deliver, store, and retrieve your communications. We may access content only when reasonably necessary to provide support, investigate abuse or security issues, or comply with legal obligations.</li></ul><h2>4. How We Share Information</h2><p>We do not sell your personal information. We do not share personal information with third parties for cross-context behavioral advertising. We share information only in the following situations: - when you use the Services to communicate with others (for example, to deliver messages, emails, and attachments to your intended recipients and any servers involved in routing); - with service providers that help us operate the Services (for example, hosting, storage, and push notification delivery), who are permitted to process information only on our behalf; - for legal reasons (for example, to comply with applicable law or valid legal process); or - in connection with a merger, acquisition, bankruptcy, or sale of assets (as described below). 4.1 With other users and recipients When you send a message or email, we share your content and associated metadata with the intended recipients and with any servers involved in message routing (for example, the recipient’s XMPP server or email provider). Federation note (XMPP): Axichat-hosted XMPP services are intended primarily for communication between Axichat accounts. Server-to-server federation may be disabled, limited, or available depending on configuration. If you communicate with a user on another domain, that other domain’s server will process your communications. 4.2 With service providers We use service providers to help operate the Services (for example, hosting, storage, and push notification delivery). Service providers are permitted to process information only to provide services to us and for no other purpose. For push notifications, Apple (APNs) and, if you use it in the future, a UnifiedPush distributor, process data to deliver notifications. 4.3 For legal reasons We may disclose information if we believe in good faith that disclosure is reasonably necessary to (a) comply with applicable law, regulation, or legal process, (b) protect the rights, property, or safety of Axichat, our users, or others, or (c) detect, prevent, or address fraud, security, or technical issues. 4.4 Business transfers If we are involved in a merger, acquisition, financing, reorganization, bankruptcy, or sale of assets, information may be transferred as part of that transaction. We will provide notice if your information becomes subject to a different privacy policy.</p><h2>5. Security</h2><p>We use administrative, technical, and physical safeguards designed to protect information. Security measures may include access controls, logging, and encryption.</p><ul><li>Encryption in transit: We use transport encryption (such as TLS) where supported and configured for XMPP and email protocols.</li><li>Encryption at rest: We intend to encrypt stored data (including databases, mailboxes, and attachment storage) using disk and/or application-level encryption in production environments.</li><li>No end-to-end encryption: Axichat-hosted services do not provide endto-end encryption. This means Axichat servers may process message and email content in decrypted form for delivery and storage. Development and testing environments: During limited development and testing, data may be stored without encryption at rest. We try to minimize the data used for testing and restrict access. No method of transmission or storage is 100% secure. You are responsible for protecting your account credentials and your devices.</li></ul><h2>6. Data Retention</h2><p>We retain information for as long as necessary to provide the Services and for legitimate business purposes such as security, dispute resolution, and legal compliance.</p><ul><li>Account data is retained while your account is active. If you delete your account, we delete or anonymize account data within a reasonable period, subject to legal and operational requirements.</li><li>Offline messages are generally stored only until delivery.</li><li>Message archives (MAM), stored attachments, and email mailboxes may be retained until you delete them, change your settings, or delete your account (subject to storage limits and server configuration).</li><li>Serverlogsandsecurityrecordsareretainedforalimitedperiodtomaintain security and reliability. Deleted messages: Deleting your account or deleting messages from your device does not necessarily delete copies that have already been delivered to other users. Recipients may retain messages in their own archives, mailboxes, or devices. Backups: We may maintain encrypted backups for a limited period. Deleted data may persist in backups until those backups are cycled out.</li></ul><h2>7. Your Choices and Rights</h2><p>7.1 Account controls You can update certain account settings within the Axichat client and, where supported by your server, manage features such as message archiving and profile visibility. You can also change your password and delete your account using available account controls (or by contacting support@axichat.com if self-service controls are unavailable). 7.2 Access, deletion, and export You may request access to, deletion of, or a copy/export of certain information we hold about you by contacting support@axichat.com. We may ask you to verify your identity before fulfilling requests. 7.3 California privacy disclosures If you are a California resident, and to the extent Axichat is subject to applicable California privacy laws, you may have rights to request access to, deletion of, or correction of certain personal information, and to opt out of the sale or sharing of personal information as defined by those laws. Axichat does not sell personal information, and we do not share personal information for cross-context behavioral advertising. To make a request, contact support@axichat.com. We will verify your request and respond as required by applicable law. California “Shine the Light”: We do not share personal information with third parties for their own direct marketing purposes. If you have questions, contact support@axichat.com. 7.4 Do Not Track Some browsers offer a “Do Not Track” (DNT) signal. Because there is no consistent industry standard for DNT, our Services do not respond to DNT signals. We do not use third-party advertising trackers in the Axichat client. Our infrastructure providers may log network requests for security and performance. 7.5 EEA/UK/Swiss users (where applicable) If you are located in the European Economic Area (EEA), the United Kingdom, or Switzerland, you may have additional rights under applicable data protection laws, including the right to access, correct, delete, restrict, or object to certain processing, and the right to data portability. You also may have the right to lodge a complaint with your local supervisory authority. Our legal bases for processing (where applicable) include: (a) providing the Services under our contract with you, (b) our legitimate interests in operating and securing the Services, and (c) your consent where we ask for it (for example, for certain optional features).</p><h2>8. International Transfers</h2><p>Axichat is based in the United States. If you use Axichat-hosted services, your information may be processed in the United States and other locations where we or our service providers operate. We use safeguards intended to protect your information when it is transferred internationally, where required by law.</p><h2>9. Age Restriction</h2><p>Axichat is not intended for individuals under 18 years of age. We do not knowingly collect personal information from anyone under 18. If you believe that a minor has provided us with personal information, contact support@axichat.com so we can take appropriate action.</p><h2>10. Changes to This Policy</h2><p>We may update this Privacy Policy from time to time. We will post the updated version at axichat.com and update the effective date. If changes are material, we may provide additional notice through the Services or by email.</p><h2>11. Contact Us</h2><p>If you have questions, requests, or complaints about this Privacy Policy or our privacy practices, contact: Email: support@axichat.com Mail: Axichat LLC, Attn: Privacy, 1908 Thomes Ave STE 12716, WY 82001, USA</p></div>
+      </article>
     </main>
   </body>
 </html>
