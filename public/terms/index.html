@@ -58,32 +58,27 @@
         background: #ffffff;
         color: #111111;
       }
-      .viewer {
-        overflow: hidden;
+      .document {
+        overflow-x: auto;
         border: 1px solid rgba(17, 17, 17, 0.1);
         border-radius: 1.5rem;
         background: rgba(17, 17, 17, 0.03);
         box-shadow: 0 20px 60px rgba(0, 0, 0, 0.06);
-      }
-      object {
-        display: block;
-        width: 100%;
-        height: min(78vh, 64rem);
-        border: 0;
-        background: #ffffff;
-      }
-      .fallback {
-        padding: 1.25rem;
-      }
-      .fallback a {
+        padding: 1.5rem;
+        white-space: pre-wrap;
+        word-break: break-word;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 0.95rem;
+        line-height: 1.65;
         color: #111111;
       }
       @media (max-width: 640px) {
         main {
           padding-top: 1.5rem;
         }
-        object {
-          height: 70vh;
+        .document {
+          padding: 1rem;
+          font-size: 0.9rem;
         }
       }
     </style>
@@ -91,24 +86,217 @@
   <body>
     <main>
       <h1>Axichat Terms</h1>
-      <p>
-        This page provides a web version of the Axichat terms. The full document is embedded below, and you can also
-        open the original PDF directly if you prefer.
-      </p>
+      <p>This page publishes the Axichat terms as HTML text. The original PDF is still available if you need the source document.</p>
       <div class="actions">
         <a class="button" href="../axichat_terms.pdf">Open PDF</a>
         <a class="link" href="../">Back to main site</a>
       </div>
-      <div class="viewer">
-        <object data="../axichat_terms.pdf" type="application/pdf" aria-label="Axichat terms PDF">
-          <div class="fallback">
-            <p>
-              Your browser could not display the embedded PDF. You can open the terms directly
-              <a href="../axichat_terms.pdf">here</a>.
-            </p>
-          </div>
-        </object>
-      </div>
+      <article class="document">Axichat Terms of Service
+Effective date: January 09, 2026
+Axichat LLC (“Axichat”, “we”, “us”)
+Contact: support@axichat.com
+1. Acceptance of These Terms
+These Terms of Service (“Terms”) govern your use of Axichat-hosted services
+and official Axichat client builds we distribute (together, the “Services”). The
+Axichat client application is open source software and may also be used with
+third-party servers not operated by Axichat.
+By creating an account, accessing, or using the Services, you agree to these
+Terms. If you do not agree, do not use the Services.
+2. Eligibility
+You must be at least 18 years old to use the Services. The Services are not
+intended for minors.
+You may not use the Services if you are prohibited from receiving services under
+applicable laws (for example, due to sanctions or export controls).
+3. Accounts and Security
+• You are responsible for maintaining the confidentiality of your login cre-
+dentials and for all activity under your account.
+• You agree to provide accurate information when creating an account and
+to keep it up to date.
+• You can change your password using available account controls.
+• If you believe your account has been compromised, notify us at sup-
+port@axichat.com.
+We may require you to take reasonable steps to secure your account (for example,
+rotating passwords) and may suspend access if we believe your account is
+compromised.
+4. The Services
+Axichat provides hosted communications services that may include:
+• XMPPmessaging, presence, contacts/rosters, offlinemessagestorage, group
+chats, and optional message archive management (MAM).
+• Email services, such as SMTP submission and mailbox storage, and related
+protocols (where enabled).
+• Attachment upload and retrieval to support message and email delivery.
+1
+• Push notifications (where supported).
+We may add, remove, or change features at any time. We may offer beta or
+experimental features that may be unstable.
+Fees: The Services are currently offered free of charge. We may introduce paid
+features or fees in the future, but we will provide notice before charging you.
+Limits: We may impose reasonable usage, storage, or message size limits to
+protect the Services and other users.
+5. User Content and Communications
+“Content” means information you upload, submit, store, send, or receive through
+the Services, including messages, emails, attachments, avatars, and profile infor-
+mation.
+You retain ownership of your Content. However, to provide the Services, you
+grant Axichat a limited, worldwide, non-exclusive, royalty-free license to host,
+store, reproduce, transmit, and display your Content solely to operate, maintain,
+and improve the Services and to deliver your Content to your intended recipients.
+You are responsible for your Content and for ensuring you have the rights to
+send or store it. You agree not to use the Services to infringe others’ rights or to
+violate applicable law.
+No end-to-end encryption: Axichat-hosted services do not provide end-to-end
+encryption. This means Axichat servers may process message and email content
+in decrypted form for delivery and storage.
+You understand that communications sent using XMPP or email may involve
+other networks and providers. Delivery is not guaranteed. Some metadata (for
+example, sender, recipient, timestamps) is required for routing and delivery.
+6. Acceptable Use
+You agree not to misuse the Services. In particular, you will not:
+• Use the Services for illegal, harmful, or abusive activities, including harass-
+ment, threats, hate, or exploitation of others.
+• Send spam, phishing, malware, or bulk unsolicited communications, or run
+open relays.
+• Attempt to gain unauthorized access to the Services or related systems,
+probe or scan for vulnerabilities, or bypass rate limits or security controls.
+• Interfere with the integrity, availability, or performance of the Services (for
+example, through denial-of-service attacks).
+• Use the Services in a way that violates others’ privacy, publicity, or intel-
+lectual property rights.
+• Misrepresent your identity, impersonate others, or mislead recipients about
+the origin of messages.
+2
+• Use automated means to create accounts or to access the Services in a way
+that is not authorized by us.
+We may remove Content, restrict features, or suspend or terminate accounts
+that violate these Terms or that create risk for users or the Services.
+7. Email-Specific Rules
+If you use Axichat-hosted email services, you agree to:
+• Comply with applicable anti-spam and electronic communications laws and
+regulations (including CAN-SPAM and similar laws in other jurisdictions).
+• Send only messages you are authorized to send and that recipients expect
+to receive.
+• Not use the Services to send bulk unsolicited or deceptive email.
+If you send commercial email, you are responsible for complying with applicable
+requirements such as accurate headers, a non-deceptive subject line, and any
+required opt-out mechanisms and disclosures.
+8. Push Notifications
+If you enable push notifications, you acknowledge that push notifications are
+delivered through platform providers:
+• iOS notifications are delivered through Apple Push Notification service
+(APNs).
+• Android notifications may be delivered through UnifiedPush in the future,
+typically via a distributor app you choose.
+Push notifications may display previews (for example, a sender name or subject
+line) depending on your device settings. You are responsible for configuring your
+device notification settings. You can disable push notifications in your device
+settings and/or within the app (where supported).
+9. Federation and Third-Party Services
+The Axichat client may allow you to connect to third-party services (for example,
+a non-Axichat XMPP server or third-party email provider). Those third parties
+are not operated by Axichat, and their terms and privacy policies govern your
+use of their services. Axichat is not responsible for third-party services.
+Federation note (XMPP): Axichat-hosted XMPP services are intended primarily
+for communication between Axichat accounts. Server-to-server federation may be
+disabled, limited, or available depending on configuration. If you communicate
+with a user on another domain, that other domain’s server will process your
+communications.
+3
+10. Suspension and Termination
+You may stop using the Services at any time. You may delete your account using
+available in-app controls or by contacting support@axichat.com.
+We may suspend or terminate your access to the Services, with or without notice,
+if we reasonably believe:
+• you violated these Terms or applicable law;
+• your account poses a security risk or is involved in abuse;
+• we must do so to comply with legal requirements; or
+• we discontinue the Services.
+Effect of account deletion: When you delete your account, we will remove
+or anonymize account data within a reasonable period, subject to legal and
+operational requirements. However, messages and emails you have already sent
+may remain visible to recipients and may be retained in recipients’ archives,
+mailboxes, or devices. Deleted data may also persist for a limited time in backups
+as described in our Privacy Policy.
+If your account is terminated by Axichat, we may delete or disable access to your
+Content, subject to applicable law and our data retention practices described in
+the Privacy Policy.
+11. Intellectual Property and Open Source
+Axichat and its licensors retain all rights, title, and interest in the Services,
+including our trademarks, logos, and service marks. Except as expressly allowed,
+you may not use Axichat branding without our permission.
+Nothing in these Terms restricts your rights under applicable open source licenses
+for any Axichat client software code we distribute.
+12. Privacy
+Our Privacy Policy explains how we collect and use information. By using the
+Services, you agree that we may process information as described in the Privacy
+Policy.
+13. Notices and Communications
+We may send you service-related communications, including security notices and
+administrative messages, by email, in-app notifications, or through the Services.
+You are responsible for keeping your contact information up to date.
+14. Disclaimers
+THE SERVICES ARE PROVIDED “AS IS” AND “AS AVAILABLE”. TO
+THE MAXIMUM EXTENT PERMITTED BY LAW, AXICHAT DISCLAIMS
+4
+ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING IMPLIED WAR-
+RANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PUR-
+POSE, NON-INFRINGEMENT, AND THAT THE SERVICES WILL BE UN-
+INTERRUPTED, ERROR-FREE, OR SECURE.
+YOU USE THE SERVICES AT YOUR OWN RISK. AXICHAT IS NOT RE-
+SPONSIBLE FOR THE CONTENT OR CONDUCT OF USERS OR THIRD
+PARTIES.
+NO EMERGENCY SERVICES: THE SERVICES DO NOT PROVIDE ACCESS
+TO EMERGENCY SERVICES OR EMERGENCY SERVICE PROVIDERS.
+15. Limitation of Liability
+TO THE MAXIMUM EXTENT PERMITTED BY LAW, IN NO EVENT
+WILL AXICHAT OR ITS AFFILIATES, OFFICERS, EMPLOYEES, AGENTS,
+OR PARTNERS (TOGETHER, THE “AXICHAT PARTIES”) BE LIABLE
+FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, EXEM-
+PLARY, OR PUNITIVE DAMAGES, OR ANY LOSS OF PROFITS, DATA,
+OR GOODWILL, ARISING OUT OF OR RELATED TO THE SERVICES OR
+THESE TERMS.
+TO THE MAXIMUM EXTENT PERMITTED BY LAW, THE TOTAL LIABIL-
+ITY OF THE AXICHAT PARTIES FOR ALL CLAIMS ARISING OUT OF OR
+RELATED TO THE SERVICES OR THESE TERMS WILL NOT EXCEED
+THE GREATER OF $100 OR THE AMOUNT YOU PAID TO AXICHAT FOR
+THE SERVICES IN THE 12 MONTHS BEFORE THE EVENT GIVING RISE
+TO THE CLAIM.
+16. Indemnification
+To the maximum extent permitted by law, you agree to indemnify and hold
+harmless the Axichat Parties from and against any claims, liabilities, damages,
+losses, and expenses (including reasonable attorneys’ fees) arising out of or
+related to: (a) your use of the Services, (b) your Content, or (c) your violation
+of these Terms or applicable law.
+17. Governing Law and Venue
+These Terms are governed by the laws of the State of Wyoming, USA, without
+regard to conflict of law principles, except to the extent such laws are preempted
+by or inconsistent with applicable law.
+Except where prohibited by applicable law, you agree that any dispute arising
+out of or relating to these Terms or the Services will be brought in the state or
+federal courts located in Wyoming, and you consent to personal jurisdiction in
+those courts.
+5
+18. Miscellaneous
+• Severability: If any provision of these Terms is held invalid or unenforceable,
+the remaining provisions will remain in effect.
+• Assignment: You may not assign these Terms without our prior writ-
+ten consent. We may assign these Terms in connection with a merger,
+acquisition, or sale of assets.
+• No waiver: Our failure to enforce any provision is not a waiver of our right
+to do so later.
+• Entire agreement: These Terms and the Privacy Policy form the entire
+agreement between you and Axichat regarding the Services.
+19. Changes to These Terms
+We may update these Terms from time to time. We will post the updated Terms
+at axichat.com and update the effective date. If changes are material, we may
+provide additional notice through the Services or by email. Your continued use
+of the Services after changes become effective means you accept the updated
+Terms.
+20. Contact
+Questions about these Terms? Contact:
+• Email: support@axichat.com
+• Mail: Axichat LLC, Attn: Legal, 1908 Thomes Ave STE 12716, WY 82001,
+USA
+6</article>
     </main>
   </body>
 </html>
