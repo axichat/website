@@ -504,8 +504,8 @@ const footerLinks = {
     { label: "Donate", href: withBasePath("donate/") },
   ],
   legal: [
-    { label: "Terms", href: withBasePath("axichat_terms.pdf") },
-    { label: "Privacy", href: withBasePath("axichat_privacy.pdf") },
+    { label: "Terms", href: withBasePath("terms/") },
+    { label: "Privacy", href: withBasePath("privacy/") },
     { label: "License", href: withBasePath("LICENSE.txt") },
   ],
   links: [
