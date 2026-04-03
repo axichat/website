@@ -6,6 +6,7 @@ type DownloadItem = {
   href: string;
   os: string;
   file: string;
+  backgroundColor: string;
   borderColor: string;
   icon: React.ReactNode;
 };
@@ -86,20 +87,21 @@ function withBasePath(path: string) {
 
 const downloads = {
   android: "https://github.com/axichat/axichat/releases/latest/download/app-production-release.apk",
-  windows: "https://github.com/axichat/axichat/releases/latest/download/axichat-windows.zip",
-  linux: "https://github.com/axichat/axichat/releases/latest/download/axichat-linux.tar.gz",
+  windows: "https://github.com/axichat/axichat/releases/latest/download/axichat-windows-setup.exe",
+  linux: "https://github.com/axichat/axichat/releases/latest/download/axichat-x86_64.AppImage",
 };
 const latestStableReleaseHref = "https://github.com/axichat/axichat/releases/latest";
 
 const heroHeadline = "Goodbye, Email";
-const heroSubhead = "The best of instant messaging, email, and calendar all in one.";
-const heroNote = "Verify checksums and signatures in GitHub release notes.";
+const heroSubhead = "Replace your email, messenger, and calendar all with one app.";
+const heroNote = "Verify the release checksums on GitHub before installing.";
 const heroDevNote = "Axichat is still in active development, so things may break.";
 const heroVideoSrc = withBasePath("videos/hero.mp4");
 const fdroidDownloadHref = "https://f-droid.org/packages/im.axi.axichat";
 const fdroidBadgeSrc = "https://f-droid.org/badge/get-it-on.png";
 const heroStoreBadgeHeightPx = 80;
 const showPublicFdroidButton = false;
+const showEditorialLinks = false;
 const unregisterFaqId = "unregister";
 const unregisterFaqHash = `#${unregisterFaqId}`;
 
@@ -188,14 +190,8 @@ const featureRows: FeatureRow[] = [
 
 const faqItems: FaqItem[] = [
   {
-    question: "Can I use my Axichat address just like a normal email address?",
-    answer: (
-      <p>
-        Yes, when you create an account we will give you a "@axi.im" email address which you can give to other people
-        just like a normal email address. You can even use it to sign up for other accounts online like you normally
-        would.
-      </p>
-    ),
+    question: "Does Axichat provide real email addresses @axi.im?",
+    answer: <p>Yes, use it as you would any email address including to sign up for other online accounts.</p>,
   },
   {
     question: "Do I need an existing email address to sign up?",
@@ -338,20 +334,19 @@ const roadmapLanes: RoadmapLane[] = [
     title: "Completed",
     status: "completed",
     items: [
-      { year: "2024", detail: "Core XMPP messenger foundation (presence, chat, open-protocol architecture)" },
-      { year: "2024", detail: "First-party notifications and offline-friendly messaging baseline" },
-      { year: "2025", detail: "Cross-platform desktop/mobile support (Android, Linux, Windows)" },
+      { year: "Jul 2024", detail: "Core XMPP messenger foundation (presence, chat, open-protocol architecture)" },
+      { year: "Sep 2024", detail: "First-party notifications and offline-friendly messaging baseline" },
+      { year: "Oct 2025", detail: "Cross-platform desktop/mobile support (Android, Linux, Windows)" },
       {
-        year: "2025",
+        year: "Nov 2025",
         detail: "Calendar + task system foundation (natural-language scheduling and drag/drop planning)",
       },
-      { year: "2025", detail: "Unified email integration via DeltaChat Core Rust" },
+      { year: "Dec 2025", detail: "Unified email integration via DeltaChat Core Rust" },
       {
-        year: "2025",
+        year: "Jan 2026",
         detail: "Group chats (MUC) and richer conversation UX (receipts/reactions/reply flows)",
       },
-      { year: "2025", detail: "File attachments and media sharing in chat/email flows" },
-      { year: "2025", detail: "Shared availability and collaborative calendar workflows" },
+      { year: "Feb 2026", detail: "File attachments and media sharing in chat/email flows" },
     ],
   },
   {
@@ -359,7 +354,6 @@ const roadmapLanes: RoadmapLane[] = [
     status: "upcoming",
     items: [
       { year: "2026", detail: "Voice and video calling" },
-      { year: "2026", detail: "End-to-end encryption" },
       { year: "2026", detail: "3rd-party email OAuth" },
     ],
   },
@@ -491,19 +485,8 @@ const blogPosts: BlogPost[] = [
 ];
 
 const footerLinks = {
-  sections: [
-    { label: "Top", href: "#top" },
-    { label: "Features", href: "#features" },
-    { label: "FAQ", href: "#faq" },
-    { label: "About", href: "#about" },
-    { label: "Contact", href: "#contact" },
-  ],
-  pages: [
-    { label: "Use Cases", href: withBasePath("use-cases/") },
-    { label: "Blog", href: withBasePath("blog/") },
-    { label: "Donate", href: withBasePath("donate/") },
-  ],
   legal: [
+    { label: "Donate", href: withBasePath("donate/") },
     { label: "Terms", href: withBasePath("terms/") },
     { label: "Privacy", href: withBasePath("privacy/") },
     { label: "License", href: withBasePath("LICENSE.txt") },
@@ -774,14 +757,13 @@ function BrandIcon({ className, alt, src }: { className?: string; alt: string; s
 function AndroidIcon({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden>
-      <path d="M7.4 7.15 5.9 4.85M16.6 7.15l1.5-2.3" stroke="#34A853" strokeWidth="1.45" strokeLinecap="round" />
-      <rect x="6.1" y="7.4" width="11.8" height="8.4" rx="2.8" fill="#34A853" />
-      <rect x="4.3" y="9.1" width="1.8" height="5.6" rx="0.9" fill="#34A853" />
-      <rect x="17.9" y="9.1" width="1.8" height="5.6" rx="0.9" fill="#34A853" />
-      <rect x="8.05" y="15.2" width="1.8" height="4.2" rx="0.9" fill="#34A853" />
-      <rect x="14.15" y="15.2" width="1.8" height="4.2" rx="0.9" fill="#34A853" />
-      <circle cx="9.6" cy="10.8" r="0.72" fill="#fff" />
-      <circle cx="14.4" cy="10.8" r="0.72" fill="#fff" />
+      <path d="M8.25 5.95 7.05 4.1M15.75 5.95l1.2-1.85" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+      <path
+        d="M7.1 7.25c.42-2.15 2.36-3.75 4.9-3.75 2.54 0 4.48 1.6 4.9 3.75H7.1Zm-.75.8h11.3a.6.6 0 0 1 .6.6v5.95a2.1 2.1 0 0 1-2.1 2.1H7.85a2.1 2.1 0 0 1-2.1-2.1V8.65a.6.6 0 0 1 .6-.6Zm-1.55.85h1.45v5.3a.72.72 0 1 1-1.45 0V8.9Zm13.95 0h1.45v5.3a.72.72 0 1 1-1.45 0V8.9ZM8.1 16.1h1.55v3.2a.78.78 0 1 1-1.55 0v-3.2Zm6.25 0h1.55v3.2a.78.78 0 1 1-1.55 0v-3.2Z"
+        fill="currentColor"
+      />
+      <circle cx="9.75" cy="10.55" r="0.6" fill="#0B0B0B" />
+      <circle cx="14.25" cy="10.55" r="0.6" fill="#0B0B0B" />
     </svg>
   );
 }
@@ -916,18 +898,8 @@ function RoadmapLaneCard({ lane }: { lane: RoadmapLane }) {
           : "border-amber-400/50 shadow-[0_16px_42px_rgba(217,119,6,0.10)]"
       )}
     >
-      <div className="mb-4 flex items-center justify-between gap-3">
+      <div className="mb-4">
         <h3 className="text-lg font-display font-semibold text-black">{lane.title}</h3>
-        <span
-          className={cn(
-            "rounded-full border px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.16em]",
-            lane.status === "completed"
-              ? "border-emerald-600/30 bg-emerald-50 text-emerald-900"
-              : "border-amber-600/30 bg-amber-50 text-amber-900"
-          )}
-        >
-          {lane.status === "completed" ? "Shipped" : "In Progress"}
-        </span>
       </div>
 
       <div ref={trackRef} className="relative px-9 sm:px-10">
@@ -1030,6 +1002,7 @@ function DownloadButton({
   href,
   os,
   file,
+  backgroundColor,
   borderColor,
   icon,
   widthPx,
@@ -1038,20 +1011,20 @@ function DownloadButton({
     <a
       href={href}
       className={cn(
-        "group relative flex h-14 max-w-full self-center items-center justify-between gap-2 rounded-lg border bg-white px-3.5",
-        "transition hover:bg-black/[0.02]",
+        "group relative flex h-14 max-w-full self-center items-center justify-between gap-2 rounded-lg border px-3.5 text-white",
+        "transition hover:brightness-95",
         "focus:outline-none focus:ring-2 focus:ring-black/25"
       )}
-      style={{ borderColor, width: `${widthPx}px` }}
+      style={{ backgroundColor, borderColor, width: `${widthPx}px` }}
     >
       <div className="flex min-w-0 items-center gap-2">
-        <div className="grid h-6 w-6 place-items-center rounded-md border border-black/15 bg-white text-black">{icon}</div>
+        <div className="grid h-6 w-6 place-items-center rounded-md border border-white/20 bg-white/15 text-white">{icon}</div>
         <div className="leading-tight">
-          <div className="whitespace-nowrap text-xs font-semibold text-black">{os}</div>
-          <div className="whitespace-nowrap text-[10px] text-black/60">{file}</div>
+          <div className="whitespace-nowrap text-xs font-semibold text-white">{os}</div>
+          <div className="whitespace-nowrap text-[10px] text-white/75">{file}</div>
         </div>
       </div>
-      <DownloadIcon className="h-3.5 w-3.5 shrink-0 text-black/60 transition group-hover:text-black/85" />
+      <DownloadIcon className="h-3.5 w-3.5 shrink-0 text-white/75 transition group-hover:text-white" />
     </a>
   );
 }
@@ -1176,10 +1149,14 @@ function SiteHeader({
 }) {
   const primaryNavItems = [
     { label: "Features", href: toHomeSectionHref("#features", isHomeRoute) },
-    { label: "Use Cases", href: withBasePath("use-cases/") },
-    { label: "Blog", href: withBasePath("blog/") },
+    ...(showEditorialLinks
+      ? [
+          { label: "Use Cases", href: withBasePath("use-cases/") },
+          { label: "Blog", href: withBasePath("blog/") },
+        ]
+      : []),
     { label: "FAQ", href: toHomeSectionHref("#faq", isHomeRoute) },
-    { label: "About", href: toHomeSectionHref("#about", isHomeRoute) },
+    { label: "Roadmap", href: toHomeSectionHref("#about", isHomeRoute) },
     { label: "Contact", href: toHomeSectionHref("#contact", isHomeRoute) },
   ];
 
@@ -1491,10 +1468,7 @@ function HomePage({
 
       <section id="about" className="py-28 sm:py-40">
         <Container>
-          <SectionHeader
-            title="About"
-            subtitle="Built in New Zealand for people who want control over communication, scheduling, and time."
-          />
+          <SectionHeader title="Roadmap" />
 
           <div className="grid gap-4 md:grid-cols-2">
             {roadmapLanes.map((lane) => (
@@ -1510,7 +1484,7 @@ function HomePage({
             title="Contact"
             subtitle={
               <>
-                <span>For help and inquiries, email </span>
+                <span>Email: </span>
                 <a href="mailto:support@axi.chat" className="underline underline-offset-4">
                   support@axi.chat
                 </a>
@@ -1565,12 +1539,14 @@ function UseCasesPage() {
         subtitle="Axichat is strongest where chat, email, and calendar are constantly leaking into each other. These are the workflows it is designed to simplify."
         actions={
           <>
-            <a
-              href={withBasePath("blog/")}
-              className="inline-flex items-center rounded-xl border border-black/15 bg-white px-4 py-2 text-sm font-semibold text-black transition hover:bg-black/[0.03]"
-            >
-              Read the blog
-            </a>
+            {showEditorialLinks ? (
+              <a
+                href={withBasePath("blog/")}
+                className="inline-flex items-center rounded-xl border border-black/15 bg-white px-4 py-2 text-sm font-semibold text-black transition hover:bg-black/[0.03]"
+              >
+                Read the blog
+              </a>
+            ) : null}
             <a
               href={toHomeSectionHref("#hero-downloads", false)}
               className="inline-flex items-center rounded-xl border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition hover:bg-black/85"
@@ -1641,12 +1617,14 @@ function BlogIndexPage() {
         title="Notes on product direction, releases, and protocol choices"
         subtitle="This is where Axichat can explain what changed and why it matters, without reducing everything to release bullet points."
         actions={
-          <a
-            href={withBasePath("use-cases/")}
-            className="inline-flex items-center rounded-xl border border-black/15 bg-white px-4 py-2 text-sm font-semibold text-black transition hover:bg-black/[0.03]"
-          >
-            Explore use cases
-          </a>
+          showEditorialLinks ? (
+            <a
+              href={withBasePath("use-cases/")}
+              className="inline-flex items-center rounded-xl border border-black/15 bg-white px-4 py-2 text-sm font-semibold text-black transition hover:bg-black/[0.03]"
+            >
+              Explore use cases
+            </a>
+          ) : undefined
         }
       />
 
@@ -1688,12 +1666,14 @@ function BlogPostPage({ post }: { post: BlogPost }) {
       <section className="border-b border-black/10 py-16 sm:py-24">
         <Container>
           <div className="max-w-3xl">
-            <a
-              href={withBasePath("blog/")}
-              className="inline-flex items-center text-sm font-medium text-black/60 transition hover:text-black"
-            >
-              Back to blog
-            </a>
+            {showEditorialLinks ? (
+              <a
+                href={withBasePath("blog/")}
+                className="inline-flex items-center text-sm font-medium text-black/60 transition hover:text-black"
+              >
+                Back to blog
+              </a>
+            ) : null}
             <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-medium text-black/55">
               <span className="rounded-full border border-black/10 bg-black/[0.03] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-black/65">
                 {post.category}
@@ -1717,101 +1697,67 @@ function BlogPostPage({ post }: { post: BlogPost }) {
         </Container>
       </section>
 
-      <section className="border-t border-black/10 py-16 sm:py-24">
-        <Container>
-          <div className="rounded-[2rem] border border-black/10 bg-black/[0.03] px-6 py-8">
-            <div className="text-xs font-semibold uppercase tracking-[0.24em] text-black/55">Next</div>
-            <h2 className="mt-3 text-3xl font-display font-semibold tracking-tight text-black">Keep exploring</h2>
-            <div className="mt-6 flex flex-wrap items-center gap-3">
-              <a
-                href={withBasePath("blog/")}
-                className="inline-flex items-center rounded-xl border border-black/15 bg-white px-4 py-2 text-sm font-semibold text-black transition hover:bg-black/[0.03]"
-              >
-                More posts
-              </a>
-              <a
-                href={withBasePath("use-cases/")}
-                className="inline-flex items-center rounded-xl border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition hover:bg-black/85"
-              >
-                Use cases
-              </a>
+      {showEditorialLinks ? (
+        <section className="border-t border-black/10 py-16 sm:py-24">
+          <Container>
+            <div className="rounded-[2rem] border border-black/10 bg-black/[0.03] px-6 py-8">
+              <div className="text-xs font-semibold uppercase tracking-[0.24em] text-black/55">Next</div>
+              <h2 className="mt-3 text-3xl font-display font-semibold tracking-tight text-black">Keep exploring</h2>
+              <div className="mt-6 flex flex-wrap items-center gap-3">
+                <a
+                  href={withBasePath("blog/")}
+                  className="inline-flex items-center rounded-xl border border-black/15 bg-white px-4 py-2 text-sm font-semibold text-black transition hover:bg-black/[0.03]"
+                >
+                  More posts
+                </a>
+                <a
+                  href={withBasePath("use-cases/")}
+                  className="inline-flex items-center rounded-xl border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition hover:bg-black/85"
+                >
+                  Use cases
+                </a>
+              </div>
             </div>
-          </div>
-        </Container>
-      </section>
+          </Container>
+        </section>
+      ) : null}
     </>
   );
 }
 
 function SiteFooter({
-  brandLogoSrc,
-  isHomeRoute,
   serverStatus,
 }: {
-  brandLogoSrc: string;
-  isHomeRoute: boolean;
   serverStatus: { email: ServiceIndicatorState; chat: ServiceIndicatorState };
 }) {
   return (
     <footer className="border-t border-black/10 py-12">
       <Container>
         <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
-          <div className="grid max-w-sm grid-cols-[3.5rem_1fr] gap-x-3 gap-y-2">
-            <BrandIcon alt="Axichat" src={brandLogoSrc} className="h-14 w-14 self-start -ml-[7px]" />
-            <div
-              className="self-center text-2xl leading-none tracking-[0.015em]"
-              style={{ fontFamily: "Gabarito, ui-sans-serif, system-ui", fontWeight: 500 }}
-            >
-              Axichat
-            </div>
-            <div className="col-span-2 flex flex-col gap-2">
-              <div className="text-xs text-black/60">© {new Date().getFullYear()} Axichat LLC</div>
-              <a href={withBasePath("LICENSE.txt")} className="text-xs text-black/60 transition hover:text-black">
-                AGPL-3.0
-              </a>
-              <div className="mt-2 rounded-xl border border-black/10 bg-white px-3 py-2">
-                <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-black/55">Server Status</div>
-                <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-black/70">
-                  <span className="inline-flex items-center gap-2">
-                    <span className={cn("h-2 w-2 rounded-full", statusDotClass(serverStatus.email))} />
-                    <span>Email</span>
-                    <span className="font-semibold text-black">{statusLabel(serverStatus.email)}</span>
-                  </span>
-                  <span className="inline-flex items-center gap-2">
-                    <span className={cn("h-2 w-2 rounded-full", statusDotClass(serverStatus.chat))} />
-                    <span>Chat</span>
-                    <span className="font-semibold text-black">{statusLabel(serverStatus.chat)}</span>
-                  </span>
-                </div>
+          <div className="flex max-w-sm flex-col gap-2">
+            <div className="rounded-xl border border-black/10 bg-white px-3 py-2">
+              <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-black/55">Server Status</div>
+              <div className="mt-2 flex flex-col gap-2 text-xs text-black/70">
+                <span className="grid grid-cols-[3.5rem_auto_1fr] items-center gap-x-2">
+                  <span>Email:</span>
+                  <span className={cn("h-2 w-2 rounded-full", statusDotClass(serverStatus.email))} />
+                  <span className="font-semibold text-black">{statusLabel(serverStatus.email)}</span>
+                </span>
+                <span className="grid grid-cols-[3.5rem_auto_1fr] items-center gap-x-2">
+                  <span>Chat:</span>
+                  <span className={cn("h-2 w-2 rounded-full", statusDotClass(serverStatus.chat))} />
+                  <span className="font-semibold text-black">{statusLabel(serverStatus.chat)}</span>
+                </span>
               </div>
             </div>
+            <div className="mt-2 text-xs text-black/60">© {new Date().getFullYear()} Axichat LLC</div>
+            <a href={withBasePath("LICENSE.txt")} className="text-xs text-black/60 transition hover:text-black">
+              AGPL-3.0
+            </a>
           </div>
 
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-8 sm:grid-cols-2">
             <div className="space-y-3">
-              <div className="text-xs font-semibold uppercase tracking-[0.24em] text-black/60">Sections</div>
-              <div className="flex flex-col gap-2">
-                {footerLinks.sections.map((link) => (
-                  <NavLink key={link.href} href={toHomeSectionHref(link.href, isHomeRoute)}>
-                    {link.label}
-                  </NavLink>
-                ))}
-              </div>
-            </div>
-
-            <div className="space-y-3">
-              <div className="text-xs font-semibold uppercase tracking-[0.24em] text-black/60">Pages</div>
-              <div className="flex flex-col gap-2">
-                {footerLinks.pages.map((link) => (
-                  <a key={link.href} href={link.href} className="text-sm text-black/70 transition hover:text-black">
-                    {link.label}
-                  </a>
-                ))}
-              </div>
-            </div>
-
-            <div className="space-y-3">
-              <div className="text-xs font-semibold uppercase tracking-[0.24em] text-black/60">Legal</div>
               <div className="flex flex-col gap-2">
                 {footerLinks.legal.map((link) => (
                   <a key={link.href} href={link.href} className="text-sm text-black/70 transition hover:text-black">
@@ -1822,7 +1768,6 @@ function SiteFooter({
             </div>
 
             <div className="space-y-3">
-              <div className="text-xs font-semibold uppercase tracking-[0.24em] text-black/60">Links</div>
               <div className="flex flex-col gap-2">
                 {footerLinks.links.map((link) => (
                   <a
@@ -2231,22 +2176,25 @@ export default function App() {
     {
       href: downloads.android,
       os: "Android",
-      file: ".apk",
-      borderColor: "#0f9d58",
+      file: "APK",
+      backgroundColor: "#34A853",
+      borderColor: "#34A853",
       icon: <AndroidIcon className="h-5 w-5" />,
     },
     {
       href: downloads.windows,
       os: "Windows",
-      file: ".zip",
-      borderColor: "#0078d4",
-      icon: <WindowsIcon className="h-5 w-5 text-black" />,
+      file: "Installer .exe",
+      backgroundColor: "#2563EB",
+      borderColor: "#2563EB",
+      icon: <WindowsIcon className="h-5 w-5" />,
     },
     {
       href: downloads.linux,
       os: "Linux",
-      file: ".tar.gz",
-      borderColor: "#111111",
+      file: "AppImage",
+      backgroundColor: "#F97316",
+      borderColor: "#F97316",
       icon: <LinuxIcon className="h-5 w-5" />,
     },
   ];
@@ -2339,7 +2287,7 @@ export default function App() {
 
       <main id="top">{pageContent}</main>
 
-      <SiteFooter brandLogoSrc={brandLogoSrc} isHomeRoute={isHomeRoute} serverStatus={serverStatus} />
+      <SiteFooter serverStatus={serverStatus} />
     </div>
   );
 }
