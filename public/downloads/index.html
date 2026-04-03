@@ -1,0 +1,906 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Axichat Downloads</title>
+    <meta
+      name="description"
+      content="Download Axichat from the latest GitHub release with plain-English labels for Windows, Android, and Linux."
+    />
+    <style>
+      :root {
+        color-scheme: light;
+        --surface: #ffffff;
+        --surface-muted: rgba(0, 0, 0, 0.03);
+        --line: rgba(0, 0, 0, 0.1);
+        --text: #111111;
+        --text-muted: rgba(17, 17, 17, 0.72);
+        --text-faint: rgba(17, 17, 17, 0.55);
+        --shadow: 0 20px 60px rgba(0, 0, 0, 0.06);
+        --radius-xl: 28px;
+        --radius-lg: 18px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background:
+          radial-gradient(1000px 520px at 10% -10%, rgba(0, 0, 0, 0.05), transparent 60%),
+          radial-gradient(900px 500px at 100% 0%, rgba(0, 0, 0, 0.04), transparent 60%),
+          var(--surface);
+        color: var(--text);
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .shell {
+        width: min(100%, 92rem);
+        margin: 0 auto;
+        padding: 0 1.5rem;
+      }
+
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        border-bottom: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.92);
+        backdrop-filter: blur(14px);
+      }
+
+      .site-header-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        min-height: 4rem;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        min-width: 0;
+        text-decoration: none;
+      }
+
+      .brand img {
+        width: 3rem;
+        height: 3rem;
+        display: block;
+        flex-shrink: 0;
+      }
+
+      .brand span {
+        font-size: 1.45rem;
+        line-height: 1;
+        letter-spacing: 0.015em;
+        font-weight: 600;
+      }
+
+      .header-links {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 0.75rem;
+      }
+
+      .header-link {
+        display: inline-flex;
+        align-items: center;
+        min-height: 2.5rem;
+        padding: 0 1rem;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: #fff;
+        text-decoration: none;
+        font-size: 0.92rem;
+        color: var(--text-muted);
+        transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+      }
+
+      .header-link:hover {
+        background: var(--surface-muted);
+        color: var(--text);
+      }
+
+      .header-link.primary {
+        border-color: #111111;
+        background: #111111;
+        color: #ffffff;
+      }
+
+      .header-link.primary:hover {
+        background: rgba(17, 17, 17, 0.88);
+      }
+
+      main {
+        padding: 3rem 0 4rem;
+      }
+
+      .hero {
+        display: grid;
+        gap: 1.5rem;
+        padding: 0 0 2rem;
+      }
+
+      .eyebrow {
+        font-size: 0.72rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.24em;
+        color: var(--text-faint);
+      }
+
+      .hero h1 {
+        margin: 0;
+        max-width: 15ch;
+        font-size: clamp(2.2rem, 5vw, 4.8rem);
+        line-height: 0.98;
+        letter-spacing: -0.03em;
+      }
+
+      .hero p {
+        margin: 0;
+        max-width: 44rem;
+        color: var(--text-muted);
+        font-size: 1.05rem;
+        line-height: 1.65;
+      }
+
+      .tip-grid {
+        display: grid;
+        gap: 0.9rem;
+        grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+      }
+
+      .tip {
+        border: 1px solid var(--line);
+        border-radius: 1.25rem;
+        background: #fff;
+        padding: 1rem 1rem 1.05rem;
+        box-shadow: var(--shadow);
+      }
+
+      .tip strong {
+        display: block;
+        margin-bottom: 0.4rem;
+        font-size: 0.92rem;
+      }
+
+      .tip span {
+        color: var(--text-muted);
+        font-size: 0.92rem;
+        line-height: 1.55;
+      }
+
+      .release-meta {
+        display: inline-flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.7rem;
+        width: fit-content;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: #fff;
+        padding: 0.75rem 1rem;
+        color: var(--text-muted);
+        font-size: 0.95rem;
+      }
+
+      .release-meta strong {
+        color: var(--text);
+      }
+
+      .sections {
+        display: grid;
+        gap: 2rem;
+      }
+
+      .section-block {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .section-heading {
+        display: grid;
+        gap: 0.35rem;
+      }
+
+      .section-heading h2 {
+        margin: 0;
+        font-size: clamp(1.5rem, 2.6vw, 2.25rem);
+        letter-spacing: -0.02em;
+      }
+
+      .section-heading p {
+        margin: 0;
+        max-width: 48rem;
+        color: var(--text-muted);
+        line-height: 1.6;
+      }
+
+      .card-grid {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+      }
+
+      .download-card {
+        display: grid;
+        gap: 1rem;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-xl);
+        background: #fff;
+        padding: 1.25rem;
+        box-shadow: var(--shadow);
+      }
+
+      .download-card.recommended {
+        border-color: rgba(17, 17, 17, 0.16);
+        background:
+          linear-gradient(180deg, rgba(17, 17, 17, 0.04), transparent 7rem),
+          #ffffff;
+      }
+
+      .card-header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 0.9rem;
+      }
+
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        min-height: 1.8rem;
+        border-radius: 999px;
+        padding: 0 0.75rem;
+        font-size: 0.74rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        background: rgba(17, 17, 17, 0.06);
+        color: rgba(17, 17, 17, 0.78);
+      }
+
+      .download-card.recommended .tag {
+        background: #111111;
+        color: #ffffff;
+      }
+
+      .meta {
+        text-align: right;
+        color: var(--text-faint);
+        font-size: 0.84rem;
+        line-height: 1.45;
+      }
+
+      .download-card h3 {
+        margin: 0.1rem 0 0;
+        font-size: 1.3rem;
+        line-height: 1.12;
+        letter-spacing: -0.02em;
+      }
+
+      .description {
+        margin: 0;
+        color: var(--text-muted);
+        line-height: 1.65;
+        font-size: 0.96rem;
+      }
+
+      .file-row {
+        display: grid;
+        gap: 0.4rem;
+        padding: 0.9rem 1rem;
+        border-radius: var(--radius-lg);
+        background: rgba(0, 0, 0, 0.03);
+      }
+
+      .file-row strong {
+        font-size: 0.82rem;
+        color: rgba(17, 17, 17, 0.86);
+      }
+
+      .file-row code {
+        font-family: ui-monospace, SFMono-Regular, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 0.82rem;
+        color: rgba(17, 17, 17, 0.72);
+        overflow-wrap: anywhere;
+      }
+
+      .button-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.65rem;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 2.8rem;
+        padding: 0 1rem;
+        border-radius: 999px;
+        border: 1px solid #111111;
+        background: #111111;
+        color: #ffffff;
+        text-decoration: none;
+        font-size: 0.93rem;
+        font-weight: 700;
+        transition: transform 0.18s ease, opacity 0.18s ease, background-color 0.18s ease;
+      }
+
+      .button:hover {
+        transform: translateY(-1px);
+        opacity: 0.96;
+      }
+
+      .button.secondary {
+        border-color: var(--line);
+        background: #fff;
+        color: var(--text-muted);
+        font-weight: 600;
+      }
+
+      .button.secondary:hover {
+        color: var(--text);
+        background: rgba(0, 0, 0, 0.03);
+      }
+
+      .status-card {
+        border: 1px solid var(--line);
+        border-radius: var(--radius-xl);
+        background: #fff;
+        padding: 1.2rem 1.25rem;
+        box-shadow: var(--shadow);
+      }
+
+      .status-card p {
+        margin: 0;
+        color: var(--text-muted);
+        line-height: 1.6;
+      }
+
+      .footer {
+        border-top: 1px solid var(--line);
+        padding: 1.4rem 0 2.5rem;
+      }
+
+      .footer-inner {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.9rem;
+        color: var(--text-faint);
+        font-size: 0.9rem;
+      }
+
+      .footer-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.85rem;
+      }
+
+      .footer-links a {
+        color: var(--text-faint);
+        text-decoration: none;
+      }
+
+      .footer-links a:hover {
+        color: var(--text);
+      }
+
+      @media (max-width: 700px) {
+        .site-header-inner,
+        .footer-inner {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .header-links {
+          justify-content: flex-start;
+        }
+
+        .meta {
+          text-align: left;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="shell site-header-inner">
+        <a class="brand" href="../">
+          <img src="../images/brand/axichat_logo_black.png" alt="Axichat" />
+          <span>Axichat</span>
+        </a>
+        <div class="header-links">
+          <a class="header-link" href="../">Main Site</a>
+          <a class="header-link primary" href="https://github.com/axichat/axichat/releases/latest" target="_blank" rel="noreferrer">
+            GitHub Releases
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="shell">
+        <section class="hero">
+          <div class="eyebrow">Downloads</div>
+          <h1>Download Axichat without guessing which file you need</h1>
+          <p>
+            This page reads the latest GitHub release and relabels each file in plain English. If you only want the app,
+            choose the button that matches your device. Raw filenames and verification files are still shown below each option.
+          </p>
+          <div class="tip-grid">
+            <div class="tip">
+              <strong>Windows</strong>
+              <span>Most people should choose the Windows installer. Use the ZIP only if you want a portable copy without an installer.</span>
+            </div>
+            <div class="tip">
+              <strong>Android</strong>
+              <span>Most people should choose the regular Android APK. The ARM64 APK is a smaller advanced option.</span>
+            </div>
+            <div class="tip">
+              <strong>Linux</strong>
+              <span>If you are unsure, start with the AppImage. Use the Debian package on Ubuntu, Debian, or Linux Mint.</span>
+            </div>
+          </div>
+          <div id="release-meta" class="release-meta">
+            <strong>Loading latest release...</strong>
+          </div>
+        </section>
+
+        <section id="downloads-root" class="sections">
+          <div class="status-card">
+            <p>Loading the latest GitHub release files...</p>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="shell footer-inner">
+        <div>&copy; <span id="year"></span> Axichat LLC</div>
+        <div class="footer-links">
+          <a href="../">Home</a>
+          <a href="../privacy/">Privacy</a>
+          <a href="../terms/">Terms</a>
+          <a href="https://github.com/axichat/axichat/releases/latest" target="_blank" rel="noreferrer">GitHub Releases</a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      const RELEASE_API_URL = "https://api.github.com/repos/axichat/axichat/releases/latest";
+      const RELEASES_PAGE_URL = "https://github.com/axichat/axichat/releases/latest";
+      const CACHE_KEY = "axichat.downloads.latest.v1";
+      const CACHE_TTL_MS = 5 * 60 * 1000;
+
+      const downloadsRoot = document.getElementById("downloads-root");
+      const releaseMeta = document.getElementById("release-meta");
+      const yearNode = document.getElementById("year");
+
+      yearNode.textContent = String(new Date().getFullYear());
+
+      function escapeHtml(value) {
+        return String(value)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/\"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      }
+
+      function formatBytes(bytes) {
+        if (!Number.isFinite(bytes) || bytes <= 0) {
+          return "";
+        }
+        const units = ["B", "KB", "MB", "GB"];
+        let value = bytes;
+        let unitIndex = 0;
+        while (value >= 1024 && unitIndex < units.length - 1) {
+          value /= 1024;
+          unitIndex += 1;
+        }
+        const decimals = value >= 100 || unitIndex === 0 ? 0 : 1;
+        return value.toFixed(decimals) + " " + units[unitIndex];
+      }
+
+      function formatDate(value) {
+        if (!value) {
+          return "";
+        }
+        const parsed = new Date(value);
+        if (Number.isNaN(parsed.getTime())) {
+          return "";
+        }
+        return new Intl.DateTimeFormat("en-US", {
+          month: "long",
+          day: "numeric",
+          year: "numeric"
+        }).format(parsed);
+      }
+
+      function readCache() {
+        try {
+          const raw = window.localStorage.getItem(CACHE_KEY);
+          if (!raw) {
+            return null;
+          }
+          const parsed = JSON.parse(raw);
+          if (!parsed || typeof parsed !== "object") {
+            return null;
+          }
+          if (!Number.isFinite(parsed.fetchedAt) || !parsed.release || !Array.isArray(parsed.release.assets)) {
+            return null;
+          }
+          return parsed;
+        } catch {
+          return null;
+        }
+      }
+
+      function writeCache(payload) {
+        try {
+          window.localStorage.setItem(CACHE_KEY, JSON.stringify(payload));
+        } catch {
+          // Ignore storage failures.
+        }
+      }
+
+      function isFresh(entry) {
+        return Date.now() - entry.fetchedAt <= CACHE_TTL_MS;
+      }
+
+      function isChecksumAssetName(name) {
+        return /\.(sha256|sha1)$/i.test(name);
+      }
+
+      function checksumSuffix(name) {
+        const match = name.match(/\.(sha256|sha1)$/i);
+        return match ? match[1].toUpperCase() : "Checksum";
+      }
+
+      function stripChecksumSuffix(name) {
+        return name.replace(/\.(sha256|sha1)$/i, "");
+      }
+
+      function classifyAsset(asset) {
+        const name = asset.name.toLowerCase();
+
+        if (name === "app-production-release.apk") {
+          return {
+            section: "recommended",
+            order: 10,
+            tag: "Recommended",
+            title: "Android phone or tablet",
+            description: "Best default choice for most Android users. This is the widest-compatibility APK.",
+            action: "Download Android APK"
+          };
+        }
+
+        if (name === "axichat-windows-setup.exe") {
+          return {
+            section: "recommended",
+            order: 20,
+            tag: "Recommended",
+            title: "Windows PC",
+            description: "Normal Windows installer. Choose this if you want the usual setup experience.",
+            action: "Download Windows Installer"
+          };
+        }
+
+        if (name === "axichat-x86_64.appimage") {
+          return {
+            section: "recommended",
+            order: 30,
+            tag: "Recommended",
+            title: "Linux desktop",
+            description: "Best default Linux option if you are not sure. AppImage usually works across many distros.",
+            action: "Download Linux AppImage"
+          };
+        }
+
+        if (name === "axichat-linux-amd64.deb") {
+          return {
+            section: "recommended",
+            order: 40,
+            tag: "Ubuntu and Debian",
+            title: "Linux desktop (.deb package)",
+            description: "Use this on Ubuntu, Debian, Linux Mint, and other Debian-based systems.",
+            action: "Download Linux .deb"
+          };
+        }
+
+        if (name === "axichat-windows.zip") {
+          return {
+            section: "other",
+            order: 50,
+            tag: "Portable",
+            title: "Windows PC (ZIP archive)",
+            description: "Use this if you want a portable copy without the Windows installer.",
+            action: "Download Windows ZIP"
+          };
+        }
+
+        if (name === "app-arm64-v8a-production-release.apk") {
+          return {
+            section: "other",
+            order: 60,
+            tag: "Advanced Android",
+            title: "Android phone or tablet (ARM64)",
+            description: "Smaller Android build. Only use this if you already know your device is ARM64.",
+            action: "Download Android ARM64 APK"
+          };
+        }
+
+        if (name === "axichat-linux.tar.gz") {
+          return {
+            section: "other",
+            order: 70,
+            tag: "Manual setup",
+            title: "Linux desktop (tar.gz archive)",
+            description: "Raw Linux bundle for people who prefer manual setup instead of AppImage or .deb.",
+            action: "Download Linux tar.gz"
+          };
+        }
+
+        return {
+          section: "advanced",
+          order: 999,
+          tag: "Advanced",
+          title: "Other release file",
+          description: "Less common or manual file from the latest GitHub release.",
+          action: "Download File"
+        };
+      }
+
+      function buildReleaseEntries(release) {
+        const checksumMap = new Map();
+        const primaryAssets = [];
+
+        for (const asset of release.assets || []) {
+          if (!asset || typeof asset.name !== "string") {
+            continue;
+          }
+          if (isChecksumAssetName(asset.name)) {
+            const baseName = stripChecksumSuffix(asset.name);
+            const list = checksumMap.get(baseName) || [];
+            list.push(asset);
+            checksumMap.set(baseName, list);
+            continue;
+          }
+          primaryAssets.push(asset);
+        }
+
+        const entries = primaryAssets.map((asset) => {
+          const view = classifyAsset(asset);
+          return {
+            ...view,
+            rawName: asset.name,
+            href: asset.browser_download_url,
+            size: formatBytes(asset.size),
+            checksums: (checksumMap.get(asset.name) || []).sort((left, right) => left.name.localeCompare(right.name))
+          };
+        });
+
+        const matchedChecksums = new Set();
+        for (const entry of entries) {
+          for (const checksum of entry.checksums) {
+            matchedChecksums.add(checksum.name);
+          }
+        }
+
+        for (const asset of release.assets || []) {
+          if (!asset || typeof asset.name !== "string" || !isChecksumAssetName(asset.name) || matchedChecksums.has(asset.name)) {
+            continue;
+          }
+          entries.push({
+            section: "advanced",
+            order: 1000,
+            tag: "Verification",
+            title: asset.name,
+            description: "Checksum file from the latest release.",
+            action: "Download checksum file",
+            rawName: asset.name,
+            href: asset.browser_download_url,
+            size: formatBytes(asset.size),
+            checksums: []
+          });
+        }
+
+        entries.push(
+          {
+            section: "developer",
+            order: 10,
+            tag: "Developers",
+            title: "Source code (.zip)",
+            description: "GitHub-generated source archive for developers, packagers, or anyone building from source.",
+            action: "Download source ZIP",
+            rawName: "Source code (zip)",
+            href: release.zipball_url,
+            size: "",
+            checksums: []
+          },
+          {
+            section: "developer",
+            order: 20,
+            tag: "Developers",
+            title: "Source code (.tar.gz)",
+            description: "GitHub-generated tarball of the same release source code.",
+            action: "Download source tarball",
+            rawName: "Source code (tar.gz)",
+            href: release.tarball_url,
+            size: "",
+            checksums: []
+          }
+        );
+
+        return entries.sort((left, right) => left.order - right.order || left.title.localeCompare(right.title));
+      }
+
+      function renderCard(entry) {
+        const checksumButtons = entry.checksums
+          .map((asset) => {
+            const label = checksumSuffix(asset.name);
+            return (
+              '<a class="button secondary" href="' + escapeHtml(asset.browser_download_url) + '" target="_blank" rel="noreferrer">' +
+              'Download ' + escapeHtml(label) +
+              "</a>"
+            );
+          })
+          .join("");
+
+        const metaParts = [entry.size].filter(Boolean).map((item) => "<div>" + escapeHtml(item) + "</div>").join("");
+        const recommendedClass = entry.section === "recommended" ? " recommended" : "";
+
+        return (
+          '<article class="download-card' + recommendedClass + '">' +
+            '<div class="card-header">' +
+              '<div>' +
+                '<div class="tag">' + escapeHtml(entry.tag) + "</div>" +
+                "<h3>" + escapeHtml(entry.title) + "</h3>" +
+              "</div>" +
+              '<div class="meta">' + metaParts + "</div>" +
+            "</div>" +
+            '<p class="description">' + escapeHtml(entry.description) + "</p>" +
+            '<div class="button-row">' +
+              '<a class="button" href="' + escapeHtml(entry.href) + '" target="_blank" rel="noreferrer">' + escapeHtml(entry.action) + "</a>" +
+              checksumButtons +
+            "</div>" +
+            '<div class="file-row">' +
+              "<strong>Raw file name</strong>" +
+              "<code>" + escapeHtml(entry.rawName) + "</code>" +
+            "</div>" +
+          "</article>"
+        );
+      }
+
+      function renderSection(title, description, entries) {
+        if (!entries.length) {
+          return "";
+        }
+        return (
+          '<section class="section-block">' +
+            '<div class="section-heading">' +
+              "<h2>" + escapeHtml(title) + "</h2>" +
+              "<p>" + escapeHtml(description) + "</p>" +
+            "</div>" +
+            '<div class="card-grid">' + entries.map(renderCard).join("") + "</div>" +
+          "</section>"
+        );
+      }
+
+      function renderRelease(release) {
+        const entries = buildReleaseEntries(release);
+        const groups = {
+          recommended: entries.filter((entry) => entry.section === "recommended"),
+          other: entries.filter((entry) => entry.section === "other"),
+          advanced: entries.filter((entry) => entry.section === "advanced"),
+          developer: entries.filter((entry) => entry.section === "developer")
+        };
+
+        releaseMeta.innerHTML =
+          "<strong>" + escapeHtml(release.tag_name || release.name || "Latest release") + "</strong>" +
+          (release.published_at ? "<span>Published " + escapeHtml(formatDate(release.published_at)) + "</span>" : "") +
+          '<a href="' + escapeHtml(release.html_url || RELEASES_PAGE_URL) + '" target="_blank" rel="noreferrer">View raw release page</a>';
+
+        downloadsRoot.innerHTML =
+          renderSection(
+            "Start here",
+            "If you just want Axichat on your device, pick the one that matches your platform below.",
+            groups.recommended
+          ) +
+          renderSection(
+            "Other download options",
+            "These are still valid release files, but they are more specific or manual than the default picks above.",
+            groups.other
+          ) +
+          renderSection(
+            "Advanced and verification files",
+            "Less common files, manual packages, and any release artifacts that do not fit the main download buckets.",
+            groups.advanced
+          ) +
+          renderSection(
+            "Source code",
+            "These are for developers, packagers, or anyone who wants the raw release source archives instead of the app binaries.",
+            groups.developer
+          );
+      }
+
+      function renderFailure(message) {
+        releaseMeta.innerHTML =
+          "<strong>Latest release lookup unavailable</strong>" +
+          '<a href="' + RELEASES_PAGE_URL + '" target="_blank" rel="noreferrer">Open GitHub Releases</a>';
+
+        downloadsRoot.innerHTML =
+          '<div class="status-card">' +
+            "<p>" + escapeHtml(message) + "</p>" +
+            '<div class="button-row" style="margin-top: 1rem;">' +
+              '<a class="button" href="' + RELEASES_PAGE_URL + '" target="_blank" rel="noreferrer">Open GitHub Releases</a>' +
+            "</div>" +
+          "</div>";
+      }
+
+      async function fetchLatestRelease() {
+        const response = await fetch(RELEASE_API_URL, {
+          headers: {
+            Accept: "application/vnd.github+json"
+          }
+        });
+        if (!response.ok) {
+          throw new Error("release_lookup_" + response.status);
+        }
+        return response.json();
+      }
+
+      async function loadRelease() {
+        const cached = readCache();
+        if (cached && cached.release) {
+          renderRelease(cached.release);
+          if (isFresh(cached)) {
+            return;
+          }
+        }
+
+        try {
+          const release = await fetchLatestRelease();
+          writeCache({
+            fetchedAt: Date.now(),
+            release: release
+          });
+          renderRelease(release);
+        } catch (error) {
+          if (cached && cached.release) {
+            renderRelease(cached.release);
+            return;
+          }
+          const message = error && typeof error.message === "string"
+            ? "Could not load the latest release automatically (" + error.message + ")."
+            : "Could not load the latest release automatically.";
+          renderFailure(message);
+        }
+      }
+
+      void loadRelease();
+    </script>
+  </body>
+</html>

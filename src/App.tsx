@@ -90,12 +90,10 @@ const downloads = {
   windows: "https://github.com/axichat/axichat/releases/latest/download/axichat-windows-setup.exe",
   linux: "https://github.com/axichat/axichat/releases/latest/download/axichat-x86_64.AppImage",
 };
-const latestStableReleaseHref = "https://github.com/axichat/axichat/releases/latest";
+const downloadsPageHref = withBasePath("downloads/");
 
-const heroHeadline = "Goodbye, Email";
-const heroSubhead = "Replace your email, messenger, and calendar all with one app.";
-const heroNote = "Verify the release checksums on GitHub before installing.";
-const heroDevNote = "Axichat is still in active development, so things may break.";
+const heroHeadline = "Replace your email, messenger, and calendar apps with Axichat";
+const heroNote = "You can verify checksums on GitHub Releases.";
 const heroVideoSrc = withBasePath("videos/hero.mp4");
 const fdroidDownloadHref = "https://f-droid.org/packages/im.axi.axichat";
 const fdroidBadgeSrc = "https://f-droid.org/badge/get-it-on.png";
@@ -109,7 +107,7 @@ const featureRows: FeatureRow[] = [
   {
     title: "Breeze through email like you're texting",
     summary:
-      "Move through conversations without context switching. Axichat keeps instant messages and email in one flow.",
+      "Conversational email turns your traditional email threads into easy chats.",
     bullets: [
       "Unified inbox for chat + email side by side",
       "Group chats and per-conversation settings",
@@ -141,7 +139,7 @@ const featureRows: FeatureRow[] = [
       "Forget less, focus more, and keep events tied to the conversations where work actually happens.",
     bullets: [
       "Drag-and-drop event editing",
-      "Create tasks and events using natural language (no AI)",
+      "Create tasks and events using natural language (without AI)",
       "Collaborative calendars",
       "One-tap add-to-calendar from simple text messages",
       "Tasks, reminders, and calendar in one view",
@@ -493,8 +491,8 @@ const footerLinks = {
   ],
   links: [
     { label: "GitHub", href: "https://github.com/axichat/axichat", external: true },
-    { label: "Latest release", href: "https://github.com/axichat/axichat/releases/latest", external: true },
     { label: "GitLab", href: "https://gitlab.com/axichat/axichat", external: true },
+    { label: "Mastodon", href: "https://mastodon.social/@axichat", external: true },
   ],
 };
 
@@ -503,6 +501,7 @@ const pngExtension = ".png";
 const webpExtension = ".webp";
 const brandLogoBlack = withBasePath("images/brand/axichat_logo_black.png");
 const brandLogoWhite = withBasePath("images/brand/axichat_logo_white.png");
+const mastodonLogoPurple = withBasePath("images/brand/mastodon_logo_purple.svg");
 const releaseCacheStorageKey = "axichat.latest-release.v1";
 const releaseCacheTtlMs = 5 * 60 * 1000;
 let inFlightLatestReleaseLookup: Promise<ReleaseCacheRecord> | null = null;
@@ -584,7 +583,7 @@ function pageTitleForRoute(route: AppRoute) {
   if (route.kind === "donate") {
     return "Support Axichat";
   }
-  return "Axichat - Goodbye, Email";
+  return `Axichat - ${heroHeadline}`;
 }
 
 function isReleaseCacheRecord(value: unknown): value is ReleaseCacheRecord {
@@ -968,6 +967,10 @@ function GitLabIcon({ className }: { className?: string }) {
   );
 }
 
+function MastodonIcon({ className }: { className?: string }) {
+  return <img src={mastodonLogoPurple} alt="" className={className} aria-hidden />;
+}
+
 function Container({ children }: { children: React.ReactNode }) {
   return <div className={containerClassName}>{children}</div>;
 }
@@ -1038,11 +1041,11 @@ function UsernameCta({ href, className }: { href: string; className?: string }) 
         "focus:outline-none focus:ring-2 focus:ring-black/25",
         className
       )}
-      aria-label="Get your username at axi.im now"
+      aria-label="Get your.name at axi.im now"
     >
-      <span>Get your</span>
+      <span>Get</span>
       <span className="inline-flex items-baseline gap-0">
-        <span>username</span>
+        <span>your.name</span>
         <span className="username-shimmer">@axi.im</span>
       </span>
       <span>now</span>
@@ -1054,11 +1057,11 @@ function UsernameTagline({ className }: { className?: string }) {
   return (
     <p
       className={cn("text-balance text-2xl font-display font-semibold tracking-tight text-black sm:text-3xl", className)}
-      aria-label="Get your username at axi.im now"
+      aria-label="Get your.name at axi.im now"
     >
-      <span className="text-black/80">Get your </span>
+      <span className="text-black/80">Get </span>
       <span className="inline-flex items-baseline gap-0">
-        <span className="text-black/80">username</span>
+        <span className="text-black/80">your.name</span>
         <span className="username-shimmer">@axi.im</span>
       </span>
       <span className="text-black/80"> now</span>
@@ -1148,6 +1151,7 @@ function SiteHeader({
   onCloseMobileMenu: () => void;
 }) {
   const primaryNavItems = [
+    { label: "Downloads", href: withBasePath("downloads/") },
     { label: "Features", href: toHomeSectionHref("#features", isHomeRoute) },
     ...(showEditorialLinks
       ? [
@@ -1160,7 +1164,7 @@ function SiteHeader({
     { label: "Contact", href: toHomeSectionHref("#contact", isHomeRoute) },
   ];
 
-  const mobileMenuItems = [...primaryNavItems, { label: "Download", href: toHomeSectionHref("#hero-downloads", isHomeRoute) }];
+  const mobileMenuItems = primaryNavItems;
   const homeHref = toHomeSectionHref("#top", isHomeRoute);
 
   return (
@@ -1197,7 +1201,7 @@ function SiteHeader({
             </a>
 
             <UsernameCta
-              href={latestStableReleaseHref}
+              href={downloadsPageHref}
               className="hidden shrink-0 border border-black bg-black text-[10px] text-white hover:bg-black/85 lg:inline-flex lg:text-xs"
             />
 
@@ -1268,18 +1272,13 @@ function HomePage({
           <div className="grid items-start gap-y-7 gap-x-6 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:items-center lg:gap-y-10 lg:gap-x-[clamp(0.55rem,1.9vw,1.9rem)] xl:gap-x-[clamp(0.9rem,2.3vw,2.5rem)]">
             <div className="mx-auto max-w-2xl text-center lg:mx-0 lg:text-left">
               <div className="mx-auto mb-5 inline-flex flex-wrap items-center gap-x-3 gap-y-1 rounded-2xl border border-black/15 bg-white px-4 py-2.5 text-black/65 lg:mx-0">
-                <span className="inline-flex h-2 w-2 rounded-full bg-black" />
-                <span className="text-xs font-medium tracking-[0.02em]">Latest version</span>
                 <span className="font-mono text-base font-semibold text-black sm:text-lg">{latestVersion}</span>
                 {latestReleaseDate ? <span className="text-xs text-black/55">Released {latestReleaseDate}</span> : null}
               </div>
 
-              <h1 className="text-balance text-5xl font-semibold tracking-tight sm:text-7xl font-display">{heroHeadline}</h1>
-              <p className="mx-auto mt-4 max-w-xl text-balance text-xl font-display font-semibold tracking-tight text-black/55 sm:mt-5 sm:text-3xl lg:mx-0">
-                {heroSubhead}
-              </p>
+              <h1 className="text-balance text-3xl font-semibold tracking-tight sm:text-4xl lg:text-5xl font-display">{heroHeadline}</h1>
 
-              <UsernameTagline className="mx-auto mt-6 max-w-xl sm:mt-8 lg:mx-0" />
+              <UsernameTagline className="mx-auto mt-10 max-w-xl sm:mt-12 lg:mx-0" />
 
               <div
                 id="hero-downloads"
@@ -1307,8 +1306,7 @@ function HomePage({
                 ))}
               </div>
 
-              <div className="mt-3 text-xs text-black/55 lg:text-left">{heroDevNote}</div>
-              <div className="mt-2 text-xs text-black/55 lg:text-left">{heroNote}</div>
+              <div className="mt-3 text-xs text-black/55 lg:text-left">{heroNote}</div>
             </div>
 
             <div className="mx-auto w-full max-w-[44rem] lg:mx-0 lg:max-w-none">
@@ -1516,16 +1514,6 @@ function HomePage({
         </Container>
       </section>
 
-      <section className="border-t border-black/10 py-24 sm:py-32">
-        <Container>
-          <div className="rounded-3xl border border-black/10 bg-black/[0.03] px-6 py-10 text-center">
-            <UsernameCta
-              href="#hero-downloads"
-              className="border border-black bg-black px-6 py-3 text-sm text-white hover:bg-black/85 sm:text-base"
-            />
-          </div>
-        </Container>
-      </section>
     </>
   );
 }
@@ -1548,7 +1536,7 @@ function UseCasesPage() {
               </a>
             ) : null}
             <a
-              href={toHomeSectionHref("#hero-downloads", false)}
+              href={downloadsPageHref}
               className="inline-flex items-center rounded-xl border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition hover:bg-black/85"
             >
               Download Axichat
@@ -1736,7 +1724,7 @@ function SiteFooter({
         <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
           <div className="flex max-w-sm flex-col gap-2">
             <div className="rounded-xl border border-black/10 bg-white px-3 py-2">
-              <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-black/55">Server Status</div>
+              <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-black/55">Status</div>
               <div className="mt-2 flex flex-col gap-2 text-xs text-black/70">
                 <span className="grid grid-cols-[3.5rem_auto_1fr] items-center gap-x-2">
                   <span>Email:</span>
@@ -1756,7 +1744,7 @@ function SiteFooter({
             </a>
           </div>
 
-          <div className="grid gap-8 sm:grid-cols-2">
+          <div className="grid gap-8 sm:grid-cols-3">
             <div className="space-y-3">
               <div className="flex flex-col gap-2">
                 {footerLinks.legal.map((link) => (
@@ -1778,10 +1766,19 @@ function SiteFooter({
                     className="inline-flex items-center gap-2 text-sm text-black/70 transition hover:text-black"
                   >
                     {link.label === "GitHub" ? <GitHubIcon className="h-4 w-4" /> : null}
+                    {link.label === "GitLab" ? <GitLabIcon className="h-4 w-4" /> : null}
+                    {link.label === "Mastodon" ? <MastodonIcon className="h-4 w-4" /> : null}
                     {link.label}
                   </a>
                 ))}
               </div>
+            </div>
+
+            <div className="space-y-3">
+              <UsernameCta
+                href={downloadsPageHref}
+                className="w-fit border border-black bg-black px-4 py-2 text-[11px] text-white hover:bg-black/85 sm:text-xs"
+              />
             </div>
           </div>
         </div>
@@ -2193,8 +2190,8 @@ export default function App() {
       href: downloads.linux,
       os: "Linux",
       file: "AppImage",
-      backgroundColor: "#F97316",
-      borderColor: "#F97316",
+      backgroundColor: "#DC143C",
+      borderColor: "#DC143C",
       icon: <LinuxIcon className="h-5 w-5" />,
     },
   ];
