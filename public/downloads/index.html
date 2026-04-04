@@ -161,32 +161,6 @@
         line-height: 1.65;
       }
 
-      .tip-grid {
-        display: grid;
-        gap: 0.9rem;
-        grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
-      }
-
-      .tip {
-        border: 1px solid var(--line);
-        border-radius: 1.25rem;
-        background: #fff;
-        padding: 1rem 1rem 1.05rem;
-        box-shadow: var(--shadow);
-      }
-
-      .tip strong {
-        display: block;
-        margin-bottom: 0.4rem;
-        font-size: 0.92rem;
-      }
-
-      .tip span {
-        color: var(--text-muted);
-        font-size: 0.92rem;
-        line-height: 1.55;
-      }
-
       .release-meta {
         display: inline-flex;
         flex-wrap: wrap;
@@ -324,6 +298,36 @@
         overflow-wrap: anywhere;
       }
 
+      .compact-list {
+        display: grid;
+        gap: 0.9rem;
+      }
+
+      .compact-item {
+        display: grid;
+        gap: 0.8rem;
+        border: 1px solid var(--line);
+        border-radius: 1.1rem;
+        background: #fff;
+        padding: 1rem;
+        box-shadow: var(--shadow);
+      }
+
+      .compact-main {
+        display: grid;
+        gap: 0.25rem;
+      }
+
+      .compact-main strong {
+        font-size: 0.95rem;
+      }
+
+      .compact-main span {
+        color: var(--text-muted);
+        line-height: 1.55;
+        font-size: 0.9rem;
+      }
+
       .button-row {
         display: flex;
         flex-wrap: wrap;
@@ -444,25 +448,8 @@
       <div class="shell">
         <section class="hero">
           <div class="eyebrow">Downloads</div>
-          <h1>Download Axichat without guessing which file you need</h1>
-          <p>
-            This page reads the latest GitHub release and relabels each file in plain English. If you only want the app,
-            choose the button that matches your device. Raw filenames and verification files are still shown below each option.
-          </p>
-          <div class="tip-grid">
-            <div class="tip">
-              <strong>Windows</strong>
-              <span>Most people should choose the Windows installer. Use the ZIP only if you want a portable copy without an installer.</span>
-            </div>
-            <div class="tip">
-              <strong>Android</strong>
-              <span>Most people should choose the regular Android APK. The ARM64 APK is a smaller advanced option.</span>
-            </div>
-            <div class="tip">
-              <strong>Linux</strong>
-              <span>If you are unsure, start with the AppImage. Use the Debian package on Ubuntu, Debian, or Linux Mint.</span>
-            </div>
-          </div>
+          <h1>Download Axichat</h1>
+          <p>Choose the download that matches your device.</p>
           <div id="release-meta" class="release-meta">
             <strong>Loading latest release...</strong>
           </div>
@@ -483,7 +470,6 @@
           <a href="../">Home</a>
           <a href="../privacy/">Privacy</a>
           <a href="../terms/">Terms</a>
-          <a href="https://github.com/axichat/axichat/releases/latest" target="_blank" rel="noreferrer">GitHub Releases</a>
         </div>
       </div>
     </footer>
@@ -776,7 +762,7 @@
           '<article class="download-card' + recommendedClass + '">' +
             '<div class="card-header">' +
               '<div>' +
-                '<div class="tag">' + escapeHtml(entry.tag) + "</div>" +
+                (entry.section === "recommended" ? "" : '<div class="tag">' + escapeHtml(entry.tag) + "</div>") +
                 "<h3>" + escapeHtml(entry.title) + "</h3>" +
               "</div>" +
               '<div class="meta">' + metaParts + "</div>" +
@@ -809,6 +795,51 @@
         );
       }
 
+      function renderCompactItem(entry) {
+        const checksumButtons = entry.checksums
+          .map((asset) => {
+            const label = checksumSuffix(asset.name);
+            return (
+              '<a class="button secondary" href="' + escapeHtml(asset.browser_download_url) + '" target="_blank" rel="noreferrer">' +
+              escapeHtml(label) +
+              "</a>"
+            );
+          })
+          .join("");
+
+        return (
+          '<div class="compact-item">' +
+            '<div class="compact-main">' +
+              "<strong>" + escapeHtml(entry.title) + "</strong>" +
+              "<span>" + escapeHtml(entry.description) + "</span>" +
+            "</div>" +
+            '<div class="button-row">' +
+              '<a class="button secondary" href="' + escapeHtml(entry.href) + '" target="_blank" rel="noreferrer">' + escapeHtml(entry.action) + "</a>" +
+              checksumButtons +
+            "</div>" +
+            '<div class="file-row">' +
+              "<strong>Raw file name</strong>" +
+              "<code>" + escapeHtml(entry.rawName) + "</code>" +
+            "</div>" +
+          "</div>"
+        );
+      }
+
+      function renderCompactSection(title, description, entries) {
+        if (!entries.length) {
+          return "";
+        }
+        return (
+          '<section class="section-block">' +
+            '<div class="section-heading">' +
+              "<h2>" + escapeHtml(title) + "</h2>" +
+              "<p>" + escapeHtml(description) + "</p>" +
+            "</div>" +
+            '<div class="compact-list">' + entries.map(renderCompactItem).join("") + "</div>" +
+          "</section>"
+        );
+      }
+
       function renderRelease(release) {
         const entries = buildReleaseEntries(release);
         const groups = {
@@ -825,24 +856,14 @@
 
         downloadsRoot.innerHTML =
           renderSection(
-            "Start here",
-            "If you just want Axichat on your device, pick the one that matches your platform below.",
+            "Recommended downloads",
+            "Pick the version that matches your platform.",
             groups.recommended
           ) +
-          renderSection(
-            "Other download options",
-            "These are still valid release files, but they are more specific or manual than the default picks above.",
-            groups.other
-          ) +
-          renderSection(
-            "Advanced and verification files",
-            "Less common files, manual packages, and any release artifacts that do not fit the main download buckets.",
-            groups.advanced
-          ) +
-          renderSection(
-            "Source code",
-            "These are for developers, packagers, or anyone who wants the raw release source archives instead of the app binaries.",
-            groups.developer
+          renderCompactSection(
+            "More download options",
+            "Additional builds, checksum files, and source archives from the same GitHub release.",
+            groups.other.concat(groups.advanced, groups.developer)
           );
       }
 

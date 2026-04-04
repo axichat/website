@@ -3,11 +3,14 @@ import React from "react";
 type ClassValue = string | false | null | undefined;
 
 type DownloadItem = {
-  href: string;
+  href?: string;
+  disabled?: boolean;
   os: string;
   file: string;
   backgroundColor: string;
   borderColor: string;
+  textColor?: string;
+  fileColor?: string;
   icon: React.ReactNode;
 };
 
@@ -90,7 +93,7 @@ const downloads = {
   windows: "https://github.com/axichat/axichat/releases/latest/download/axichat-windows-setup.exe",
   linux: "https://github.com/axichat/axichat/releases/latest/download/axichat-x86_64.AppImage",
 };
-const downloadsPageHref = withBasePath("downloads/");
+const downloadsPageHref = withBasePath("downloads/index.html");
 
 const heroHeadline = "Replace your email, messenger, and calendar apps with Axichat";
 const heroNote = "You can verify checksums on GitHub Releases.";
@@ -193,7 +196,7 @@ const faqItems: FaqItem[] = [
   },
   {
     question: "Do I need an existing email address to sign up?",
-    answer: <p>No. Signing up for Axichat is frictionless; you just enter a username and, optionally, a password.</p>,
+    answer: <p>No. You just enter a username and, optionally, a password.</p>,
   },
   {
     question: "Can I still receive email from my previous address?",
@@ -312,8 +315,7 @@ const faqItems: FaqItem[] = [
     question: "What if I don't like Axichat?",
     answer: (
       <>
-        <p>First, do no harm.</p>
-        <p className="mt-3">
+        <p>
           You can easily export all your emails, chats and contacts out of Axichat and delete your account through the
           app.
         </p>
@@ -332,27 +334,27 @@ const roadmapLanes: RoadmapLane[] = [
     title: "Completed",
     status: "completed",
     items: [
-      { year: "Jul 2024", detail: "Core XMPP messenger foundation (presence, chat, open-protocol architecture)" },
-      { year: "Sep 2024", detail: "First-party notifications and offline-friendly messaging baseline" },
-      { year: "Oct 2025", detail: "Cross-platform desktop/mobile support (Android, Linux, Windows)" },
+      { year: "Jul 2024", detail: "Basic chat: send messages, see who is online, and stay in touch" },
+      { year: "Sep 2024", detail: "Notifications and better message history when you come back online" },
+      { year: "Oct 2025", detail: "Axichat apps for Android, Linux, and Windows" },
       {
         year: "Nov 2025",
-        detail: "Calendar + task system foundation (natural-language scheduling and drag/drop planning)",
+        detail: "A built-in calendar and to-do list, with easy scheduling and planning",
       },
-      { year: "Dec 2025", detail: "Unified email integration via DeltaChat Core Rust" },
+      { year: "Dec 2025", detail: "Email built into Axichat" },
       {
         year: "Jan 2026",
-        detail: "Group chats (MUC) and richer conversation UX (receipts/reactions/reply flows)",
+        detail: "Group chats, reactions, read receipts, and replies",
       },
-      { year: "Feb 2026", detail: "File attachments and media sharing in chat/email flows" },
+      { year: "Feb 2026", detail: "Sending photos, files, and other attachments in chats and email" },
     ],
   },
   {
     title: "Upcoming",
     status: "upcoming",
     items: [
-      { year: "2026", detail: "Voice and video calling" },
-      { year: "2026", detail: "3rd-party email OAuth" },
+      { year: "2026", detail: "Voice and video calls" },
+      { year: "2026", detail: "Use Axichat with your existing Gmail or Outlook account" },
     ],
   },
 ];
@@ -761,8 +763,8 @@ function AndroidIcon({ className }: { className?: string }) {
         d="M7.1 7.25c.42-2.15 2.36-3.75 4.9-3.75 2.54 0 4.48 1.6 4.9 3.75H7.1Zm-.75.8h11.3a.6.6 0 0 1 .6.6v5.95a2.1 2.1 0 0 1-2.1 2.1H7.85a2.1 2.1 0 0 1-2.1-2.1V8.65a.6.6 0 0 1 .6-.6Zm-1.55.85h1.45v5.3a.72.72 0 1 1-1.45 0V8.9Zm13.95 0h1.45v5.3a.72.72 0 1 1-1.45 0V8.9ZM8.1 16.1h1.55v3.2a.78.78 0 1 1-1.55 0v-3.2Zm6.25 0h1.55v3.2a.78.78 0 1 1-1.55 0v-3.2Z"
         fill="currentColor"
       />
-      <circle cx="9.75" cy="10.55" r="0.6" fill="#0B0B0B" />
-      <circle cx="14.25" cy="10.55" r="0.6" fill="#0B0B0B" />
+      <circle cx="9.75" cy="10.55" r="0.6" fill="currentColor" />
+      <circle cx="14.25" cy="10.55" r="0.6" fill="currentColor" />
     </svg>
   );
 }
@@ -781,14 +783,21 @@ function WindowsIcon({ className }: { className?: string }) {
 function LinuxIcon({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden>
-      <path d="M12 3.2c-3.15 0-5.5 2.8-5.5 6.15 0 1.2.28 2.25.82 3.3-.9.9-1.67 2.2-1.67 3.85 0 2.78 1.95 4.95 4.15 4.95.98 0 1.8-.37 2.2-1.03.4.66 1.22 1.03 2.2 1.03 2.2 0 4.15-2.17 4.15-4.95 0-1.65-.77-2.95-1.67-3.85.54-1.05.82-2.1.82-3.3 0-3.35-2.35-6.15-5.5-6.15Z" fill="#111" />
-      <ellipse cx="12" cy="14.35" rx="3.8" ry="4.75" fill="#fff" />
-      <circle cx="10.35" cy="9.95" r="0.72" fill="#fff" />
-      <circle cx="13.65" cy="9.95" r="0.72" fill="#fff" />
-      <path d="M12 11.15 10.9 12.3h2.2L12 11.15Z" fill="#F59E0B" />
-      <path d="M8.1 18.5c.8 1.02 1.95 1.72 3.05 1.72 1.1 0 2.25-.7 3.05-1.72" stroke="#111" strokeWidth="1.05" strokeLinecap="round" />
-      <ellipse cx="9.15" cy="20.15" rx="2.05" ry="1.2" fill="#F59E0B" />
-      <ellipse cx="14.85" cy="20.15" rx="2.05" ry="1.2" fill="#F59E0B" />
+      <path
+        d="M12 3.2c-3.15 0-5.5 2.8-5.5 6.15 0 1.2.28 2.25.82 3.3-.9.9-1.67 2.2-1.67 3.85 0 2.78 1.95 4.95 4.15 4.95.98 0 1.8-.37 2.2-1.03.4.66 1.22 1.03 2.2 1.03 2.2 0 4.15-2.17 4.15-4.95 0-1.65-.77-2.95-1.67-3.85.54-1.05.82-2.1.82-3.3 0-3.35-2.35-6.15-5.5-6.15Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
+function AppleIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden>
+      <path
+        d="M16.86 12.32c.03 2.8 2.46 3.73 2.49 3.75-.02.07-.39 1.34-1.27 2.65-.76 1.13-1.56 2.26-2.8 2.28-1.22.02-1.62-.72-3.03-.72-1.42 0-1.86.7-3 .74-1.2.05-2.12-1.21-2.89-2.33-1.57-2.26-2.77-6.4-1.16-9.2.8-1.39 2.23-2.27 3.78-2.29 1.18-.02 2.3.8 3.03.8.72 0 2.08-.99 3.5-.84.6.02 2.28.24 3.36 1.82-.09.05-2 1.17-1.98 3.44Zm-2.33-7.34c.64-.78 1.07-1.86.95-2.94-.92.04-2.03.61-2.69 1.39-.59.68-1.11 1.78-.97 2.83 1.02.08 2.06-.52 2.71-1.28Z"
+        fill="currentColor"
+      />
     </svg>
   );
 }
@@ -796,9 +805,9 @@ function LinuxIcon({ className }: { className?: string }) {
 function DownloadIcon({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden>
-      <path d="M12 4.5v9.75" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-      <path d="m8.75 11.5 3.25 3.25 3.25-3.25" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-      <path d="M5.5 18.5h13" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+      <path d="M12 4.5v9.75" stroke="#FFFFFF" strokeWidth="1.8" strokeLinecap="round" />
+      <path d="m8.75 11.5 3.25 3.25 3.25-3.25" stroke="#FFFFFF" strokeWidth="1.8" strokeLinecap="round" />
+      <path d="M5.5 18.5h13" stroke="#FFFFFF" strokeWidth="1.8" strokeLinecap="round" />
     </svg>
   );
 }
@@ -941,6 +950,19 @@ function RoadmapLaneCard({ lane }: { lane: RoadmapLane }) {
           ))}
         </div>
       </div>
+
+      {lane.status === "upcoming" ? (
+        <div className="mt-5">
+          <a
+            href="https://github.com/axichat/axichat/issues"
+            target="_blank"
+            rel="noreferrer"
+            className="text-sm font-medium text-black/70 underline underline-offset-4 transition hover:text-black"
+          >
+            Tell me what you want
+          </a>
+        </div>
+      ) : null}
     </article>
   );
 }
@@ -1003,31 +1025,61 @@ function NavLink({ href, children }: { href: string; children: React.ReactNode }
 
 function DownloadButton({
   href,
+  disabled,
   os,
   file,
   backgroundColor,
   borderColor,
+  textColor,
+  fileColor,
   icon,
   widthPx,
 }: DownloadItem & { widthPx: number }) {
-  return (
-    <a
-      href={href}
-      className={cn(
-        "group relative flex h-14 max-w-full self-center items-center justify-between gap-2 rounded-lg border px-3.5 text-white",
-        "transition hover:brightness-95",
-        "focus:outline-none focus:ring-2 focus:ring-black/25"
-      )}
-      style={{ backgroundColor, borderColor, width: `${widthPx}px` }}
-    >
+  const primaryTextColor = textColor ?? "#ffffff";
+  const secondaryTextColor = fileColor ?? "rgba(255,255,255,0.75)";
+  const buttonIconColor = disabled || !href ? primaryTextColor : "#ffffff";
+  const iconBackground = disabled || !href ? "rgba(255,255,255,0.42)" : "rgba(255,255,255,0.15)";
+  const iconBorder = disabled || !href ? "rgba(17,17,17,0.12)" : "rgba(255,255,255,0.2)";
+
+  const content = (
+    <>
       <div className="flex min-w-0 items-center gap-2">
-        <div className="grid h-6 w-6 place-items-center rounded-md border border-white/20 bg-white/15 text-white">{icon}</div>
+        <div
+          className="grid h-6 w-6 place-items-center rounded-md border"
+          style={{ borderColor: iconBorder, backgroundColor: iconBackground, color: buttonIconColor }}
+        >
+          {icon}
+        </div>
         <div className="leading-tight">
-          <div className="whitespace-nowrap text-xs font-semibold text-white">{os}</div>
-          <div className="whitespace-nowrap text-[10px] text-white/75">{file}</div>
+          <div className="whitespace-nowrap text-xs font-semibold" style={{ color: primaryTextColor }}>
+            {os}
+          </div>
+          <div className="whitespace-nowrap text-[10px]" style={{ color: secondaryTextColor }}>
+            {file}
+          </div>
         </div>
       </div>
-      <DownloadIcon className="h-3.5 w-3.5 shrink-0 text-white/75 transition group-hover:text-white" />
+      {!disabled && href ? <DownloadIcon className="h-3.5 w-3.5 shrink-0 opacity-90 transition group-hover:opacity-100" /> : null}
+    </>
+  );
+
+  const commonClassName = cn(
+    "group relative flex h-14 max-w-full self-center items-center justify-between gap-2 rounded-lg border px-3.5",
+    disabled ? "cursor-default" : "transition hover:brightness-95 focus:outline-none focus:ring-2 focus:ring-black/25"
+  );
+  const commonStyle = { backgroundColor, borderColor, width: `${widthPx}px` };
+
+  if (disabled || !href) {
+    return (
+      <div className={commonClassName} style={commonStyle} aria-disabled="true">
+        {content}
+      </div>
+    );
+  }
+
+  return (
+    <a href={href} className={commonClassName} style={commonStyle}>
+      {content}
     </a>
   );
 }
@@ -1062,7 +1114,7 @@ function UsernameTagline({ className }: { className?: string }) {
       <span className="text-black/80">Get </span>
       <span className="inline-flex items-baseline gap-0">
         <span className="text-black/80">your.name</span>
-        <span className="username-shimmer">@axi.im</span>
+        <span className="username-shimmer-hero">@axi.im</span>
       </span>
       <span className="text-black/80"> now</span>
     </p>
@@ -1151,7 +1203,7 @@ function SiteHeader({
   onCloseMobileMenu: () => void;
 }) {
   const primaryNavItems = [
-    { label: "Downloads", href: withBasePath("downloads/") },
+    { label: "Downloads", href: downloadsPageHref },
     { label: "Features", href: toHomeSectionHref("#features", isHomeRoute) },
     ...(showEditorialLinks
       ? [
@@ -2193,6 +2245,16 @@ export default function App() {
       backgroundColor: "#DC143C",
       borderColor: "#DC143C",
       icon: <LinuxIcon className="h-5 w-5" />,
+    },
+    {
+      disabled: true,
+      os: "iOS/macOS",
+      file: "Coming soon",
+      backgroundColor: "#C0C0C0",
+      borderColor: "#C0C0C0",
+      textColor: "#111111",
+      fileColor: "rgba(17,17,17,0.72)",
+      icon: <AppleIcon className="h-5 w-5" />,
     },
   ];
 
