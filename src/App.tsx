@@ -1004,14 +1004,14 @@ function DownloadButton({
 
   const content = (
     <>
-      <div className="flex min-w-0 items-center gap-2">
+      <div className="flex min-w-0 items-center gap-2 text-left">
         <div
           className="grid h-8 w-8 place-items-center rounded-md border"
           style={{ borderColor: iconBorder, backgroundColor: iconBackground }}
         >
           {icon}
         </div>
-        <div className="leading-tight">
+        <div className="leading-tight text-left">
           <div className="whitespace-nowrap text-xs font-semibold" style={{ color: primaryTextColor }}>
             {os}
           </div>
@@ -2186,7 +2186,7 @@ export default function App() {
     {
       href: downloads.android,
       os: "Android",
-      file: "APK",
+      file: ".apk",
       backgroundColor: "#34A853",
       borderColor: "#34A853",
       iconBackgroundColor: "rgba(255,255,255,0.94)",

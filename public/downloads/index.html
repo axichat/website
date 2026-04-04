@@ -1032,7 +1032,7 @@
         const cardClass = primaryEntry ? "platform-card" : "platform-card disabled";
         const meta = primaryEntry
           ? [primaryEntry.title, primaryEntry.size].filter(Boolean).join(" • ")
-          : "Coming soon";
+          : "";
         const action = primaryEntry
           ? '<a class="button" href="' + escapeHtml(primaryEntry.href) + '" target="_blank" rel="noreferrer">' + escapeHtml(primaryEntry.action) + "</a>"
           : '<span class="button is-disabled">Coming soon</span>';

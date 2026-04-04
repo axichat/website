@@ -129,10 +129,19 @@ main {
   display: inline-block;
   background-size: 200% 100%;
   background-repeat: repeat;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  background-position: 0% 50%;
+  color: inherit;
   animation: username-shimmer 7.5s linear infinite;
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .username-shimmer,
+  .username-shimmer-hero {
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
 }
 
 .username-shimmer {
