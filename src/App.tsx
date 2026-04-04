@@ -298,8 +298,7 @@ const faqItems: FaqItem[] = [
             business use cases.
           </li>
           <li>
-            Axichat is open source; Spike is closed source, so you have no idea what software you're actually using or
-            what it's really doing behind the scenes.
+            Axichat is open source, so you can see our code.
           </li>
           <li>
             Axichat was made with Flutter, which provides significantly better UI and performance on all
