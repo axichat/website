@@ -203,13 +203,13 @@ const faqItems: FaqItem[] = [
   },
   {
     question: "Do I need an existing email address to sign up?",
-    answer: <p>No. You just enter a username and, optionally, a password if you don't want one generated for you.</p>,
+    answer: <p>No, just enter a username and, optionally, a password if you don't want one generated for you.</p>,
   },
   {
     question: "Can I still receive email from my previous address?",
     answer: (
       <p>
-        Yes, you can forward emails from your existing provider to your new "@axi.im" address. If you use Gmail or
+        Yes, forward emails from your existing provider to your new "@axi.im" address. If you use Gmail or
         Outlook, here are some quick links:{" "}
         <a
           href="https://support.google.com/mail/answer/10957"
@@ -236,7 +236,7 @@ const faqItems: FaqItem[] = [
     question: "Is it FOSS?",
     answer: (
       <p>
-        Yes, Axichat is free and open source as you can see on{" "}
+        Yes, Axichat is free and open source software as you can see on{" "}
         <a
           href="https://github.com/axichat/axichat"
           target="_blank"
@@ -279,8 +279,7 @@ const faqItems: FaqItem[] = [
     question: "If Axichat uses XMPP, is it federated?",
     answer: (
       <p>
-        Axichat uses SMTP for sending messages to other email providers. XMPP is used for messaging other Axichat
-        users and anyone with a valid JID.
+        Yes, XMPP is used for messaging other Axichat users and anyone with a valid JID.
       </p>
     ),
   },
@@ -303,7 +302,7 @@ const faqItems: FaqItem[] = [
             what it's really doing behind the scenes.
           </li>
           <li>
-            Axichat was made with Flutter, which lets us provide significantly better UI and performance on all
+            Axichat was made with Flutter, which provides significantly better UI and performance on all
             platforms.
           </li>
         </ul>
@@ -324,8 +323,7 @@ const faqItems: FaqItem[] = [
           >
             Request the features you want
           </a>{" "}
-          or you can export all your emails, chats, and contacts out of Axichat and delete your account through the
-          app.
+          or you can export all your messages and contacts.
         </p>
         <p className="mt-3">
           If you want to unregister entirely, open your profile page in the app and go to <strong>Account</strong>
