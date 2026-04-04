@@ -194,17 +194,22 @@ const featureRows: FeatureRow[] = [
 const faqItems: FaqItem[] = [
   {
     question: "Does Axichat provide real email addresses @axi.im?",
-    answer: <p>Yes, use it as you would any email address including to sign up for other online accounts.</p>,
+    answer: (
+      <p>
+        Yes, use it as you would any other email address, including to sign up for other online accounts. Your chat
+        address (JID) and email address are exactly the same.
+      </p>
+    ),
   },
   {
     question: "Do I need an existing email address to sign up?",
-    answer: <p>No. You just enter a username and, optionally, a password.</p>,
+    answer: <p>No. You just enter a username and, optionally, a password if you don't want one generated for you.</p>,
   },
   {
     question: "Can I still receive email from my previous address?",
     answer: (
       <p>
-        Yes, simply set up forwarding to your new "@axi.im" address from your existing provider. If you use Gmail or
+        Yes, you can forward emails from your existing provider to your new "@axi.im" address. If you use Gmail or
         Outlook, here are some quick links:{" "}
         <a
           href="https://support.google.com/mail/answer/10957"
@@ -231,7 +236,7 @@ const faqItems: FaqItem[] = [
     question: "Is it FOSS?",
     answer: (
       <p>
-        Yes, Axichat is free and open source. Check out our{" "}
+        Yes, Axichat is free and open source as you can see on{" "}
         <a
           href="https://github.com/axichat/axichat"
           target="_blank"
@@ -257,16 +262,16 @@ const faqItems: FaqItem[] = [
     question: "Can I self-host?",
     answer: (
       <p>
-        Yes. We provide scripts and guidelines to set up your own chat and email server for the Axichat client{" "}
+        Yes, read the{" "}
         <a
           href="https://github.com/axichat/selfhost"
           target="_blank"
           rel="noreferrer"
           className="underline underline-offset-4"
         >
-          here
+          guide
         </a>
-        .
+        {" "}on using your own server with the Axichat client.
       </p>
     ),
   },
@@ -274,12 +279,8 @@ const faqItems: FaqItem[] = [
     question: "If Axichat uses XMPP, is it federated?",
     answer: (
       <p>
-        Axichat uses SMTP for Axichat-to-External emails. That part is necessarily federated. For Axichat-to-Axichat
-        messages, we switch to XMPP for more speed and features, and Axichat can send XMPP messages to most other XMPP
-        servers. However, you cannot log in to Axichat using accounts from other XMPP servers. Axichat is built to
-        work with the latest, most secure versions of ejabberd and requires SASL2 and SCRAM-SHA-512 for
-        authentication. Some XMPP servers run outdated software and therefore do not work with Axichat. We are still
-        working on adhering to the various XMPP Compliance Suites.
+        Axichat uses SMTP for sending messages to other email providers. XMPP is used for messaging other Axichat
+        users and anyone with a valid JID.
       </p>
     ),
   },
@@ -290,23 +291,20 @@ const faqItems: FaqItem[] = [
         <p>Both Spike and Axichat are tremendous improvements over traditional email clients. However,</p>
         <ul className="mt-3 list-disc space-y-2 pl-5">
           <li>
-            Spike still limits itself to the email protocol (SMTP). Axichat leverages both SMTP and XMPP, which is a
-            protocol designed for instant messaging and enables us to provide a significantly richer IM experience,
-            especially when you are talking to another Axichat user.
+            Axichat provides a richer IM experience by using a combination of chat (XMPP) and email (SMTP) protocols.
+            Spike limits itself to SMTP.
           </li>
           <li>
-            Spike is targeted more toward business teams. Axichat works well for teams too, but is also great for
-            personal email and day-to-day individual use.
+            Spike is more targeted to business teams, whereas Axichat works just as well for individual, family, and
+            business use cases.
           </li>
           <li>
-            Spike is closed source, so you have no idea what software you're actually using or what it's really doing
-            behind the scenes. Axichat is open source, so you can see for yourself exactly what you're running and know
-            that nothing suspicious is going on.
+            Axichat is open source; Spike is closed source, so you have no idea what software you're actually using or
+            what it's really doing behind the scenes.
           </li>
           <li>
-            Axichat was made with Dart + Flutter and Spike was not. This allows us to implement a much more
-            aesthetically pleasing interface with attention to detail and performance that can't be matched without
-            Flutter.
+            Axichat was made with Flutter, which lets us provide significantly better UI and performance on all
+            platforms.
           </li>
         </ul>
       </>
@@ -318,7 +316,15 @@ const faqItems: FaqItem[] = [
     answer: (
       <>
         <p>
-          You can easily export all your emails, chats and contacts out of Axichat and delete your account through the
+          <a
+            href="https://github.com/axichat/axichat/issues"
+            target="_blank"
+            rel="noreferrer"
+            className="underline underline-offset-4"
+          >
+            Request the features you want
+          </a>{" "}
+          or you can export all your emails, chats, and contacts out of Axichat and delete your account through the
           app.
         </p>
         <p className="mt-3">
@@ -811,7 +817,7 @@ function RoadmapLaneCard({ lane }: { lane: RoadmapLane }) {
         }
         const currentRect = current.getBoundingClientRect();
         const nextRect = next.getBoundingClientRect();
-        const side = index % 2 === 0 ? "left" : "right";
+        const side = index % 2 === 0 ? "right" : "left";
 
         const startX = (side === "left" ? currentRect.left : currentRect.right) - trackRect.left;
         const startY = currentRect.top + currentRect.height / 2 - trackRect.top;
