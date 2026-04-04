@@ -11,6 +11,8 @@ type DownloadItem = {
   borderColor: string;
   textColor?: string;
   fileColor?: string;
+  iconBackgroundColor?: string;
+  iconBorderColor?: string;
   icon: React.ReactNode;
 };
 
@@ -117,11 +119,11 @@ const featureRows: FeatureRow[] = [
       "Easy forwarding and replying",
       "Emoji reactions",
       "Delivery and read receipts with typing indicators",
-      "Stream management with automatic reconnect to stop messages dropping",
+      "Stream management with automatic reconnect to keep messages from dropping",
       "Message drafts, starred items, and pinned messages",
       "Rich attachments and inline previews",
       "Fast search across chats, mail, and calendar",
-      "1st-party push notifications and offline sync",
+      "First-party push notifications and offline sync",
     ],
     mockups: [
       {
@@ -755,51 +757,8 @@ function BrandIcon({ className, alt, src }: { className?: string; alt: string; s
   return <img src={src} alt={alt} className={cn("brand-logo", className)} />;
 }
 
-function AndroidIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden>
-      <path d="M8.25 5.95 7.05 4.1M15.75 5.95l1.2-1.85" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
-      <path
-        d="M7.1 7.25c.42-2.15 2.36-3.75 4.9-3.75 2.54 0 4.48 1.6 4.9 3.75H7.1Zm-.75.8h11.3a.6.6 0 0 1 .6.6v5.95a2.1 2.1 0 0 1-2.1 2.1H7.85a2.1 2.1 0 0 1-2.1-2.1V8.65a.6.6 0 0 1 .6-.6Zm-1.55.85h1.45v5.3a.72.72 0 1 1-1.45 0V8.9Zm13.95 0h1.45v5.3a.72.72 0 1 1-1.45 0V8.9ZM8.1 16.1h1.55v3.2a.78.78 0 1 1-1.55 0v-3.2Zm6.25 0h1.55v3.2a.78.78 0 1 1-1.55 0v-3.2Z"
-        fill="currentColor"
-      />
-      <circle cx="9.75" cy="10.55" r="0.6" fill="currentColor" />
-      <circle cx="14.25" cy="10.55" r="0.6" fill="currentColor" />
-    </svg>
-  );
-}
-
-function WindowsIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden>
-      <path
-        d="M3 5.5 10.5 4.4v7.1H3V5.5Zm0 13 7.5 1.1v-7.1H3v6Zm10.5-14.3L21 3v8.5h-7.5V4.2Zm0 15.6L21 21v-8.5h-7.5v7.3Z"
-        fill="currentColor"
-      />
-    </svg>
-  );
-}
-
-function LinuxIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden>
-      <path
-        d="M12 3.2c-3.15 0-5.5 2.8-5.5 6.15 0 1.2.28 2.25.82 3.3-.9.9-1.67 2.2-1.67 3.85 0 2.78 1.95 4.95 4.15 4.95.98 0 1.8-.37 2.2-1.03.4.66 1.22 1.03 2.2 1.03 2.2 0 4.15-2.17 4.15-4.95 0-1.65-.77-2.95-1.67-3.85.54-1.05.82-2.1.82-3.3 0-3.35-2.35-6.15-5.5-6.15Z"
-        fill="currentColor"
-      />
-    </svg>
-  );
-}
-
-function AppleIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden>
-      <path
-        d="M16.86 12.32c.03 2.8 2.46 3.73 2.49 3.75-.02.07-.39 1.34-1.27 2.65-.76 1.13-1.56 2.26-2.8 2.28-1.22.02-1.62-.72-3.03-.72-1.42 0-1.86.7-3 .74-1.2.05-2.12-1.21-2.89-2.33-1.57-2.26-2.77-6.4-1.16-9.2.8-1.39 2.23-2.27 3.78-2.29 1.18-.02 2.3.8 3.03.8.72 0 2.08-.99 3.5-.84.6.02 2.28.24 3.36 1.82-.09.05-2 1.17-1.98 3.44Zm-2.33-7.34c.64-.78 1.07-1.86.95-2.94-.92.04-2.03.61-2.69 1.39-.59.68-1.11 1.78-.97 2.83 1.02.08 2.06-.52 2.71-1.28Z"
-        fill="currentColor"
-      />
-    </svg>
-  );
+function PlatformMark({ src, alt, className }: { src: string; alt: string; className?: string }) {
+  return <img src={src} alt={alt} className={cn("block object-contain", className)} />;
 }
 
 function DownloadIcon({ className }: { className?: string }) {
@@ -959,7 +918,7 @@ function RoadmapLaneCard({ lane }: { lane: RoadmapLane }) {
             rel="noreferrer"
             className="text-sm font-medium text-black/70 underline underline-offset-4 transition hover:text-black"
           >
-            Tell me what you want
+            Feature requests
           </a>
         </div>
       ) : null}
@@ -1032,21 +991,23 @@ function DownloadButton({
   borderColor,
   textColor,
   fileColor,
+  iconBackgroundColor,
+  iconBorderColor,
   icon,
   widthPx,
 }: DownloadItem & { widthPx: number }) {
   const primaryTextColor = textColor ?? "#ffffff";
   const secondaryTextColor = fileColor ?? "rgba(255,255,255,0.75)";
-  const buttonIconColor = disabled || !href ? primaryTextColor : "#ffffff";
-  const iconBackground = disabled || !href ? "rgba(255,255,255,0.42)" : "rgba(255,255,255,0.15)";
-  const iconBorder = disabled || !href ? "rgba(17,17,17,0.12)" : "rgba(255,255,255,0.2)";
+  const iconBackground =
+    iconBackgroundColor ?? (disabled || !href ? "rgba(255,255,255,0.42)" : "rgba(255,255,255,0.15)");
+  const iconBorder = iconBorderColor ?? (disabled || !href ? "rgba(17,17,17,0.12)" : "rgba(255,255,255,0.2)");
 
   const content = (
     <>
       <div className="flex min-w-0 items-center gap-2">
         <div
-          className="grid h-6 w-6 place-items-center rounded-md border"
-          style={{ borderColor: iconBorder, backgroundColor: iconBackground, color: buttonIconColor }}
+          className="grid h-8 w-8 place-items-center rounded-md border"
+          style={{ borderColor: iconBorder, backgroundColor: iconBackground }}
         >
           {icon}
         </div>
@@ -2228,7 +2189,9 @@ export default function App() {
       file: "APK",
       backgroundColor: "#34A853",
       borderColor: "#34A853",
-      icon: <AndroidIcon className="h-5 w-5" />,
+      iconBackgroundColor: "rgba(255,255,255,0.94)",
+      iconBorderColor: "rgba(255,255,255,0.58)",
+      icon: <PlatformMark src="/images/platforms/android.svg" alt="" className="h-[26px] w-[26px]" />,
     },
     {
       href: downloads.windows,
@@ -2236,7 +2199,9 @@ export default function App() {
       file: "Installer .exe",
       backgroundColor: "#2563EB",
       borderColor: "#2563EB",
-      icon: <WindowsIcon className="h-5 w-5" />,
+      iconBackgroundColor: "rgba(255,255,255,0.96)",
+      iconBorderColor: "rgba(255,255,255,0.64)",
+      icon: <PlatformMark src="/images/platforms/windows.svg" alt="" className="h-[26px] w-[26px]" />,
     },
     {
       href: downloads.linux,
@@ -2244,7 +2209,9 @@ export default function App() {
       file: "AppImage",
       backgroundColor: "#DC143C",
       borderColor: "#DC143C",
-      icon: <LinuxIcon className="h-5 w-5" />,
+      iconBackgroundColor: "rgba(255,255,255,0.96)",
+      iconBorderColor: "rgba(255,255,255,0.58)",
+      icon: <PlatformMark src="/images/platforms/linux.svg" alt="" className="h-[26px] w-[26px]" />,
     },
     {
       disabled: true,
@@ -2254,7 +2221,9 @@ export default function App() {
       borderColor: "#C0C0C0",
       textColor: "#111111",
       fileColor: "rgba(17,17,17,0.72)",
-      icon: <AppleIcon className="h-5 w-5" />,
+      iconBackgroundColor: "rgba(255,255,255,0.92)",
+      iconBorderColor: "rgba(17,17,17,0.14)",
+      icon: <PlatformMark src="/images/platforms/apple.svg" alt="" className="h-[26px] w-[26px]" />,
     },
   ];
 

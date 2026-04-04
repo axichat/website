@@ -157,17 +157,23 @@ main {
 .username-shimmer-hero {
   background-image: linear-gradient(
     90deg,
-    #d65c73 0%,
-    #d97a67 10%,
+    #ef476f 0%,
+    #ff7f62 6%,
+    #ffb35c 11%,
+    #ffd166 15%,
     #00d1bf 22%,
-    #5a95ef 34%,
-    #b07bf4 44%,
-    #d65c73 50%,
-    #d97a67 60%,
+    #5a95ef 30%,
+    #7c8ff6 37%,
+    #a855f7 44%,
+    #ef476f 50%,
+    #ff7f62 56%,
+    #ffb35c 61%,
+    #ffd166 65%,
     #00d1bf 72%,
-    #5a95ef 84%,
-    #b07bf4 94%,
-    #d65c73 100%
+    #5a95ef 80%,
+    #7c8ff6 87%,
+    #a855f7 94%,
+    #ef476f 100%
   );
 }
 

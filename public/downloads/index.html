@@ -6,7 +6,7 @@
     <title>Axichat Downloads</title>
     <meta
       name="description"
-      content="Download Axichat from the latest GitHub release with plain-English labels for Windows, Android, and Linux."
+      content="Simple Axichat downloads for Android, Windows, Linux, and upcoming Apple support."
     />
     <style>
       :root {
@@ -213,6 +213,140 @@
         grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
       }
 
+      .platform-grid {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(auto-fit, minmax(14.5rem, 1fr));
+        align-items: stretch;
+      }
+
+      .platform-card {
+        display: grid;
+        grid-template-rows: 7.75rem minmax(4.5rem, auto) auto auto minmax(0, 1fr);
+        gap: 1rem;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-xl);
+        background: #fff;
+        padding: 1.5rem;
+        box-shadow: var(--shadow);
+        align-content: start;
+      }
+
+      .platform-card.disabled {
+        background:
+          linear-gradient(180deg, rgba(0, 0, 0, 0.03), transparent 8rem),
+          #ffffff;
+      }
+
+      .platform-figure {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 7.75rem;
+        height: 7.75rem;
+        border-radius: 2rem;
+        background: rgba(17, 17, 17, 0.035);
+        color: #111111;
+        align-self: start;
+      }
+
+      .platform-figure svg {
+        width: 5rem;
+        height: 5rem;
+        display: block;
+      }
+
+      .platform-figure img {
+        width: 5rem;
+        height: 5rem;
+        display: block;
+        object-fit: contain;
+      }
+
+      .platform-copy {
+        display: grid;
+        gap: 0.3rem;
+        align-content: start;
+      }
+
+      .platform-copy h3 {
+        margin: 0;
+        font-size: 1.7rem;
+        line-height: 1.02;
+        letter-spacing: -0.03em;
+      }
+
+      .platform-copy p {
+        margin: 0;
+        color: var(--text-muted);
+        line-height: 1.5;
+        font-size: 0.95rem;
+      }
+
+      .platform-meta {
+        color: var(--text-faint);
+        font-size: 0.82rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .platform-options {
+        display: grid;
+        gap: 0.6rem;
+        align-content: start;
+      }
+
+      .platform-card > .button,
+      .platform-card > .button.is-disabled {
+        align-self: start;
+        justify-self: start;
+      }
+
+      .platform-option {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.8rem 0.95rem;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(0, 0, 0, 0.02);
+        color: var(--text-muted);
+        text-decoration: none;
+        transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+      }
+
+      .platform-option:hover {
+        background: rgba(0, 0, 0, 0.04);
+        color: var(--text);
+      }
+
+      .platform-option-icon {
+        width: 2rem;
+        height: 2rem;
+        flex-shrink: 0;
+        object-fit: contain;
+      }
+
+      .platform-option-copy {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        width: 100%;
+      }
+
+      .platform-option span {
+        font-size: 0.93rem;
+        font-weight: 600;
+      }
+
+      .platform-option strong {
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: var(--text-faint);
+      }
+
       .download-card {
         display: grid;
         gap: 1rem;
@@ -367,6 +501,46 @@
         background: rgba(0, 0, 0, 0.03);
       }
 
+      .button.is-disabled {
+        border-color: rgba(0, 0, 0, 0.1);
+        background: rgba(0, 0, 0, 0.05);
+        color: var(--text-faint);
+        pointer-events: none;
+      }
+
+      .simple-list {
+        display: grid;
+        gap: 0.9rem;
+      }
+
+      .simple-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.9rem;
+        border: 1px solid var(--line);
+        border-radius: 1.15rem;
+        background: #fff;
+        padding: 1rem 1.05rem;
+        box-shadow: var(--shadow);
+      }
+
+      .simple-copy {
+        display: grid;
+        gap: 0.25rem;
+      }
+
+      .simple-copy strong {
+        font-size: 0.96rem;
+      }
+
+      .simple-copy span {
+        color: var(--text-muted);
+        line-height: 1.5;
+        font-size: 0.9rem;
+      }
+
       .status-card {
         border: 1px solid var(--line);
         border-radius: var(--radius-xl);
@@ -425,6 +599,21 @@
         .meta {
           text-align: left;
         }
+
+        .platform-figure {
+          width: 6.5rem;
+          height: 6.5rem;
+        }
+
+        .platform-figure svg,
+        .platform-figure img {
+          width: 4.25rem;
+          height: 4.25rem;
+        }
+
+        .platform-card {
+          grid-template-rows: 6.5rem minmax(4.5rem, auto) auto auto minmax(0, 1fr);
+        }
       }
     </style>
   </head>
@@ -449,7 +638,7 @@
         <section class="hero">
           <div class="eyebrow">Downloads</div>
           <h1>Download Axichat</h1>
-          <p>Choose the download that matches your device.</p>
+          <p>Choose your device.</p>
           <div id="release-meta" class="release-meta">
             <strong>Loading latest release...</strong>
           </div>
@@ -574,82 +763,114 @@
 
         if (name === "app-production-release.apk") {
           return {
+            platform: "android",
             section: "recommended",
             order: 10,
-            tag: "Recommended",
-            title: "Android phone or tablet",
-            description: "Best default choice for most Android users. This is the widest-compatibility APK.",
+            tag: "Android",
+            title: "Android APK",
+            description: "APK",
             action: "Download Android APK"
           };
         }
 
         if (name === "axichat-windows-setup.exe") {
           return {
+            platform: "windows",
             section: "recommended",
             order: 20,
-            tag: "Recommended",
-            title: "Windows PC",
-            description: "Normal Windows installer. Choose this if you want the usual setup experience.",
+            tag: "Windows",
+            title: "Windows installer",
+            description: "Installer",
             action: "Download Windows Installer"
           };
         }
 
         if (name === "axichat-x86_64.appimage") {
           return {
+            platform: "linux",
             section: "recommended",
             order: 30,
-            tag: "Recommended",
-            title: "Linux desktop",
-            description: "Best default Linux option if you are not sure. AppImage usually works across many distros.",
+            tag: "Linux",
+            title: "Linux AppImage",
+            description: "AppImage",
             action: "Download Linux AppImage"
           };
         }
 
         if (name === "axichat-linux-amd64.deb") {
           return {
+            platform: "linux",
             section: "recommended",
             order: 40,
-            tag: "Ubuntu and Debian",
-            title: "Linux desktop (.deb package)",
-            description: "Use this on Ubuntu, Debian, Linux Mint, and other Debian-based systems.",
+            tag: "Linux",
+            title: ".deb package",
+            description: "Ubuntu / Debian",
             action: "Download Linux .deb"
           };
         }
 
         if (name === "axichat-windows.zip") {
           return {
+            platform: "windows",
             section: "other",
             order: 50,
-            tag: "Portable",
-            title: "Windows PC (ZIP archive)",
-            description: "Use this if you want a portable copy without the Windows installer.",
+            tag: "Windows",
+            title: "Portable ZIP",
+            description: "ZIP",
             action: "Download Windows ZIP"
           };
         }
 
         if (name === "app-arm64-v8a-production-release.apk") {
           return {
+            platform: "android",
             section: "other",
             order: 60,
-            tag: "Advanced Android",
-            title: "Android phone or tablet (ARM64)",
-            description: "Smaller Android build. Only use this if you already know your device is ARM64.",
+            tag: "Android",
+            title: "ARM64 APK",
+            description: "Newer Android",
             action: "Download Android ARM64 APK"
           };
         }
 
         if (name === "axichat-linux.tar.gz") {
           return {
+            platform: "linux",
             section: "other",
             order: 70,
-            tag: "Manual setup",
-            title: "Linux desktop (tar.gz archive)",
-            description: "Raw Linux bundle for people who prefer manual setup instead of AppImage or .deb.",
+            tag: "Linux",
+            title: "tar.gz archive",
+            description: "Manual setup",
             action: "Download Linux tar.gz"
           };
         }
 
+        if (/\.(dmg|pkg)$/i.test(name) || name.includes("macos") || name.includes("darwin")) {
+          return {
+            platform: "apple",
+            section: "recommended",
+            order: 80,
+            tag: "Apple",
+            title: name.endsWith(".pkg") ? "Mac installer" : "Mac download",
+            description: "Mac",
+            action: "Download for Mac"
+          };
+        }
+
+        if (name.endsWith(".ipa") || name.includes("ios")) {
+          return {
+            platform: "apple",
+            section: "other",
+            order: 90,
+            tag: "Apple",
+            title: "iPhone / iPad build",
+            description: "iPhone / iPad",
+            action: "Download iOS build"
+          };
+        }
+
         return {
+          platform: null,
           section: "advanced",
           order: 999,
           tag: "Advanced",
@@ -688,24 +909,24 @@
           };
         });
 
-        const matchedChecksums = new Set();
-        for (const entry of entries) {
-          for (const checksum of entry.checksums) {
-            matchedChecksums.add(checksum.name);
-          }
-        }
-
         for (const asset of release.assets || []) {
-          if (!asset || typeof asset.name !== "string" || !isChecksumAssetName(asset.name) || matchedChecksums.has(asset.name)) {
+          if (!asset || typeof asset.name !== "string" || !isChecksumAssetName(asset.name)) {
             continue;
           }
+          const baseName = stripChecksumSuffix(asset.name);
+          const baseView = classifyAsset({ name: baseName });
+          const checksumTargetTitle =
+            baseView && baseView.platform
+              ? baseView.title + " checksum"
+              : baseName + " checksum";
           entries.push({
+            platform: null,
             section: "advanced",
             order: 1000,
             tag: "Verification",
-            title: asset.name,
-            description: "Checksum file from the latest release.",
-            action: "Download checksum file",
+            title: checksumTargetTitle,
+            description: checksumSuffix(asset.name) + " verification file",
+            action: "Download " + checksumSuffix(asset.name),
             rawName: asset.name,
             href: asset.browser_download_url,
             size: formatBytes(asset.size),
@@ -715,11 +936,12 @@
 
         entries.push(
           {
+            platform: null,
             section: "developer",
             order: 10,
             tag: "Developers",
             title: "Source code (.zip)",
-            description: "GitHub-generated source archive for developers, packagers, or anyone building from source.",
+            description: "Source archive",
             action: "Download source ZIP",
             rawName: "Source code (zip)",
             href: release.zipball_url,
@@ -727,11 +949,12 @@
             checksums: []
           },
           {
+            platform: null,
             section: "developer",
             order: 20,
             tag: "Developers",
             title: "Source code (.tar.gz)",
-            description: "GitHub-generated tarball of the same release source code.",
+            description: "Source tarball",
             action: "Download source tarball",
             rawName: "Source code (tar.gz)",
             href: release.tarball_url,
@@ -743,89 +966,137 @@
         return entries.sort((left, right) => left.order - right.order || left.title.localeCompare(right.title));
       }
 
-      function renderCard(entry) {
-        const checksumButtons = entry.checksums
-          .map((asset) => {
-            const label = checksumSuffix(asset.name);
-            return (
-              '<a class="button secondary" href="' + escapeHtml(asset.browser_download_url) + '" target="_blank" rel="noreferrer">' +
-              'Download ' + escapeHtml(label) +
-              "</a>"
-            );
-          })
-          .join("");
+      function platformDetails(platform) {
+        if (platform === "android") {
+          return {
+            title: "Android",
+            subtitle: "Phones and tablets"
+          };
+        }
+        if (platform === "windows") {
+          return {
+            title: "Windows",
+            subtitle: "PC"
+          };
+        }
+        if (platform === "linux") {
+          return {
+            title: "Linux",
+            subtitle: "Desktop"
+          };
+        }
+        return {
+          title: "iPhone & Mac",
+          subtitle: "Apple devices"
+        };
+      }
 
-        const metaParts = [entry.size].filter(Boolean).map((item) => "<div>" + escapeHtml(item) + "</div>").join("");
-        const recommendedClass = entry.section === "recommended" ? " recommended" : "";
+      function platformIconSrc(platform) {
+        if (platform === "android") {
+          return "../images/platforms/android.svg";
+        }
+        if (platform === "windows") {
+          return "../images/platforms/windows.svg";
+        }
+        if (platform === "linux") {
+          return "../images/platforms/linux.svg";
+        }
+        return "../images/platforms/apple.svg";
+      }
+
+      function optionIconSrc(entry) {
+        if (entry.platform === "linux" && entry.title === ".deb package") {
+          return "../images/platforms/debian.svg";
+        }
+        if (entry.platform) {
+          return platformIconSrc(entry.platform);
+        }
+        return "";
+      }
+
+      function renderPlatformOption(entry) {
+        const iconSrc = optionIconSrc(entry);
+        return (
+          '<a class="platform-option" href="' + escapeHtml(entry.href) + '" target="_blank" rel="noreferrer">' +
+            (iconSrc ? '<img class="platform-option-icon" src="' + escapeHtml(iconSrc) + '" alt="" loading="lazy" />' : "") +
+            '<div class="platform-option-copy">' +
+              "<span>" + escapeHtml(entry.title) + "</span>" +
+              "<strong>" + escapeHtml(entry.description) + "</strong>" +
+            "</div>" +
+          "</a>"
+        );
+      }
+
+      function renderPlatformCard(platform, primaryEntry, secondaryEntries) {
+        const details = platformDetails(platform);
+        const cardClass = primaryEntry ? "platform-card" : "platform-card disabled";
+        const meta = primaryEntry
+          ? [primaryEntry.title, primaryEntry.size].filter(Boolean).join(" • ")
+          : "Coming soon";
+        const action = primaryEntry
+          ? '<a class="button" href="' + escapeHtml(primaryEntry.href) + '" target="_blank" rel="noreferrer">' + escapeHtml(primaryEntry.action) + "</a>"
+          : '<span class="button is-disabled">Coming soon</span>';
 
         return (
-          '<article class="download-card' + recommendedClass + '">' +
-            '<div class="card-header">' +
-              '<div>' +
-                (entry.section === "recommended" ? "" : '<div class="tag">' + escapeHtml(entry.tag) + "</div>") +
-                "<h3>" + escapeHtml(entry.title) + "</h3>" +
-              "</div>" +
-              '<div class="meta">' + metaParts + "</div>" +
+          '<article class="' + cardClass + '">' +
+            '<div class="platform-figure"><img src="' + escapeHtml(platformIconSrc(platform)) + '" alt="" loading="lazy" /></div>' +
+            '<div class="platform-copy">' +
+              "<h3>" + escapeHtml(details.title) + "</h3>" +
+              "<p>" + escapeHtml(details.subtitle) + "</p>" +
             "</div>" +
-            '<p class="description">' + escapeHtml(entry.description) + "</p>" +
-            '<div class="button-row">' +
-              '<a class="button" href="' + escapeHtml(entry.href) + '" target="_blank" rel="noreferrer">' + escapeHtml(entry.action) + "</a>" +
-              checksumButtons +
-            "</div>" +
-            '<div class="file-row">' +
-              "<strong>Raw file name</strong>" +
-              "<code>" + escapeHtml(entry.rawName) + "</code>" +
-            "</div>" +
+            '<div class="platform-meta">' + escapeHtml(meta) + "</div>" +
+            action +
+            (secondaryEntries.length ? '<div class="platform-options">' + secondaryEntries.map(renderPlatformOption).join("") + "</div>" : "") +
           "</article>"
         );
       }
 
-      function renderSection(title, description, entries) {
-        if (!entries.length) {
-          return "";
+      function renderPlatformSection(entries) {
+        const platformOrder = ["android", "windows", "linux", "apple"];
+        const platformEntries = new Map();
+
+        for (const entry of entries) {
+          if (!entry.platform || entry.section === "advanced" || entry.section === "developer") {
+            continue;
+          }
+          const list = platformEntries.get(entry.platform) || [];
+          list.push(entry);
+          platformEntries.set(entry.platform, list);
         }
+
         return (
           '<section class="section-block">' +
             '<div class="section-heading">' +
-              "<h2>" + escapeHtml(title) + "</h2>" +
-              (description ? "<p>" + escapeHtml(description) + "</p>" : "") +
+              "<h2>Choose your device</h2>" +
             "</div>" +
-            '<div class="card-grid">' + entries.map(renderCard).join("") + "</div>" +
+            '<div class="platform-grid">' +
+              platformOrder
+                .map((platform) => {
+                  const entriesForPlatform = platformEntries.get(platform) || [];
+                  const primaryEntry = entriesForPlatform.find((entry) => entry.section === "recommended") || entriesForPlatform[0] || null;
+                  const secondaryEntries = entriesForPlatform.filter((entry) => entry !== primaryEntry);
+                  return renderPlatformCard(platform, primaryEntry, secondaryEntries);
+                })
+                .join("") +
+            "</div>" +
           "</section>"
         );
       }
 
-      function renderCompactItem(entry) {
-        const checksumButtons = entry.checksums
-          .map((asset) => {
-            const label = checksumSuffix(asset.name);
-            return (
-              '<a class="button secondary" href="' + escapeHtml(asset.browser_download_url) + '" target="_blank" rel="noreferrer">' +
-              escapeHtml(label) +
-              "</a>"
-            );
-          })
-          .join("");
-
+      function renderSimpleRow(entry) {
+        const meta = [entry.description, entry.size].filter(Boolean).join(" • ");
         return (
-          '<div class="compact-item">' +
-            '<div class="compact-main">' +
+          '<div class="simple-row">' +
+            '<div class="simple-copy">' +
               "<strong>" + escapeHtml(entry.title) + "</strong>" +
-              "<span>" + escapeHtml(entry.description) + "</span>" +
+              (meta ? "<span>" + escapeHtml(meta) + "</span>" : "") +
             "</div>" +
-            '<div class="button-row">' +
-              '<a class="button secondary" href="' + escapeHtml(entry.href) + '" target="_blank" rel="noreferrer">' + escapeHtml(entry.action) + "</a>" +
-              checksumButtons +
-            "</div>" +
-            '<div class="file-row">' +
-              "<strong>Raw file name</strong>" +
-              "<code>" + escapeHtml(entry.rawName) + "</code>" +
-            "</div>" +
+            '<a class="button secondary" href="' + escapeHtml(entry.href) + '" target="_blank" rel="noreferrer">' + escapeHtml(entry.action) + "</a>" +
           "</div>"
         );
       }
 
-      function renderCompactSection(title, description, entries) {
+      function renderSimpleSection(title, description, entries) {
         if (!entries.length) {
           return "";
         }
@@ -835,35 +1106,26 @@
               "<h2>" + escapeHtml(title) + "</h2>" +
               (description ? "<p>" + escapeHtml(description) + "</p>" : "") +
             "</div>" +
-            '<div class="compact-list">' + entries.map(renderCompactItem).join("") + "</div>" +
+            '<div class="simple-list">' + entries.map(renderSimpleRow).join("") + "</div>" +
           "</section>"
         );
       }
 
       function renderRelease(release) {
         const entries = buildReleaseEntries(release);
-        const groups = {
-          recommended: entries.filter((entry) => entry.section === "recommended"),
-          other: entries.filter((entry) => entry.section === "other"),
-          advanced: entries.filter((entry) => entry.section === "advanced"),
-          developer: entries.filter((entry) => entry.section === "developer")
-        };
+        const remainingEntries = entries.filter((entry) => entry.section === "advanced" || entry.section === "developer");
 
         releaseMeta.innerHTML =
           "<strong>" + escapeHtml(release.tag_name || release.name || "Latest release") + "</strong>" +
           (release.published_at ? "<span>Published " + escapeHtml(formatDate(release.published_at)) + "</span>" : "") +
-          '<a href="' + escapeHtml(release.html_url || RELEASES_PAGE_URL) + '" target="_blank" rel="noreferrer">View raw release page</a>';
+          '<a href="' + escapeHtml(release.html_url || RELEASES_PAGE_URL) + '" target="_blank" rel="noreferrer">View release page</a>';
 
         downloadsRoot.innerHTML =
-          renderSection(
-            "Recommended downloads",
-            "",
-            groups.recommended
-          ) +
-          renderCompactSection(
-            "More download options",
-            "Additional builds, checksum files, and source archives from the same GitHub release.",
-            groups.other.concat(groups.advanced, groups.developer)
+          renderPlatformSection(entries) +
+          renderSimpleSection(
+            "Other files",
+            "Checksums and source files.",
+            remainingEntries
           );
       }
 
