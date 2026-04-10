@@ -91,19 +91,18 @@ function withBasePath(path: string) {
 }
 
 const downloads = {
-  android: "https://github.com/axichat/axichat/releases/latest/download/app-production-release.apk",
   windows: "https://github.com/axichat/axichat/releases/latest/download/axichat-windows-setup.exe",
   linux: "https://github.com/axichat/axichat/releases/latest/download/axichat-x86_64.AppImage",
 };
 const downloadsPageHref = withBasePath("downloads/index.html");
+const googlePlayDownloadHref = "https://play.google.com/store/apps/details?id=im.axi.axichat";
 
 const heroHeadline = "Replace your email, messenger, and calendar apps with Axichat";
 const heroNote = "You can verify checksums on GitHub Releases.";
 const heroVideoSrc = withBasePath("videos/hero.mp4");
-const fdroidDownloadHref = "https://f-droid.org/packages/im.axi.axichat";
-const fdroidBadgeSrc = "https://f-droid.org/badge/get-it-on.png";
+const googlePlayBadgeSrc = withBasePath("images/platforms/google-play-badge.svg");
 const heroStoreBadgeHeightPx = 80;
-const showPublicFdroidButton = false;
+const heroDownloadButtonHeightPx = 62;
 const showEditorialLinks = false;
 const unregisterFaqId = "unregister";
 const unregisterFaqHash = `#${unregisterFaqId}`;
@@ -998,7 +997,8 @@ function DownloadButton({
   iconBorderColor,
   icon,
   widthPx,
-}: DownloadItem & { widthPx: number }) {
+  heightPx,
+}: DownloadItem & { widthPx: number; heightPx: number }) {
   const primaryTextColor = textColor ?? "#ffffff";
   const secondaryTextColor = fileColor ?? "rgba(255,255,255,0.75)";
   const iconBackground =
@@ -1028,10 +1028,10 @@ function DownloadButton({
   );
 
   const commonClassName = cn(
-    "group relative flex h-14 max-w-full self-center items-center justify-between gap-2 rounded-lg border px-3.5",
+    "group relative box-border flex max-w-full self-center items-center justify-between gap-2 rounded-lg border px-3.5",
     disabled ? "cursor-default" : "transition hover:brightness-95 focus:outline-none focus:ring-2 focus:ring-black/25"
   );
-  const commonStyle = { backgroundColor, borderColor, width: `${widthPx}px` };
+  const commonStyle = { backgroundColor, borderColor, width: `${widthPx}px`, height: `${heightPx}px` };
 
   if (disabled || !href) {
     return (
@@ -1267,7 +1267,7 @@ function HomePage({
   highlightUnregisterFaq,
   latestReleaseDate,
   latestVersion,
-  onFdroidBadgeLoad,
+  onStoreBadgeLoad,
   onPlayVideo,
 }: {
   autoplayBlocked: boolean;
@@ -1278,7 +1278,7 @@ function HomePage({
   highlightUnregisterFaq: boolean;
   latestReleaseDate: string;
   latestVersion: string;
-  onFdroidBadgeLoad: (event: React.SyntheticEvent<HTMLImageElement>) => void;
+  onStoreBadgeLoad: (event: React.SyntheticEvent<HTMLImageElement>) => void;
   onPlayVideo: () => void;
 }) {
   return (
@@ -1300,25 +1300,23 @@ function HomePage({
                 id="hero-downloads"
                 className="mx-auto mt-4 inline-grid grid-cols-1 items-center justify-items-center gap-3 sm:grid-cols-2 lg:mx-0 lg:justify-items-start"
               >
-                {showPublicFdroidButton ? (
-                  <a
-                    href={fdroidDownloadHref}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-block max-w-full transition focus:outline-none focus:ring-2 focus:ring-black/25"
-                    style={{ width: `${heroDownloadWidthPx}px` }}
-                  >
-                    <img
-                      src={fdroidBadgeSrc}
-                      alt="Get it on F-Droid"
-                      className="block w-auto"
-                      style={{ height: `${heroStoreBadgeHeightPx}px` }}
-                      onLoad={onFdroidBadgeLoad}
-                    />
-                  </a>
-                ) : null}
+                <a
+                  href={googlePlayDownloadHref}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-block max-w-full transition focus:outline-none focus:ring-2 focus:ring-black/25"
+                  style={{ width: `${heroDownloadWidthPx}px` }}
+                >
+                  <img
+                    src={googlePlayBadgeSrc}
+                    alt="Get it on Google Play"
+                    className="block w-auto"
+                    style={{ height: `${heroStoreBadgeHeightPx}px` }}
+                    onLoad={onStoreBadgeLoad}
+                  />
+                </a>
                 {downloadButtons.map((item) => (
-                  <DownloadButton key={item.os} widthPx={heroDownloadWidthPx} {...item} />
+                  <DownloadButton key={item.os} widthPx={heroDownloadWidthPx} heightPx={heroDownloadButtonHeightPx} {...item} />
                 ))}
               </div>
 
@@ -2187,16 +2185,6 @@ export default function App() {
 
   const downloadButtons: DownloadItem[] = [
     {
-      href: downloads.android,
-      os: "Android",
-      file: ".apk",
-      backgroundColor: "#34A853",
-      borderColor: "#34A853",
-      iconBackgroundColor: "rgba(255,255,255,0.94)",
-      iconBorderColor: "rgba(255,255,255,0.58)",
-      icon: <PlatformMark src="/images/platforms/android.svg" alt="" className="h-[26px] w-[26px]" />,
-    },
-    {
       href: downloads.windows,
       os: "Windows",
       file: "Installer .exe",
@@ -2230,7 +2218,7 @@ export default function App() {
     },
   ];
 
-  const handleFdroidBadgeLoad = React.useCallback((event: React.SyntheticEvent<HTMLImageElement>) => {
+  const handleStoreBadgeLoad = React.useCallback((event: React.SyntheticEvent<HTMLImageElement>) => {
     const { naturalWidth, naturalHeight } = event.currentTarget;
     if (!naturalWidth || !naturalHeight) {
       return;
@@ -2274,7 +2262,7 @@ export default function App() {
         highlightUnregisterFaq={isHomeRoute && activeHash === unregisterFaqHash}
         latestReleaseDate={latestReleaseDate}
         latestVersion={latestVersion}
-        onFdroidBadgeLoad={handleFdroidBadgeLoad}
+        onStoreBadgeLoad={handleStoreBadgeLoad}
         onPlayVideo={handlePlayVideo}
       />
     );
