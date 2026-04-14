@@ -101,7 +101,7 @@ const heroHeadline = "Replace your email, messenger, and calendar apps with Axic
 const heroNote = "You can verify checksums on GitHub Releases.";
 const heroVideoSrc = withBasePath("videos/hero.mp4");
 const googlePlayBadgeSrc = withBasePath("images/platforms/google-play-badge.svg");
-const heroStoreBadgeHeightPx = 80;
+const googlePlayBadgeAspectRatio = 238.96 / 70.87;
 const heroDownloadButtonHeightPx = 62;
 const showEditorialLinks = false;
 const unregisterFaqId = "unregister";
@@ -1267,7 +1267,6 @@ function HomePage({
   highlightUnregisterFaq,
   latestReleaseDate,
   latestVersion,
-  onStoreBadgeLoad,
   onPlayVideo,
 }: {
   autoplayBlocked: boolean;
@@ -1278,7 +1277,6 @@ function HomePage({
   highlightUnregisterFaq: boolean;
   latestReleaseDate: string;
   latestVersion: string;
-  onStoreBadgeLoad: (event: React.SyntheticEvent<HTMLImageElement>) => void;
   onPlayVideo: () => void;
 }) {
   return (
@@ -1310,9 +1308,7 @@ function HomePage({
                   <img
                     src={googlePlayBadgeSrc}
                     alt="Get it on Google Play"
-                    className="block w-auto"
-                    style={{ height: `${heroStoreBadgeHeightPx}px` }}
-                    onLoad={onStoreBadgeLoad}
+                    className="block h-auto w-full max-w-full"
                   />
                 </a>
                 {downloadButtons.map((item) => (
@@ -1862,7 +1858,6 @@ export default function App() {
   const [logoTone, setLogoTone] = React.useState<LogoTone>("dark");
   const [latestVersion, setLatestVersion] = React.useState<string>("loading...");
   const [latestReleaseDate, setLatestReleaseDate] = React.useState<string>("");
-  const [heroDownloadWidthPx, setHeroDownloadWidthPx] = React.useState(206);
   const [activeHash, setActiveHash] = React.useState<string>(typeof window !== "undefined" ? window.location.hash : "");
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
   const [serverStatus, setServerStatus] = React.useState<{ email: ServiceIndicatorState; chat: ServiceIndicatorState }>(
@@ -1871,6 +1866,7 @@ export default function App() {
       chat: "unknown",
     }
   );
+  const heroDownloadWidthPx = Math.round(googlePlayBadgeAspectRatio * heroDownloadButtonHeightPx);
 
   React.useEffect(() => {
     document.title = pageTitleForRoute(route);
@@ -2218,16 +2214,6 @@ export default function App() {
     },
   ];
 
-  const handleStoreBadgeLoad = React.useCallback((event: React.SyntheticEvent<HTMLImageElement>) => {
-    const { naturalWidth, naturalHeight } = event.currentTarget;
-    if (!naturalWidth || !naturalHeight) {
-      return;
-    }
-    const measuredWidth = Math.round((naturalWidth / naturalHeight) * heroStoreBadgeHeightPx);
-    const boundedWidth = Math.max(160, Math.min(320, measuredWidth));
-    setHeroDownloadWidthPx((current) => (current === boundedWidth ? current : boundedWidth));
-  }, []);
-
   const handlePlayVideo = React.useCallback(() => {
     const video = heroVideoRef.current;
     if (!video) {
@@ -2262,7 +2248,6 @@ export default function App() {
         highlightUnregisterFaq={isHomeRoute && activeHash === unregisterFaqHash}
         latestReleaseDate={latestReleaseDate}
         latestVersion={latestVersion}
-        onStoreBadgeLoad={handleStoreBadgeLoad}
         onPlayVideo={handlePlayVideo}
       />
     );
