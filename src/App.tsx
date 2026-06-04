@@ -1,4 +1,5 @@
 import React from "react";
+import RegisterPage from "./RegisterPage";
 
 type ClassValue = string | false | null | undefined;
 
@@ -65,6 +66,7 @@ type BlogPost = {
 
 type AppRoute =
   | { kind: "home" }
+  | { kind: "register" }
   | { kind: "use-cases" }
   | { kind: "blog" }
   | { kind: "blog-post"; post: BlogPost }
@@ -82,8 +84,6 @@ type ReleaseCacheRecord = {
   fetchedAt: number;
 };
 
-type ServiceHealth = "online" | "offline";
-type ServiceIndicatorState = ServiceHealth | "unknown";
 type LogoTone = "light" | "dark";
 
 function withBasePath(path: string) {
@@ -95,6 +95,7 @@ const downloads = {
   linux: "https://github.com/axichat/axichat/releases/latest/download/axichat-x86_64.AppImage",
 };
 const downloadsPageHref = withBasePath("downloads/index.html");
+const registerPageHref = withBasePath("register/");
 const googlePlayDownloadHref = "https://play.google.com/store/apps/details?id=im.axi.axichat";
 
 const heroHeadline = "Replace your email, messenger, and calendar apps with Axichat";
@@ -202,7 +203,12 @@ const faqItems: FaqItem[] = [
   },
   {
     question: "Do I need an existing email address to sign up?",
-    answer: <p>No, just enter a username and, optionally, a password if you don't want one generated for you.</p>,
+    answer: (
+      <p>
+        No. Create your account on this website with a username and password, then add a recovery method if you have
+        one available.
+      </p>
+    ),
   },
   {
     question: "Can I still receive email from my previous address?",
@@ -537,6 +543,10 @@ function resolveRoute(pathname: string): AppRoute {
     return { kind: "donate" };
   }
 
+  if (/^\/register(?:\/index\.html)?\/?$/.test(normalizedPathname)) {
+    return { kind: "register" };
+  }
+
   const blogPostMatch = normalizedPathname.match(/^\/blog\/([^/]+)(?:\/index\.html)?\/?$/);
   if (blogPostMatch) {
     const post = blogPosts.find((entry) => entry.slug === blogPostMatch[1]);
@@ -588,6 +598,9 @@ function pageTitleForRoute(route: AppRoute) {
   }
   if (route.kind === "donate") {
     return "Support Axichat";
+  }
+  if (route.kind === "register") {
+    return "Create an axi.im Account - Axichat";
   }
   return `Axichat - ${heroHeadline}`;
 }
@@ -676,33 +689,6 @@ async function fetchLatestRelease(): Promise<ReleaseCacheRecord> {
   } finally {
     inFlightLatestReleaseLookup = null;
   }
-}
-
-function toIndicatorState(value: unknown): ServiceIndicatorState {
-  if (value === "online" || value === "offline") {
-    return value;
-  }
-  return "unknown";
-}
-
-function statusDotClass(status: ServiceIndicatorState) {
-  if (status === "online") {
-    return "bg-emerald-500";
-  }
-  if (status === "offline") {
-    return "bg-rose-500";
-  }
-  return "bg-amber-400";
-}
-
-function statusLabel(status: ServiceIndicatorState) {
-  if (status === "online") {
-    return "Online";
-  }
-  if (status === "offline") {
-    return "Offline";
-  }
-  return "Unknown";
 }
 
 function parseRgbColor(input: string): [number, number, number] | null {
@@ -1028,7 +1014,7 @@ function DownloadButton({
   );
 
   const commonClassName = cn(
-    "group relative box-border flex max-w-full self-center items-center justify-between gap-2 rounded-lg border px-3.5",
+    "group relative box-border flex max-w-full self-center items-center justify-between gap-2 rounded-[1rem] border px-3.5",
     disabled ? "cursor-default" : "transition hover:brightness-95 focus:outline-none focus:ring-2 focus:ring-black/25"
   );
   const commonStyle = { backgroundColor, borderColor, width: `${widthPx}px`, height: `${heightPx}px` };
@@ -1053,7 +1039,7 @@ function UsernameCta({ href, className }: { href: string; className?: string }) 
     <a
       href={href}
       className={cn(
-        "inline-flex flex-wrap items-center justify-center gap-x-1 rounded-xl px-4 py-2 font-semibold transition",
+        "inline-flex flex-wrap items-center justify-center gap-x-1 rounded-[1rem] px-4 py-2 font-semibold transition",
         "focus:outline-none focus:ring-2 focus:ring-black/25",
         className
       )}
@@ -1157,12 +1143,14 @@ function SiteHeader({
   brandLogoSrc,
   isHomeRoute,
   mobileMenuOpen,
+  registerHref,
   onToggleMobileMenu,
   onCloseMobileMenu,
 }: {
   brandLogoSrc: string;
   isHomeRoute: boolean;
   mobileMenuOpen: boolean;
+  registerHref: string;
   onToggleMobileMenu: () => void;
   onCloseMobileMenu: () => void;
 }) {
@@ -1211,13 +1199,13 @@ function SiteHeader({
               target="_blank"
               rel="noreferrer"
               aria-label="Open Axichat on GitHub"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-black/15 bg-white text-black transition hover:bg-black/[0.03] focus:outline-none focus:ring-2 focus:ring-black/25"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-[1rem] border border-black/15 bg-white text-black transition hover:bg-black/[0.03] focus:outline-none focus:ring-2 focus:ring-black/25"
             >
               <GitHubIcon className="h-5 w-5" />
             </a>
 
             <UsernameCta
-              href={downloadsPageHref}
+              href={registerHref}
               className="hidden shrink-0 border border-black bg-black text-[10px] text-white hover:bg-black/85 lg:inline-flex lg:text-xs"
             />
 
@@ -1226,7 +1214,7 @@ function SiteHeader({
               onClick={onToggleMobileMenu}
               aria-expanded={mobileMenuOpen}
               aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
-              className="inline-flex items-center gap-2 rounded-xl border border-black/15 bg-white px-3 py-2 text-sm font-semibold text-black transition hover:bg-black/[0.03] focus:outline-none focus:ring-2 focus:ring-black/25 lg:hidden"
+              className="inline-flex items-center gap-2 rounded-[1rem] border border-black/15 bg-white px-3 py-2 text-sm font-semibold text-black transition hover:bg-black/[0.03] focus:outline-none focus:ring-2 focus:ring-black/25 lg:hidden"
             >
               <span>Menu</span>
               <MenuIcon className="h-4 w-4" open={mobileMenuOpen} />
@@ -1246,11 +1234,15 @@ function SiteHeader({
                 key={item.label}
                 href={item.href}
                 onClick={onCloseMobileMenu}
-                className="rounded-xl px-3 py-2 text-sm text-black/75 transition hover:bg-black/[0.03] hover:text-black"
+                className="rounded-[1rem] px-3 py-2 text-sm text-black/75 transition hover:bg-black/[0.03] hover:text-black"
               >
                 {item.label}
               </a>
             ))}
+            <UsernameCta
+              href={registerHref}
+              className="mt-2 w-fit border border-black bg-black text-xs text-white hover:bg-black/85"
+            />
           </nav>
         </div>
       </Container>
@@ -1327,7 +1319,6 @@ function HomePage({
                   autoPlay
                   loop
                   muted
-                  defaultMuted
                   playsInline
                   preload="auto"
                   poster={heroPoster || undefined}
@@ -1339,7 +1330,7 @@ function HomePage({
                   <button
                     type="button"
                     onClick={onPlayVideo}
-                    className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 rounded-full border border-black bg-white px-6 py-3 text-sm font-semibold text-black"
+                    className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 rounded-[1rem] border border-black bg-white px-6 py-3 text-sm font-semibold text-black"
                   >
                     Play Video
                   </button>
@@ -1540,14 +1531,14 @@ function UseCasesPage() {
             {showEditorialLinks ? (
               <a
                 href={withBasePath("blog/")}
-                className="inline-flex items-center rounded-xl border border-black/15 bg-white px-4 py-2 text-sm font-semibold text-black transition hover:bg-black/[0.03]"
+                className="inline-flex items-center rounded-[1rem] border border-black/15 bg-white px-4 py-2 text-sm font-semibold text-black transition hover:bg-black/[0.03]"
               >
                 Read the blog
               </a>
             ) : null}
             <a
               href={downloadsPageHref}
-              className="inline-flex items-center rounded-xl border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition hover:bg-black/85"
+              className="inline-flex items-center rounded-[1rem] border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition hover:bg-black/85"
             >
               Download Axichat
             </a>
@@ -1618,7 +1609,7 @@ function BlogIndexPage() {
           showEditorialLinks ? (
             <a
               href={withBasePath("use-cases/")}
-              className="inline-flex items-center rounded-xl border border-black/15 bg-white px-4 py-2 text-sm font-semibold text-black transition hover:bg-black/[0.03]"
+              className="inline-flex items-center rounded-[1rem] border border-black/15 bg-white px-4 py-2 text-sm font-semibold text-black transition hover:bg-black/[0.03]"
             >
               Explore use cases
             </a>
@@ -1635,7 +1626,7 @@ function BlogIndexPage() {
                 className="rounded-[2rem] border border-black/10 bg-white p-6 shadow-[0_20px_60px_rgba(0,0,0,0.05)] sm:p-7"
               >
                 <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-medium text-black/55">
-                  <span className="rounded-full border border-black/10 bg-black/[0.03] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-black/65">
+                  <span className="rounded-[0.8rem] border border-black/10 bg-black/[0.03] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-black/65">
                     {post.category}
                   </span>
                   <span>{formatBlogDate(post.publishedAt)}</span>
@@ -1645,7 +1636,7 @@ function BlogIndexPage() {
                 <p className="mt-3 max-w-3xl text-sm leading-relaxed text-black/72">{post.summary}</p>
                 <a
                   href={withBasePath(`blog/${post.slug}/`)}
-                  className="mt-6 inline-flex items-center rounded-xl border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition hover:bg-black/85"
+                  className="mt-6 inline-flex items-center rounded-[1rem] border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition hover:bg-black/85"
                 >
                   Read article
                 </a>
@@ -1673,7 +1664,7 @@ function BlogPostPage({ post }: { post: BlogPost }) {
               </a>
             ) : null}
             <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-medium text-black/55">
-              <span className="rounded-full border border-black/10 bg-black/[0.03] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-black/65">
+              <span className="rounded-[0.8rem] border border-black/10 bg-black/[0.03] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-black/65">
                 {post.category}
               </span>
               <span>{formatBlogDate(post.publishedAt)}</span>
@@ -1704,13 +1695,13 @@ function BlogPostPage({ post }: { post: BlogPost }) {
               <div className="mt-6 flex flex-wrap items-center gap-3">
                 <a
                   href={withBasePath("blog/")}
-                  className="inline-flex items-center rounded-xl border border-black/15 bg-white px-4 py-2 text-sm font-semibold text-black transition hover:bg-black/[0.03]"
+                  className="inline-flex items-center rounded-[1rem] border border-black/15 bg-white px-4 py-2 text-sm font-semibold text-black transition hover:bg-black/[0.03]"
                 >
                   More posts
                 </a>
                 <a
                   href={withBasePath("use-cases/")}
-                  className="inline-flex items-center rounded-xl border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition hover:bg-black/85"
+                  className="inline-flex items-center rounded-[1rem] border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition hover:bg-black/85"
                 >
                   Use cases
                 </a>
@@ -1723,30 +1714,14 @@ function BlogPostPage({ post }: { post: BlogPost }) {
   );
 }
 
-function SiteFooter({
-  serverStatus,
-}: {
-  serverStatus: { email: ServiceIndicatorState; chat: ServiceIndicatorState };
-}) {
+function SiteFooter({ registerHref }: { registerHref: string }) {
   return (
     <footer className="border-t border-black/10 py-12">
       <Container>
         <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
           <div className="flex max-w-sm flex-col gap-2">
-            <div className="rounded-xl border border-black/10 bg-white px-3 py-2">
-              <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-black/55">Status</div>
-              <div className="mt-2 flex flex-col gap-2 text-xs text-black/70">
-                <span className="grid grid-cols-[3.5rem_auto_1fr] items-center gap-x-2">
-                  <span>Email:</span>
-                  <span className={cn("h-2 w-2 rounded-full", statusDotClass(serverStatus.email))} />
-                  <span className="font-semibold text-black">{statusLabel(serverStatus.email)}</span>
-                </span>
-                <span className="grid grid-cols-[3.5rem_auto_1fr] items-center gap-x-2">
-                  <span>Chat:</span>
-                  <span className={cn("h-2 w-2 rounded-full", statusDotClass(serverStatus.chat))} />
-                  <span className="font-semibold text-black">{statusLabel(serverStatus.chat)}</span>
-                </span>
-              </div>
+            <div className="text-sm leading-relaxed text-black/65">
+              Open-source chat, email, and calendar software from Axichat LLC.
             </div>
             <div className="mt-2 text-xs text-black/60">© {new Date().getFullYear()} Axichat LLC</div>
             <a href={withBasePath("LICENSE.txt")} className="text-xs text-black/60 transition hover:text-black">
@@ -1786,7 +1761,7 @@ function SiteFooter({
 
             <div className="space-y-3">
               <UsernameCta
-                href={downloadsPageHref}
+                href={registerHref}
                 className="w-fit border border-black bg-black px-4 py-2 text-[11px] text-white hover:bg-black/85 sm:text-xs"
               />
             </div>
@@ -1851,6 +1826,7 @@ export default function App() {
   }
 
   const isHomeRoute = route.kind === "home";
+  const isRegisterRoute = route.kind === "register";
   const routeKey = route.kind === "blog-post" ? route.post.slug : route.kind;
   const heroVideoRef = React.useRef<HTMLVideoElement | null>(null);
   const [autoplayBlocked, setAutoplayBlocked] = React.useState(false);
@@ -1860,12 +1836,6 @@ export default function App() {
   const [latestReleaseDate, setLatestReleaseDate] = React.useState<string>("");
   const [activeHash, setActiveHash] = React.useState<string>(typeof window !== "undefined" ? window.location.hash : "");
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
-  const [serverStatus, setServerStatus] = React.useState<{ email: ServiceIndicatorState; chat: ServiceIndicatorState }>(
-    {
-      email: "unknown",
-      chat: "unknown",
-    }
-  );
   const heroDownloadWidthPx = Math.round(googlePlayBadgeAspectRatio * heroDownloadButtonHeightPx);
 
   React.useEffect(() => {
@@ -1924,6 +1894,10 @@ export default function App() {
   const brandLogoSrc = logoTone === "light" ? brandLogoWhite : brandLogoBlack;
 
   React.useEffect(() => {
+    if (isRegisterRoute) {
+      return;
+    }
+
     let cancelled = false;
 
     const fetchLatestVersion = async () => {
@@ -1961,50 +1935,7 @@ export default function App() {
     return () => {
       cancelled = true;
     };
-  }, []);
-
-  React.useEffect(() => {
-    let cancelled = false;
-
-    const fetchServerStatus = async () => {
-      try {
-        const response = await fetch("https://axi.im:8443/status", {
-          method: "GET",
-          headers: {
-            Accept: "application/json",
-            "X-Client-Token": "axichatpublictoken",
-          },
-        });
-        if (response.status !== 200 && response.status !== 503) {
-          throw new Error(`status_lookup_${response.status}`);
-        }
-        const payload = (await response.json()) as { stalwart?: string; ejabberd?: string };
-        if (!cancelled) {
-          setServerStatus({
-            email: toIndicatorState(payload.stalwart),
-            chat: toIndicatorState(payload.ejabberd),
-          });
-        }
-      } catch {
-        if (!cancelled) {
-          setServerStatus({
-            email: "unknown",
-            chat: "unknown",
-          });
-        }
-      }
-    };
-
-    void fetchServerStatus();
-    const interval = window.setInterval(() => {
-      void fetchServerStatus();
-    }, 30000);
-
-    return () => {
-      cancelled = true;
-      window.clearInterval(interval);
-    };
-  }, []);
+  }, [isRegisterRoute]);
 
   React.useEffect(() => {
     if (!isHomeRoute) {
@@ -2231,7 +2162,9 @@ export default function App() {
   }, []);
 
   let pageContent: React.ReactNode;
-  if (route.kind === "use-cases") {
+  if (route.kind === "register") {
+    pageContent = <RegisterPage downloadsHref={downloadsPageHref} />;
+  } else if (route.kind === "use-cases") {
     pageContent = <UseCasesPage />;
   } else if (route.kind === "blog") {
     pageContent = <BlogIndexPage />;
@@ -2250,6 +2183,14 @@ export default function App() {
         latestVersion={latestVersion}
         onPlayVideo={handlePlayVideo}
       />
+    );
+  }
+
+  if (isRegisterRoute) {
+    return (
+      <div className="min-h-screen bg-white text-black font-body">
+        <main id="top">{pageContent}</main>
+      </div>
     );
   }
 
@@ -2273,14 +2214,13 @@ export default function App() {
       `}</style>
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute inset-0 surface-grid opacity-60" />
-        <div className="absolute -left-24 top-20 h-72 w-72 rounded-full bg-black/5 blur-3xl animate-floatSlow" />
-        <div className="absolute right-0 top-0 h-80 w-80 rounded-full bg-black/[0.03] blur-3xl" />
       </div>
 
       <SiteHeader
         brandLogoSrc={brandLogoSrc}
         isHomeRoute={isHomeRoute}
         mobileMenuOpen={mobileMenuOpen}
+        registerHref={registerPageHref}
         onToggleMobileMenu={() => {
           setMobileMenuOpen((current) => !current);
         }}
@@ -2291,7 +2231,7 @@ export default function App() {
 
       <main id="top">{pageContent}</main>
 
-      <SiteFooter serverStatus={serverStatus} />
+      <SiteFooter registerHref={registerPageHref} />
     </div>
   );
 }
