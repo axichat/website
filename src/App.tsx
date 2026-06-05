@@ -1,5 +1,4 @@
 import React from "react";
-import { AnimatedTextShine } from "./AnimatedTextShine";
 import RegisterPage from "./RegisterPage";
 
 type ClassValue = string | false | null | undefined;
@@ -105,7 +104,6 @@ const heroVideoSrc = withBasePath("videos/hero.mp4");
 const googlePlayBadgeSrc = withBasePath("images/platforms/google-play-badge.svg");
 const googlePlayBadgeAspectRatio = 238.96 / 70.87;
 const heroDownloadButtonHeightPx = 62;
-const axiTextShineColors = ["#ff5f6d", "#ffd166", "#00e4d0", "#60a5fa", "#c084fc"];
 const showEditorialLinks = false;
 const unregisterFaqId = "unregister";
 const unregisterFaqHash = `#${unregisterFaqId}`;
@@ -1048,9 +1046,7 @@ function UsernameCta({ href, className }: { href: string; className?: string }) 
       aria-label="Register an axi.im account"
     >
       <span>Register</span>
-      <AnimatedTextShine duration="3.5s" pauseDuration="5s" shineColors={axiTextShineColors}>
-        @axi.im
-      </AnimatedTextShine>
+      <span className="username-shimmer">@axi.im</span>
     </a>
   );
 }
@@ -1064,9 +1060,7 @@ function UsernameTagline({ className }: { className?: string }) {
       <span className="text-black/80">Get </span>
       <span className="inline-flex items-baseline gap-0">
         <span className="text-black/80">yourname</span>
-        <AnimatedTextShine className="text-black/80" duration="3.5s" pauseDuration="5s" shineColors={axiTextShineColors}>
-          @axi.im
-        </AnimatedTextShine>
+        <span className="username-shimmer-hero">@axi.im</span>
       </span>
       <span className="text-black/80"> now</span>
     </p>

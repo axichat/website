@@ -1,5 +1,4 @@
 import React from "react";
-import { AnimatedTextShine } from "./AnimatedTextShine";
 import { createQrSvg } from "./qr";
 
 type PublicAxiConfig = {
@@ -108,7 +107,6 @@ const signupTemporaryErrors = new Set([
 ]);
 const captchaErrors = new Set(["captcha_required", "captcha_invalid", "captcha_failed", "captcha_unavailable"]);
 const axiBackendDevProxyPath = "/__axi_backend";
-const axiTextShineColors = ["#ff5f6d", "#ffd166", "#00e4d0", "#60a5fa", "#c084fc"];
 
 function withBasePath(path: string) {
   return `${import.meta.env.BASE_URL}${path.replace(/^\/+/, "")}`;
@@ -1559,9 +1557,7 @@ export default function RegisterPage({ downloadsHref }: { downloadsHref: string 
             className="min-w-0 flex-1 bg-transparent px-3 py-2.5 text-sm text-black outline-none disabled:bg-black/[0.03]"
           />
           <span className="flex items-center border-l border-black/10 bg-black/[0.03] px-3 text-sm font-semibold text-black/65">
-            <AnimatedTextShine duration="3.5s" pauseDuration="5s" shineColors={axiTextShineColors}>
-              @{config.accountDomain}
-            </AnimatedTextShine>
+            <span className="username-shimmer">@{config.accountDomain}</span>
           </span>
         </div>
         <FieldError id="signup-localpart-error">{localpartError}</FieldError>
