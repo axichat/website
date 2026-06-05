@@ -1,4 +1,5 @@
 import React from "react";
+import { AnimatedTextShine } from "./AnimatedTextShine";
 import { createQrSvg } from "./qr";
 
 type PublicAxiConfig = {
@@ -107,6 +108,7 @@ const signupTemporaryErrors = new Set([
 ]);
 const captchaErrors = new Set(["captcha_required", "captcha_invalid", "captcha_failed", "captcha_unavailable"]);
 const axiBackendDevProxyPath = "/__axi_backend";
+const axiTextShineColors = ["#ff5f6d", "#ffd166", "#00e4d0", "#60a5fa", "#c084fc"];
 
 function withBasePath(path: string) {
   return `${import.meta.env.BASE_URL}${path.replace(/^\/+/, "")}`;
@@ -647,7 +649,7 @@ function OtpCodeInput({
           aria-invalid={Boolean(hasError)}
           aria-describedby={index === 0 ? describedBy : undefined}
           className={cx(
-            "h-12 min-w-0 rounded-xl border bg-white text-center font-mono text-xl font-semibold text-black outline-none transition focus:border-black focus:ring-2 focus:ring-black/15 disabled:bg-black/[0.03]",
+            "h-10 min-w-0 squircle-control-sm border bg-white text-center font-mono text-lg font-semibold text-black outline-none transition focus:border-black focus:ring-2 focus:ring-black/15 disabled:bg-black/[0.03]",
             hasError ? "border-rose-500" : "border-black/15"
           )}
         />
@@ -846,7 +848,7 @@ function RecoveryEmailPanel({
             aria-invalid={Boolean(recoveryEmailError)}
             aria-describedby={recoveryEmailError ? "recovery-email-error" : undefined}
             className={cx(
-              "mt-2 w-full rounded-xl border bg-white px-4 py-3 text-base text-black outline-none transition focus:border-black focus:ring-2 focus:ring-black/15 disabled:bg-black/[0.03]",
+              "mt-2 w-full squircle-control border bg-white px-3 py-2.5 text-sm text-black outline-none transition focus:border-black focus:ring-2 focus:ring-black/15 disabled:bg-black/[0.03]",
               recoveryEmailError ? "border-rose-500" : "border-black/15"
             )}
           />
@@ -854,7 +856,7 @@ function RecoveryEmailPanel({
           <button
             type="submit"
             disabled={disabled || busy || completed}
-            className="mt-4 inline-flex items-center gap-2 rounded-[1rem] border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition hover:bg-black/85 disabled:cursor-not-allowed disabled:border-black/20 disabled:bg-black/20"
+            className="mt-4 inline-flex items-center gap-2 squircle-control border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition hover:bg-black/85 disabled:cursor-not-allowed disabled:border-black/20 disabled:bg-black/20"
           >
             {busy ? (
               <>
@@ -891,7 +893,7 @@ function RecoveryEmailPanel({
             <button
               type="submit"
               disabled={disabled || busy || completed}
-              className="inline-flex items-center gap-2 rounded-[1rem] border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition hover:bg-black/85 disabled:cursor-not-allowed disabled:border-black/20 disabled:bg-black/20"
+              className="inline-flex items-center gap-2 squircle-control border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition hover:bg-black/85 disabled:cursor-not-allowed disabled:border-black/20 disabled:bg-black/20"
             >
               {busy ? (
                 <>
@@ -911,7 +913,7 @@ function RecoveryEmailPanel({
                   setCode("");
                   setError("");
                 }}
-                className="inline-flex rounded-[1rem] border border-black/15 bg-white px-4 py-2 text-sm font-semibold text-black transition hover:bg-black/[0.03] disabled:cursor-not-allowed disabled:opacity-50"
+                className="inline-flex squircle-control border border-black/15 bg-white px-4 py-2 text-sm font-semibold text-black transition hover:bg-black/[0.03] disabled:cursor-not-allowed disabled:opacity-50"
               >
                 Cancel
               </button>
@@ -1062,7 +1064,7 @@ function TotpPanel({
           type="button"
           onClick={start}
           disabled={disabled || busy || completed}
-          className="mt-5 inline-flex items-center gap-2 rounded-[1rem] border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition hover:bg-black/85 disabled:cursor-not-allowed disabled:border-black/20 disabled:bg-black/20"
+          className="mt-5 inline-flex items-center gap-2 squircle-control border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition hover:bg-black/85 disabled:cursor-not-allowed disabled:border-black/20 disabled:bg-black/20"
         >
           {busy ? (
             <>
@@ -1109,7 +1111,7 @@ function TotpPanel({
             <button
               type="submit"
               disabled={disabled || busy || completed}
-              className="inline-flex items-center gap-2 rounded-[1rem] border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition hover:bg-black/85 disabled:cursor-not-allowed disabled:border-black/20 disabled:bg-black/20"
+              className="inline-flex items-center gap-2 squircle-control border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition hover:bg-black/85 disabled:cursor-not-allowed disabled:border-black/20 disabled:bg-black/20"
             >
               {busy ? (
                 <>
@@ -1131,7 +1133,7 @@ function TotpPanel({
                   setCode("");
                   setError("");
                 }}
-                className="inline-flex rounded-[1rem] border border-black/15 bg-white px-4 py-2 text-sm font-semibold text-black transition hover:bg-black/[0.03] disabled:cursor-not-allowed disabled:opacity-50"
+                className="inline-flex squircle-control border border-black/15 bg-white px-4 py-2 text-sm font-semibold text-black transition hover:bg-black/[0.03] disabled:cursor-not-allowed disabled:opacity-50"
               >
                 Cancel
               </button>
@@ -1415,7 +1417,7 @@ export default function RegisterPage({ downloadsHref }: { downloadsHref: string 
         )}
         <a
           href={downloadsHref}
-          className="mt-5 inline-flex rounded-[1rem] border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition hover:bg-black/85"
+          className="mt-5 inline-flex squircle-control border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition hover:bg-black/85"
         >
           Download Axichat
         </a>
@@ -1431,7 +1433,7 @@ export default function RegisterPage({ downloadsHref }: { downloadsHref: string 
       >
         <a
           href={downloadsHref}
-          className="inline-flex rounded-[1rem] border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition hover:bg-black/85"
+          className="inline-flex squircle-control border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition hover:bg-black/85"
         >
           Download Axichat
         </a>
@@ -1502,14 +1504,14 @@ export default function RegisterPage({ downloadsHref }: { downloadsHref: string 
               type="button"
               onClick={finish}
               disabled={!hasCompletedRecovery}
-              className="inline-flex rounded-[1rem] border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition hover:bg-black/85 disabled:cursor-not-allowed disabled:border-black/20 disabled:bg-black/20"
+              className="inline-flex squircle-control border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition hover:bg-black/85 disabled:cursor-not-allowed disabled:border-black/20 disabled:bg-black/20"
             >
               Finish setup
             </button>
             <button
               type="button"
               onClick={finish}
-              className="inline-flex rounded-[1rem] border border-black/15 bg-white px-4 py-2 text-sm font-semibold text-black transition hover:bg-black/[0.03]"
+              className="inline-flex squircle-control border border-black/15 bg-white px-4 py-2 text-sm font-semibold text-black transition hover:bg-black/[0.03]"
             >
               Skip
             </button>
@@ -1536,7 +1538,7 @@ export default function RegisterPage({ downloadsHref }: { downloadsHref: string 
         </label>
         <div
           className={cx(
-            "mt-2 flex rounded-xl border bg-white transition focus-within:border-black focus-within:ring-2 focus-within:ring-black/15",
+            "mt-2 flex squircle-control overflow-hidden border bg-white transition focus-within:border-black focus-within:ring-2 focus-within:ring-black/15",
             localpartError ? "border-rose-500" : "border-black/15"
           )}
         >
@@ -1554,10 +1556,12 @@ export default function RegisterPage({ downloadsHref }: { downloadsHref: string 
             required
             aria-invalid={Boolean(localpartError)}
             aria-describedby={localpartError ? "signup-localpart-error" : undefined}
-            className="min-w-0 flex-1 rounded-l-xl bg-transparent px-4 py-3 text-base text-black outline-none disabled:bg-black/[0.03]"
+            className="min-w-0 flex-1 bg-transparent px-3 py-2.5 text-sm text-black outline-none disabled:bg-black/[0.03]"
           />
-          <span className="flex items-center rounded-r-xl border-l border-black/10 bg-black/[0.03] px-3 text-sm font-semibold text-black/65">
-            @{config.accountDomain}
+          <span className="flex items-center border-l border-black/10 bg-black/[0.03] px-3 text-sm font-semibold text-black/65">
+            <AnimatedTextShine duration="3.5s" pauseDuration="5s" shineColors={axiTextShineColors}>
+              @{config.accountDomain}
+            </AnimatedTextShine>
           </span>
         </div>
         <FieldError id="signup-localpart-error">{localpartError}</FieldError>
@@ -1581,7 +1585,7 @@ export default function RegisterPage({ downloadsHref }: { downloadsHref: string 
           aria-invalid={Boolean(passwordError)}
           aria-describedby={passwordError ? "signup-password-error" : undefined}
           className={cx(
-            "mt-2 w-full rounded-xl border bg-white px-4 py-3 text-base text-black outline-none transition focus:border-black focus:ring-2 focus:ring-black/15 disabled:bg-black/[0.03]",
+            "mt-2 w-full squircle-control border bg-white px-3 py-2.5 text-sm text-black outline-none transition focus:border-black focus:ring-2 focus:ring-black/15 disabled:bg-black/[0.03]",
             passwordError ? "border-rose-500" : "border-black/15"
           )}
         />
@@ -1606,7 +1610,7 @@ export default function RegisterPage({ downloadsHref }: { downloadsHref: string 
           aria-invalid={Boolean(passwordConfirmationError)}
           aria-describedby={passwordConfirmationError ? "signup-password-confirm-error" : undefined}
           className={cx(
-            "mt-2 w-full rounded-xl border bg-white px-4 py-3 text-base text-black outline-none transition focus:border-black focus:ring-2 focus:ring-black/15 disabled:bg-black/[0.03]",
+            "mt-2 w-full squircle-control border bg-white px-3 py-2.5 text-sm text-black outline-none transition focus:border-black focus:ring-2 focus:ring-black/15 disabled:bg-black/[0.03]",
             passwordConfirmationError ? "border-rose-500" : "border-black/15"
           )}
         />
@@ -1629,7 +1633,7 @@ export default function RegisterPage({ downloadsHref }: { downloadsHref: string 
         <button
           type="submit"
           disabled={busy || registrationDisabled}
-          className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-[1rem] border border-black bg-black px-5 py-3 text-sm font-semibold text-white transition hover:bg-black/85 disabled:cursor-not-allowed disabled:border-black/20 disabled:bg-black/20"
+          className="mt-6 inline-flex w-full items-center justify-center gap-2 squircle-control border border-black bg-black px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-black/85 disabled:cursor-not-allowed disabled:border-black/20 disabled:bg-black/20"
         >
           <span className="inline-flex min-w-[9.5rem] items-center justify-center gap-2 whitespace-nowrap">
             {busy ? (

@@ -18,9 +18,9 @@
         --text-muted: rgba(17, 17, 17, 0.72);
         --text-faint: rgba(17, 17, 17, 0.55);
         --shadow: 0 20px 60px rgba(0, 0, 0, 0.06);
-        --radius-xl: 24px;
-        --radius-lg: 18px;
-        --radius-control: 16px;
+        --radius-xl: 20px;
+        --radius-lg: 16px;
+        --radius-control: 12px;
       }
 
       * {
@@ -116,6 +116,19 @@
       .header-link:hover {
         background: var(--surface-muted);
         color: var(--text);
+      }
+
+      @supports (corner-shape: squircle) {
+        .header-link,
+        .release-meta,
+        .primary-download-button,
+        .platform-option,
+        .button,
+        .download-card a,
+        .copy-button,
+        .status-card {
+          corner-shape: squircle;
+        }
       }
 
       .header-link.primary {

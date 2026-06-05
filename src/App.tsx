@@ -1,4 +1,5 @@
 import React from "react";
+import { AnimatedTextShine } from "./AnimatedTextShine";
 import RegisterPage from "./RegisterPage";
 
 type ClassValue = string | false | null | undefined;
@@ -104,6 +105,7 @@ const heroVideoSrc = withBasePath("videos/hero.mp4");
 const googlePlayBadgeSrc = withBasePath("images/platforms/google-play-badge.svg");
 const googlePlayBadgeAspectRatio = 238.96 / 70.87;
 const heroDownloadButtonHeightPx = 62;
+const axiTextShineColors = ["#ff5f6d", "#ffd166", "#00e4d0", "#60a5fa", "#c084fc"];
 const showEditorialLinks = false;
 const unregisterFaqId = "unregister";
 const unregisterFaqHash = `#${unregisterFaqId}`;
@@ -1014,7 +1016,7 @@ function DownloadButton({
   );
 
   const commonClassName = cn(
-    "group relative box-border flex max-w-full self-center items-center justify-between gap-2 rounded-[1rem] border px-3.5",
+    "group relative box-border flex max-w-full self-center items-center justify-between gap-2 squircle-control border px-3.5",
     disabled ? "cursor-default" : "transition hover:brightness-95 focus:outline-none focus:ring-2 focus:ring-black/25"
   );
   const commonStyle = { backgroundColor, borderColor, width: `${widthPx}px`, height: `${heightPx}px` };
@@ -1039,18 +1041,16 @@ function UsernameCta({ href, className }: { href: string; className?: string }) 
     <a
       href={href}
       className={cn(
-        "inline-flex flex-wrap items-center justify-center gap-x-1 rounded-[1rem] px-4 py-2 font-semibold transition",
+        "inline-flex flex-wrap items-center justify-center gap-x-1 squircle-control px-4 py-2 font-semibold transition",
         "focus:outline-none focus:ring-2 focus:ring-black/25",
         className
       )}
-      aria-label="Get your.name at axi.im now"
+      aria-label="Register an axi.im account"
     >
-      <span>Get</span>
-      <span className="inline-flex items-baseline gap-0">
-        <span>your.name</span>
-        <span className="username-shimmer">@axi.im</span>
-      </span>
-      <span>now</span>
+      <span>Register</span>
+      <AnimatedTextShine duration="3.5s" pauseDuration="5s" shineColors={axiTextShineColors}>
+        @axi.im
+      </AnimatedTextShine>
     </a>
   );
 }
@@ -1059,12 +1059,14 @@ function UsernameTagline({ className }: { className?: string }) {
   return (
     <p
       className={cn("text-balance text-2xl font-display font-semibold tracking-tight text-black sm:text-3xl", className)}
-      aria-label="Get your.name at axi.im now"
+      aria-label="Get yourname at axi.im now"
     >
       <span className="text-black/80">Get </span>
       <span className="inline-flex items-baseline gap-0">
-        <span className="text-black/80">your.name</span>
-        <span className="username-shimmer-hero">@axi.im</span>
+        <span className="text-black/80">yourname</span>
+        <AnimatedTextShine className="text-black/80" duration="3.5s" pauseDuration="5s" shineColors={axiTextShineColors}>
+          @axi.im
+        </AnimatedTextShine>
       </span>
       <span className="text-black/80"> now</span>
     </p>
@@ -1199,7 +1201,7 @@ function SiteHeader({
               target="_blank"
               rel="noreferrer"
               aria-label="Open Axichat on GitHub"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-[1rem] border border-black/15 bg-white text-black transition hover:bg-black/[0.03] focus:outline-none focus:ring-2 focus:ring-black/25"
+              className="inline-flex h-10 w-10 items-center justify-center squircle-control border border-black/15 bg-white text-black transition hover:bg-black/[0.03] focus:outline-none focus:ring-2 focus:ring-black/25"
             >
               <GitHubIcon className="h-5 w-5" />
             </a>
@@ -1214,7 +1216,7 @@ function SiteHeader({
               onClick={onToggleMobileMenu}
               aria-expanded={mobileMenuOpen}
               aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
-              className="inline-flex items-center gap-2 rounded-[1rem] border border-black/15 bg-white px-3 py-2 text-sm font-semibold text-black transition hover:bg-black/[0.03] focus:outline-none focus:ring-2 focus:ring-black/25 lg:hidden"
+              className="inline-flex items-center gap-2 squircle-control border border-black/15 bg-white px-3 py-2 text-sm font-semibold text-black transition hover:bg-black/[0.03] focus:outline-none focus:ring-2 focus:ring-black/25 lg:hidden"
             >
               <span>Menu</span>
               <MenuIcon className="h-4 w-4" open={mobileMenuOpen} />
@@ -1234,7 +1236,7 @@ function SiteHeader({
                 key={item.label}
                 href={item.href}
                 onClick={onCloseMobileMenu}
-                className="rounded-[1rem] px-3 py-2 text-sm text-black/75 transition hover:bg-black/[0.03] hover:text-black"
+                className="squircle-control px-3 py-2 text-sm text-black/75 transition hover:bg-black/[0.03] hover:text-black"
               >
                 {item.label}
               </a>
@@ -1286,9 +1288,20 @@ function HomePage({
 
               <UsernameTagline className="mx-auto mt-10 max-w-xl sm:mt-12 lg:mx-0" />
 
+              <p className="mx-auto mt-7 max-w-xl text-sm leading-relaxed text-black/60 lg:mx-0">
+                Axichat is currently under the radar, so you must create your account here:
+              </p>
+              <a
+                href={registerPageHref}
+                className="mt-3 inline-flex items-center justify-center squircle-control border border-black bg-black px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-black/85 focus:outline-none focus:ring-2 focus:ring-black/25"
+              >
+                Sign up
+              </a>
+              <p className="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-black/60 lg:mx-0">Then download the app:</p>
+
               <div
                 id="hero-downloads"
-                className="mx-auto mt-4 inline-grid grid-cols-1 items-center justify-items-center gap-3 sm:grid-cols-2 lg:mx-0 lg:justify-items-start"
+                className="mx-auto mt-3 inline-grid grid-cols-1 items-center justify-items-center gap-3 sm:grid-cols-2 lg:mx-0 lg:justify-items-start"
               >
                 <a
                   href={googlePlayDownloadHref}
@@ -1330,7 +1343,7 @@ function HomePage({
                   <button
                     type="button"
                     onClick={onPlayVideo}
-                    className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 rounded-[1rem] border border-black bg-white px-6 py-3 text-sm font-semibold text-black"
+                    className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 squircle-control border border-black bg-white px-6 py-3 text-sm font-semibold text-black"
                   >
                     Play Video
                   </button>
@@ -1531,14 +1544,14 @@ function UseCasesPage() {
             {showEditorialLinks ? (
               <a
                 href={withBasePath("blog/")}
-                className="inline-flex items-center rounded-[1rem] border border-black/15 bg-white px-4 py-2 text-sm font-semibold text-black transition hover:bg-black/[0.03]"
+                className="inline-flex items-center squircle-control border border-black/15 bg-white px-4 py-2 text-sm font-semibold text-black transition hover:bg-black/[0.03]"
               >
                 Read the blog
               </a>
             ) : null}
             <a
               href={downloadsPageHref}
-              className="inline-flex items-center rounded-[1rem] border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition hover:bg-black/85"
+              className="inline-flex items-center squircle-control border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition hover:bg-black/85"
             >
               Download Axichat
             </a>
@@ -1609,7 +1622,7 @@ function BlogIndexPage() {
           showEditorialLinks ? (
             <a
               href={withBasePath("use-cases/")}
-              className="inline-flex items-center rounded-[1rem] border border-black/15 bg-white px-4 py-2 text-sm font-semibold text-black transition hover:bg-black/[0.03]"
+              className="inline-flex items-center squircle-control border border-black/15 bg-white px-4 py-2 text-sm font-semibold text-black transition hover:bg-black/[0.03]"
             >
               Explore use cases
             </a>
@@ -1636,7 +1649,7 @@ function BlogIndexPage() {
                 <p className="mt-3 max-w-3xl text-sm leading-relaxed text-black/72">{post.summary}</p>
                 <a
                   href={withBasePath(`blog/${post.slug}/`)}
-                  className="mt-6 inline-flex items-center rounded-[1rem] border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition hover:bg-black/85"
+                  className="mt-6 inline-flex items-center squircle-control border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition hover:bg-black/85"
                 >
                   Read article
                 </a>
@@ -1695,13 +1708,13 @@ function BlogPostPage({ post }: { post: BlogPost }) {
               <div className="mt-6 flex flex-wrap items-center gap-3">
                 <a
                   href={withBasePath("blog/")}
-                  className="inline-flex items-center rounded-[1rem] border border-black/15 bg-white px-4 py-2 text-sm font-semibold text-black transition hover:bg-black/[0.03]"
+                  className="inline-flex items-center squircle-control border border-black/15 bg-white px-4 py-2 text-sm font-semibold text-black transition hover:bg-black/[0.03]"
                 >
                   More posts
                 </a>
                 <a
                   href={withBasePath("use-cases/")}
-                  className="inline-flex items-center rounded-[1rem] border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition hover:bg-black/85"
+                  className="inline-flex items-center squircle-control border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition hover:bg-black/85"
                 >
                   Use cases
                 </a>

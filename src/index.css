@@ -110,86 +110,72 @@ main {
   font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", "Twemoji Mozilla";
 }
 
+.squircle-control {
+  border-radius: 12px;
+}
+
+.squircle-control-sm {
+  border-radius: 10px;
+}
+
+@supports (corner-shape: squircle) {
+  .squircle-control,
+  .squircle-control-sm {
+    corner-shape: squircle;
+  }
+}
+
 .brand-logo {
   display: block;
   background: transparent;
 }
 
-@keyframes username-shimmer {
-  0% {
-    background-position: 0% 50%;
-  }
-  100% {
-    background-position: -100% 50%;
-  }
-}
-
-.username-shimmer,
-.username-shimmer-hero {
+.animatedTextShine {
   display: inline-block;
-  background-size: 200% 100%;
-  background-repeat: repeat;
-  background-position: 0% 50%;
-  color: inherit;
-  animation: username-shimmer 7.5s linear infinite;
+  line-height: inherit;
+  --shine-mix: 0%;
+  --shine-start: -37%;
+  --shine-p1: -31.3%;
+  --shine-p2: -24.65%;
+  --shine-p3: -18%;
+  --shine-p4: -11.35%;
+  --shine-p5: -4.7%;
+  --shine-end: 1%;
+  color: var(--shine-base, currentColor);
 }
 
-@supports ((-webkit-background-clip: text) or (background-clip: text)) {
-  .username-shimmer,
-  .username-shimmer-hero {
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
+@media (prefers-reduced-motion: no-preference) {
+  @supports (color: color-mix(in srgb, black 50%, white)) {
+    .animatedTextShine {
+      background-image: linear-gradient(
+        100deg,
+        var(--shine-base, currentColor) -100%,
+        var(--shine-base, currentColor) var(--shine-start),
+        color-mix(in srgb, var(--shine-color-1, #7dd3fc) var(--shine-mix), var(--shine-base, currentColor))
+          var(--shine-p1),
+        color-mix(in srgb, var(--shine-color-2, #c084fc) var(--shine-mix), var(--shine-base, currentColor))
+          var(--shine-p2),
+        color-mix(in srgb, var(--shine-color-3, #f0abfc) var(--shine-mix), var(--shine-base, currentColor))
+          var(--shine-p3),
+        color-mix(in srgb, var(--shine-color-4, #c084fc) var(--shine-mix), var(--shine-base, currentColor))
+          var(--shine-p4),
+        color-mix(in srgb, var(--shine-color-5, #7dd3fc) var(--shine-mix), var(--shine-base, currentColor))
+          var(--shine-p5),
+        var(--shine-base, currentColor) var(--shine-end),
+        var(--shine-base, currentColor) 200%
+      );
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      will-change: background-image;
+    }
   }
-}
-
-.username-shimmer {
-  background-image: linear-gradient(
-    90deg,
-    #ff5f6d 0%,
-    #ff906f 8.333%,
-    #ffd166 16.666%,
-    #00e4d0 25%,
-    #60a5fa 33.333%,
-    #c084fc 41.666%,
-    #ff5f6d 50%,
-    #ff906f 58.333%,
-    #ffd166 66.666%,
-    #00e4d0 75%,
-    #60a5fa 83.333%,
-    #c084fc 91.666%,
-    #ff5f6d 100%
-  );
-}
-
-.username-shimmer-hero {
-  background-image: linear-gradient(
-    90deg,
-    #ef476f 0%,
-    #ff7f62 6%,
-    #ffb35c 11%,
-    #ffd166 15%,
-    #00d1bf 22%,
-    #5a95ef 30%,
-    #7c8ff6 37%,
-    #a855f7 44%,
-    #ef476f 50%,
-    #ff7f62 56%,
-    #ffb35c 61%,
-    #ffd166 65%,
-    #00d1bf 72%,
-    #5a95ef 80%,
-    #7c8ff6 87%,
-    #a855f7 94%,
-    #ef476f 100%
-  );
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .username-shimmer,
-  .username-shimmer-hero {
-    animation: none;
-    background-position: 50% 50%;
+  .animatedTextShine {
+    color: var(--shine-base, currentColor);
   }
 }
