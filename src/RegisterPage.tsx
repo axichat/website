@@ -98,8 +98,12 @@ type RecoveryEmailFieldName = "recoveryEmail" | "code";
 type RecoveryEmailFieldErrors = Partial<Record<RecoveryEmailFieldName, string>>;
 type TotpFieldErrors = Partial<Record<"code", string>>;
 
-const localpartPattern = /^[A-Za-z0-9._-]+$/;
+const localpartPattern = /^[a-z][a-z0-9._-]{3,19}$/;
 const otpCodeLength = 6;
+const passwordMaxLength = 64;
+const weakEntropyBits = 50;
+const strongerEntropyBits = 80;
+const maxEntropyBits = 120;
 const signupTemporaryErrors = new Set([
   "signup_service_unavailable",
   "mail_service_unavailable",
@@ -118,6 +122,65 @@ function cx(...classes: Array<string | false | null | undefined>) {
 
 function hasFieldErrors(errors: Record<string, string | undefined>) {
   return Object.values(errors).some(Boolean);
+}
+
+function passwordEntropyBits(password: string) {
+  if (!password) {
+    return 0;
+  }
+  let pool = 0;
+  if (/[0-9]/.test(password)) {
+    pool += 10;
+  }
+  if (/[a-z]/.test(password)) {
+    pool += 26;
+  }
+  if (/[A-Z]/.test(password)) {
+    pool += 26;
+  }
+  if (/[^0-9a-zA-Z]/.test(password)) {
+    pool += 33;
+  }
+  return password.length * Math.log2(Math.max(pool, 1));
+}
+
+function passwordStrengthLevel(password: string) {
+  if (!password) {
+    return { label: "None", textClass: "text-rose-600", barClass: "bg-rose-600" };
+  }
+  const bits = passwordEntropyBits(password);
+  if (bits < weakEntropyBits) {
+    return { label: "Weak", textClass: "text-rose-600", barClass: "bg-rose-600" };
+  }
+  if (bits < strongerEntropyBits) {
+    return { label: "Medium", textClass: "text-[#FD7E14]", barClass: "bg-[#FD7E14]" };
+  }
+  return { label: "Stronger", textClass: "text-[#00C853]", barClass: "bg-[#00C853]" };
+}
+
+async function sha1HexUpper(text: string) {
+  const digest = await crypto.subtle.digest("SHA-1", new TextEncoder().encode(text));
+  return Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, "0"))
+    .join("")
+    .toUpperCase();
+}
+
+async function isPasswordPwned(password: string): Promise<boolean> {
+  try {
+    const hash = await sha1HexUpper(password);
+    const prefix = hash.slice(0, 5);
+    const suffix = hash.slice(5);
+    const response = await fetch(`https://api.pwnedpasswords.com/range/${prefix}`, {
+      signal: AbortSignal.timeout(10000),
+    });
+    if (!response.ok) {
+      return false;
+    }
+    const body = await response.text();
+    return body.split(/\r?\n/).some((line) => line.split(":")[0]?.trim().toUpperCase() === suffix);
+  } catch {
+    return false;
+  }
 }
 
 function isPlaceholder(value: string) {
@@ -339,15 +402,15 @@ function validateSignupFields({
   if (!canonicalLocalpart) {
     errors.localpart = "Enter a username.";
   } else if (!localpartPattern.test(canonicalLocalpart)) {
-    errors.localpart = "Use only letters, numbers, periods, underscores, and hyphens.";
-  } else if (canonicalLocalpart.length < 4) {
-    errors.localpart = "Usernames shorter than 4 characters are not available through website registration.";
+    errors.localpart = "4-20 characters, starting with a letter; letters, numbers, '.', '_', '-'.";
   }
 
   if (!password) {
     errors.password = "Enter a password.";
   } else if (password.length < 8) {
     errors.password = "Use at least 8 characters.";
+  } else if (password.length > passwordMaxLength) {
+    errors.password = "Must be 64 characters or fewer.";
   }
 
   if (!passwordConfirmation) {
@@ -524,6 +587,106 @@ function TurnstileWidget({
   }, [onToken, resetNonce]);
 
   return <div ref={containerRef} className="min-h-[65px]" aria-label="Verification challenge" />;
+}
+
+function PasswordStrengthMeter({ password }: { password: string }) {
+  const strength = passwordStrengthLevel(password);
+  const fillPercent = Math.min(100, (passwordEntropyBits(password) / maxEntropyBits) * 100);
+  return (
+    <div className="mt-4">
+      <div className="flex items-center justify-between text-xs">
+        <span className="font-semibold text-black/55">Password strength</span>
+        <span className={cx("font-semibold", strength.textClass)}>{strength.label}</span>
+      </div>
+      <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-black/[0.06]">
+        <div
+          className={cx("h-full rounded-full transition-[width,background-color] duration-300", strength.barClass)}
+          style={{ width: `${fillPercent}%` }}
+        />
+      </div>
+    </div>
+  );
+}
+
+function InfoIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 16 16" fill="none" className={className} aria-hidden>
+      <circle cx="8" cy="8" r="6.25" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M8 7.25v3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <circle cx="8" cy="4.75" r="0.9" fill="currentColor" />
+    </svg>
+  );
+}
+
+function InsecurePasswordNotice({
+  breached,
+  riskAccepted,
+  riskError,
+  disabled,
+  onChange,
+}: {
+  breached: boolean;
+  riskAccepted: boolean;
+  riskError: string;
+  disabled: boolean;
+  onChange: (accepted: boolean) => void;
+}) {
+  const [privacyOpen, setPrivacyOpen] = React.useState(false);
+  return (
+    <div className="mt-4 rounded-xl border border-black/10 bg-black/[0.02] px-4 py-3">
+      {breached ? (
+        <div className="mb-3">
+          <p className="text-sm text-rose-700">
+            This password has been found in a hacked database.{" "}
+            <button
+              type="button"
+              onClick={() => setPrivacyOpen((current) => !current)}
+              aria-expanded={privacyOpen}
+              aria-controls="breach-privacy-note"
+              aria-label="How this check protects your password"
+              className="inline-flex h-4 w-4 translate-y-[2.5px] text-black/45 transition hover:text-black focus:outline-none focus:ring-2 focus:ring-black/25"
+            >
+              <InfoIcon className="h-4 w-4" />
+            </button>
+          </p>
+          {privacyOpen ? (
+            <p id="breach-privacy-note" className="mt-2 text-xs leading-relaxed text-black/65">
+              Your password never leaves this page. The check sends only the first 5 characters of its scrambled
+              fingerprint (hash) to Have I Been Pwned, which is not enough to reveal the password itself.{" "}
+              <a
+                href="https://www.troyhunt.com/understanding-have-i-been-pwneds-use-of-sha-1-and-k-anonymity/"
+                target="_blank"
+                rel="noreferrer"
+                className="underline underline-offset-4"
+              >
+                How it works
+              </a>
+            </p>
+          ) : null}
+        </div>
+      ) : null}
+      <label className="flex items-start gap-3">
+        <input
+          type="checkbox"
+          checked={riskAccepted}
+          onChange={(event) => onChange(event.target.checked)}
+          disabled={disabled}
+          aria-invalid={Boolean(riskError)}
+          aria-describedby={riskError ? "signup-risk-error" : undefined}
+          className="mt-0.5 h-4 w-4 shrink-0 accent-black"
+        />
+        <span>
+          <span className="block text-sm font-semibold text-black">I understand the risk</span>
+          <span className="mt-0.5 block text-sm leading-relaxed text-black/65">
+            {breached
+              ? "Allow this password even though it appeared in a breach."
+              : "Allow this password even though it is considered weak."}
+          </span>
+        </span>
+      </label>
+      <FieldError id="signup-risk-error">{riskError}</FieldError>
+    </div>
+  );
 }
 
 function ButtonSpinner() {
@@ -1166,7 +1329,13 @@ export default function RegisterPage({ downloadsHref }: { downloadsHref: string 
   const [completedMethods, setCompletedMethods] = React.useState<string[]>([]);
   const [completedAccount, setCompletedAccount] = React.useState<CompletedAccount | null>(null);
   const [expired, setExpired] = React.useState(false);
+  const [riskAccepted, setRiskAccepted] = React.useState(false);
+  const [riskError, setRiskError] = React.useState("");
+  const [breachChecking, setBreachChecking] = React.useState(false);
+  const [pwnedCheck, setPwnedCheck] = React.useState<{ password: string; pwned: boolean } | null>(null);
+  const [weakSubmittedPassword, setWeakSubmittedPassword] = React.useState("");
   const signupInFlightRef = React.useRef(false);
+  const latestPasswordRef = React.useRef("");
 
   const registrationDisabled = Boolean(configError);
   const turnstileEnabled = config.turnstileSiteKey !== "";
@@ -1176,6 +1345,9 @@ export default function RegisterPage({ downloadsHref }: { downloadsHref: string 
   const secondsRemaining = session ? Math.max(0, Math.ceil((session.recoverySetupExpiresAt - now) / 1000)) : 0;
   const turnstileAccepted =
     !turnstileEnabled || Boolean(turnstileToken) || Boolean(sameAttempt && attempt?.captchaVerified);
+  const passwordWeak = password !== "" && passwordEntropyBits(password) < weakEntropyBits;
+  const passwordBreached = pwnedCheck !== null && pwnedCheck.password === password && pwnedCheck.pwned;
+  const showRiskNotice = (passwordWeak && weakSubmittedPassword === password) || passwordBreached;
   const signupClientErrors = validateSignupFields({
     canonicalLocalpart,
     password,
@@ -1208,6 +1380,10 @@ export default function RegisterPage({ downloadsHref }: { downloadsHref: string 
     setCapabilities(null);
     setCapabilitiesError("");
     setCompletedMethods([]);
+    setPwnedCheck(null);
+    setRiskAccepted(false);
+    setRiskError("");
+    setWeakSubmittedPassword("");
   }, []);
 
   const handleTurnstileToken = React.useCallback((token: string) => {
@@ -1277,6 +1453,40 @@ export default function RegisterPage({ downloadsHref }: { downloadsHref: string 
       setSignupError("");
       signupInFlightRef.current = false;
       return;
+    }
+
+    if (passwordWeak && weakSubmittedPassword !== password) {
+      setWeakSubmittedPassword(password);
+      setRiskAccepted(false);
+      setRiskError("");
+      setSignupError("");
+      signupInFlightRef.current = false;
+      return;
+    }
+
+    if (showRiskNotice && !riskAccepted) {
+      setRiskError("Check the box above to continue.");
+      setSignupError("");
+      signupInFlightRef.current = false;
+      return;
+    }
+
+    if (pwnedCheck === null || pwnedCheck.password !== password) {
+      setBreachChecking(true);
+      setSignupError("");
+      const pwned = await isPasswordPwned(password);
+      setBreachChecking(false);
+      if (latestPasswordRef.current !== password) {
+        signupInFlightRef.current = false;
+        return;
+      }
+      setPwnedCheck({ password, pwned });
+      if (pwned) {
+        setRiskAccepted(false);
+        setRiskError("");
+        signupInFlightRef.current = false;
+        return;
+      }
     }
 
     let key = attempt && sameAttempt ? attempt.key : "";
@@ -1379,6 +1589,10 @@ export default function RegisterPage({ downloadsHref }: { downloadsHref: string 
     setSignupSubmitted(false);
     setSignupServerErrors({});
     setAttempt(null);
+    setPwnedCheck(null);
+    setRiskAccepted(false);
+    setRiskError("");
+    setWeakSubmittedPassword("");
   };
 
   const handleRecoveryCompleted = (label: string) => {
@@ -1544,13 +1758,14 @@ export default function RegisterPage({ downloadsHref }: { downloadsHref: string 
             id="signup-localpart"
             value={localpart}
             onChange={(event) => {
-              setLocalpart(event.target.value);
+              setLocalpart(event.target.value.toLowerCase());
               setSignupServerErrors((current) => ({ ...current, localpart: "" }));
               setSignupError("");
             }}
             onBlur={() => setSignupTouched((current) => ({ ...current, localpart: true }))}
-            disabled={busy || registrationDisabled}
+            disabled={busy || breachChecking || registrationDisabled}
             autoComplete="username"
+            maxLength={20}
             required
             aria-invalid={Boolean(localpartError)}
             aria-describedby={localpartError ? "signup-localpart-error" : undefined}
@@ -1560,6 +1775,7 @@ export default function RegisterPage({ downloadsHref }: { downloadsHref: string 
             <span className="username-shimmer">@{config.accountDomain}</span>
           </span>
         </div>
+        <p className="mt-2 text-xs text-black/55">Case insensitive</p>
         <FieldError id="signup-localpart-error">{localpartError}</FieldError>
 
         <label className="mt-5 block text-sm font-semibold text-black" htmlFor="signup-password">
@@ -1570,13 +1786,17 @@ export default function RegisterPage({ downloadsHref }: { downloadsHref: string 
           type="password"
           value={password}
           onChange={(event) => {
+            latestPasswordRef.current = event.target.value;
             setPassword(event.target.value);
+            setRiskAccepted(false);
+            setRiskError("");
             setSignupServerErrors((current) => ({ ...current, password: "" }));
             setSignupError("");
           }}
           onBlur={() => setSignupTouched((current) => ({ ...current, password: true }))}
-          disabled={busy || registrationDisabled}
+          disabled={busy || breachChecking || registrationDisabled}
           autoComplete="new-password"
+          maxLength={passwordMaxLength}
           required
           aria-invalid={Boolean(passwordError)}
           aria-describedby={passwordError ? "signup-password-error" : undefined}
@@ -1600,8 +1820,9 @@ export default function RegisterPage({ downloadsHref }: { downloadsHref: string 
             setSignupError("");
           }}
           onBlur={() => setSignupTouched((current) => ({ ...current, passwordConfirmation: true }))}
-          disabled={busy || registrationDisabled}
+          disabled={busy || breachChecking || registrationDisabled}
           autoComplete="new-password"
+          maxLength={passwordMaxLength}
           required
           aria-invalid={Boolean(passwordConfirmationError)}
           aria-describedby={passwordConfirmationError ? "signup-password-confirm-error" : undefined}
@@ -1611,6 +1832,23 @@ export default function RegisterPage({ downloadsHref }: { downloadsHref: string 
           )}
         />
         <FieldError id="signup-password-confirm-error">{passwordConfirmationError}</FieldError>
+
+        <PasswordStrengthMeter password={password} />
+
+        {showRiskNotice ? (
+          <InsecurePasswordNotice
+            breached={passwordBreached}
+            riskAccepted={riskAccepted}
+            riskError={riskError}
+            disabled={busy || breachChecking || registrationDisabled}
+            onChange={(accepted) => {
+              setRiskAccepted(accepted);
+              if (accepted) {
+                setRiskError("");
+              }
+            }}
+          />
+        ) : null}
 
         {turnstileEnabled ? (
           <div className="mt-5">
@@ -1628,7 +1866,7 @@ export default function RegisterPage({ downloadsHref }: { downloadsHref: string 
 
         <button
           type="submit"
-          disabled={busy || registrationDisabled}
+          disabled={busy || breachChecking || registrationDisabled}
           className="mt-6 inline-flex w-full items-center justify-center gap-2 squircle-control border border-black bg-black px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-black/85 disabled:cursor-not-allowed disabled:border-black/20 disabled:bg-black/20"
         >
           <span className="inline-flex min-w-[9.5rem] items-center justify-center gap-2 whitespace-nowrap">
@@ -1636,6 +1874,11 @@ export default function RegisterPage({ downloadsHref }: { downloadsHref: string 
               <>
                 <ButtonSpinner />
                 Creating account...
+              </>
+            ) : breachChecking ? (
+              <>
+                <ButtonSpinner />
+                Checking password safety...
               </>
             ) : (
               "Create account"

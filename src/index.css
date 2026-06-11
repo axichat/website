@@ -13,31 +13,15 @@
 
 @font-face {
   font-family: "Inter";
-  src: url("/fonts/Inter-VariableFont_slnt,wght.ttf") format("truetype");
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Inter";
-  src: url("/fonts/Inter-Italic-VariableFont_slnt,wght.ttf") format("truetype");
-  font-weight: 100 900;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Gabarito";
-  src: url("/fonts/Gabarito-Regular.ttf") format("truetype");
-  font-weight: 400;
+  src: url("/fonts/Inter-roman.woff2") format("woff2");
+  font-weight: 400 600;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
   font-family: "Gabarito";
-  src: url("/fonts/Gabarito-Medium.ttf") format("truetype");
+  src: url("/fonts/Gabarito-Medium.woff2") format("woff2");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -45,32 +29,8 @@
 
 @font-face {
   font-family: "Gabarito";
-  src: url("/fonts/Gabarito-SemiBold.ttf") format("truetype");
+  src: url("/fonts/Gabarito-SemiBold.woff2") format("woff2");
   font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Gabarito";
-  src: url("/fonts/Gabarito-Bold.ttf") format("truetype");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Gabarito";
-  src: url("/fonts/Gabarito-ExtraBold.ttf") format("truetype");
-  font-weight: 800;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Gabarito";
-  src: url("/fonts/Gabarito-Black.ttf") format("truetype");
-  font-weight: 900;
   font-style: normal;
   font-display: swap;
 }

@@ -3,3 +3,4 @@ website-backend
 dist
 .vite
 .idea
+.claude

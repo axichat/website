@@ -101,6 +101,7 @@ const googlePlayDownloadHref = "https://play.google.com/store/apps/details?id=im
 const heroHeadline = "Replace your email, messenger, and calendar apps with Axichat";
 const heroNote = "You can verify checksums on GitHub Releases.";
 const heroVideoSrc = withBasePath("videos/hero.mp4");
+const heroPosterSrc = withBasePath("videos/hero_poster.jpg");
 const googlePlayBadgeSrc = withBasePath("images/platforms/google-play-badge.svg");
 const googlePlayBadgeAspectRatio = 238.96 / 70.87;
 const heroDownloadButtonHeightPx = 62;
@@ -130,11 +131,13 @@ const featureRows: FeatureRow[] = [
         src: withBasePath("images/screenshots/mobile/01.png"),
         alt: "Axichat mobile screenshot 1 showing unified inbox flow",
         aspect: "aspect-[9/16]",
+        useWebp: true,
       },
       {
         src: withBasePath("images/screenshots/mobile/02.png"),
         alt: "Axichat mobile screenshot 2 showing unified inbox flow",
         aspect: "aspect-[9/16]",
+        useWebp: true,
       },
     ],
   },
@@ -156,11 +159,13 @@ const featureRows: FeatureRow[] = [
         src: withBasePath("images/screenshots/mobile/05.png"),
         alt: "Axichat mobile screenshot 5 showing calendar workflow",
         aspect: "aspect-[9/16]",
+        useWebp: true,
       },
       {
         src: withBasePath("images/screenshots/mobile/04.png"),
         alt: "Axichat mobile screenshot 4 showing calendar workflow",
         aspect: "aspect-[9/16]",
+        useWebp: true,
       },
     ],
   },
@@ -181,11 +186,13 @@ const featureRows: FeatureRow[] = [
         src: withBasePath("images/screenshots/mobile/06.png"),
         alt: "Axichat mobile screenshot 6 showing mobile parity experience",
         aspect: "aspect-[9/16]",
+        useWebp: true,
       },
       {
         src: withBasePath("images/screenshots/mobile/03.png"),
         alt: "Axichat mobile screenshot 3 showing mobile parity experience",
         aspect: "aspect-[9/16]",
+        useWebp: true,
       },
     ],
   },
@@ -1250,7 +1257,6 @@ function HomePage({
   autoplayBlocked,
   downloadButtons,
   heroDownloadWidthPx,
-  heroPoster,
   heroVideoRef,
   highlightUnregisterFaq,
   latestReleaseDate,
@@ -1260,7 +1266,6 @@ function HomePage({
   autoplayBlocked: boolean;
   downloadButtons: DownloadItem[];
   heroDownloadWidthPx: number;
-  heroPoster: string;
   heroVideoRef: React.RefObject<HTMLVideoElement>;
   highlightUnregisterFaq: boolean;
   latestReleaseDate: string;
@@ -1327,8 +1332,8 @@ function HomePage({
                   loop
                   muted
                   playsInline
-                  preload="auto"
-                  poster={heroPoster || undefined}
+                  preload="metadata"
+                  poster={heroPosterSrc}
                 >
                   <source src={heroVideoSrc} type="video/mp4" />
                   Your browser does not support the video tag.
@@ -1828,16 +1833,11 @@ function DonatePage() {
 export default function App() {
   const route = resolveRoute(typeof window !== "undefined" ? window.location.pathname : "/");
 
-  if (route.kind === "donate") {
-    return <DonatePage />;
-  }
-
   const isHomeRoute = route.kind === "home";
   const isRegisterRoute = route.kind === "register";
   const routeKey = route.kind === "blog-post" ? route.post.slug : route.kind;
   const heroVideoRef = React.useRef<HTMLVideoElement | null>(null);
   const [autoplayBlocked, setAutoplayBlocked] = React.useState(false);
-  const [heroPoster, setHeroPoster] = React.useState<string>("");
   const [logoTone, setLogoTone] = React.useState<LogoTone>("dark");
   const [latestVersion, setLatestVersion] = React.useState<string>("loading...");
   const [latestReleaseDate, setLatestReleaseDate] = React.useState<string>("");
@@ -1901,7 +1901,7 @@ export default function App() {
   const brandLogoSrc = logoTone === "light" ? brandLogoWhite : brandLogoBlack;
 
   React.useEffect(() => {
-    if (isRegisterRoute) {
+    if (!isHomeRoute) {
       return;
     }
 
@@ -1942,7 +1942,7 @@ export default function App() {
     return () => {
       cancelled = true;
     };
-  }, [isRegisterRoute]);
+  }, [isHomeRoute]);
 
   React.useEffect(() => {
     if (!isHomeRoute) {
@@ -1979,59 +1979,6 @@ export default function App() {
     }
     setActiveHash(window.location.hash);
   }, [activeHash, routeKey]);
-
-  React.useEffect(() => {
-    if (!isHomeRoute) {
-      return;
-    }
-
-    let disposed = false;
-    const probeVideo = document.createElement("video");
-    probeVideo.src = heroVideoSrc;
-    probeVideo.preload = "auto";
-    probeVideo.muted = true;
-    probeVideo.defaultMuted = true;
-    probeVideo.playsInline = true;
-
-    const captureFrame = () => {
-      if (disposed || !probeVideo.videoWidth || !probeVideo.videoHeight) {
-        return;
-      }
-      const canvas = document.createElement("canvas");
-      canvas.width = probeVideo.videoWidth;
-      canvas.height = probeVideo.videoHeight;
-      const ctx = canvas.getContext("2d");
-      if (!ctx) {
-        return;
-      }
-      ctx.drawImage(probeVideo, 0, 0, canvas.width, canvas.height);
-      setHeroPoster(canvas.toDataURL("image/jpeg", 0.85));
-    };
-
-    const handleLoadedMetadata = () => {
-      const targetTime = probeVideo.duration && Number.isFinite(probeVideo.duration) ? Math.min(0.2, probeVideo.duration / 2) : 0;
-      try {
-        probeVideo.currentTime = targetTime;
-      } catch {
-        captureFrame();
-      }
-    };
-
-    probeVideo.addEventListener("loadedmetadata", handleLoadedMetadata);
-    probeVideo.addEventListener("seeked", captureFrame);
-    probeVideo.addEventListener("loadeddata", captureFrame);
-    probeVideo.load();
-
-    return () => {
-      disposed = true;
-      probeVideo.removeEventListener("loadedmetadata", handleLoadedMetadata);
-      probeVideo.removeEventListener("seeked", captureFrame);
-      probeVideo.removeEventListener("loadeddata", captureFrame);
-      probeVideo.pause();
-      probeVideo.removeAttribute("src");
-      probeVideo.load();
-    };
-  }, [isHomeRoute]);
 
   React.useEffect(() => {
     if (!isHomeRoute) {
@@ -2126,7 +2073,7 @@ export default function App() {
       borderColor: "#2563EB",
       iconBackgroundColor: "rgba(255,255,255,0.96)",
       iconBorderColor: "rgba(255,255,255,0.64)",
-      icon: <PlatformMark src="/images/platforms/windows.svg" alt="" className="h-[26px] w-[26px]" />,
+      icon: <PlatformMark src={withBasePath("images/platforms/windows.svg")} alt="" className="h-[26px] w-[26px]" />,
     },
     {
       href: downloads.linux,
@@ -2136,7 +2083,7 @@ export default function App() {
       borderColor: "#DC143C",
       iconBackgroundColor: "rgba(255,255,255,0.96)",
       iconBorderColor: "rgba(255,255,255,0.58)",
-      icon: <PlatformMark src="/images/platforms/linux.svg" alt="" className="h-[26px] w-[26px]" />,
+      icon: <PlatformMark src={withBasePath("images/platforms/linux.svg")} alt="" className="h-[26px] w-[26px]" />,
     },
     {
       disabled: true,
@@ -2148,7 +2095,7 @@ export default function App() {
       fileColor: "rgba(17,17,17,0.72)",
       iconBackgroundColor: "rgba(255,255,255,0.92)",
       iconBorderColor: "rgba(17,17,17,0.14)",
-      icon: <PlatformMark src="/images/platforms/apple.svg" alt="" className="h-[26px] w-[26px]" />,
+      icon: <PlatformMark src={withBasePath("images/platforms/apple.svg")} alt="" className="h-[26px] w-[26px]" />,
     },
   ];
 
@@ -2168,6 +2115,10 @@ export default function App() {
       });
   }, []);
 
+  if (route.kind === "donate") {
+    return <DonatePage />;
+  }
+
   let pageContent: React.ReactNode;
   if (route.kind === "register") {
     pageContent = <RegisterPage downloadsHref={downloadsPageHref} />;
@@ -2183,7 +2134,6 @@ export default function App() {
         autoplayBlocked={autoplayBlocked}
         downloadButtons={downloadButtons}
         heroDownloadWidthPx={heroDownloadWidthPx}
-        heroPoster={heroPoster}
         heroVideoRef={heroVideoRef}
         highlightUnregisterFaq={isHomeRoute && activeHash === unregisterFaqHash}
         latestReleaseDate={latestReleaseDate}
