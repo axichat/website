@@ -17,14 +17,6 @@
     <meta property="og:image" content="%BASE_URL%images/brand/axichat_banner.png" />
     <meta property="og:image:alt" content="Axichat banner" />
     <link rel="icon" type="image/png" sizes="32x32" href="%BASE_URL%favicon-32x32.png?v=3" />
-    <link rel="apple-touch-icon" sizes="57x57" href="%BASE_URL%apple-icon-57x57.png" />
-    <link rel="apple-touch-icon" sizes="60x60" href="%BASE_URL%apple-icon-60x60.png" />
-    <link rel="apple-touch-icon" sizes="72x72" href="%BASE_URL%apple-icon-72x72.png" />
-    <link rel="apple-touch-icon" sizes="76x76" href="%BASE_URL%apple-icon-76x76.png" />
-    <link rel="apple-touch-icon" sizes="114x114" href="%BASE_URL%apple-icon-114x114.png" />
-    <link rel="apple-touch-icon" sizes="120x120" href="%BASE_URL%apple-icon-120x120.png" />
-    <link rel="apple-touch-icon" sizes="144x144" href="%BASE_URL%apple-icon-144x144.png" />
-    <link rel="apple-touch-icon" sizes="152x152" href="%BASE_URL%apple-icon-152x152.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="%BASE_URL%apple-icon-180x180.png" />
     <link rel="icon" type="image/png" sizes="192x192" href="%BASE_URL%android-icon-192x192.png?v=3" />
     <link rel="icon" type="image/png" sizes="96x96" href="%BASE_URL%favicon-96x96.png?v=3" />
@@ -35,8 +27,150 @@
     <meta name="theme-color" content="#ffffff" />
   </head>
   <body class="bg-white">
-    <div id="root"></div>
+    <section class="min-h-screen bg-white px-4 pb-10 pt-2 text-black sm:pb-14 sm:pt-3 font-body">
+      <div id="register-shell" class="mx-auto w-full max-w-md">
+        <a
+          href="%BASE_URL%"
+          aria-label="Axichat home"
+          class="mx-auto mb-16 flex w-fit items-center justify-center gap-3 px-4 py-3 text-black no-underline transition hover:text-black/75 sm:mb-20"
+        >
+          <img src="%BASE_URL%images/brand/axichat_logo_black.png" alt="" class="h-11 w-11" />
+          <span class="text-xl font-semibold tracking-[0.01em]">Axichat</span>
+        </a>
+
+        <div id="register-heading" hidden>
+          <h1 id="register-title" class="font-display text-3xl font-semibold tracking-tight text-black"></h1>
+          <div id="register-description" class="mt-2 text-sm leading-relaxed text-black/65"></div>
+        </div>
+
+        <div class="mt-6">
+          <div id="signup-view">
+            <form id="signup-form" novalidate>
+              <div id="config-error" hidden class="mb-5 rounded-xl border border-amber-300/70 bg-amber-50 px-4 py-3 text-sm text-amber-900"></div>
+
+              <label class="block text-sm font-semibold text-black" for="signup-localpart">Username</label>
+              <div
+                id="signup-localpart-group"
+                class="mt-2 flex squircle-control overflow-hidden border bg-white transition focus-within:border-black focus-within:ring-2 focus-within:ring-black/15 border-black/15"
+              >
+                <input
+                  id="signup-localpart"
+                  autocomplete="username"
+                  maxlength="20"
+                  required
+                  class="min-w-0 flex-1 bg-transparent px-3 py-2.5 text-sm text-black outline-none disabled:bg-black/[0.03]"
+                />
+                <span class="flex items-center border-l border-black/10 bg-black/[0.03] px-3 text-sm font-semibold text-black/65">
+                  <span class="username-shimmer" id="signup-domain">@axi.im</span>
+                </span>
+              </div>
+              <p class="mt-2 text-xs text-black/55">Case insensitive</p>
+              <p id="signup-localpart-error" hidden class="mt-2 text-sm text-rose-700"></p>
+
+              <label class="mt-5 block text-sm font-semibold text-black" for="signup-password">Password</label>
+              <input
+                id="signup-password"
+                type="password"
+                autocomplete="new-password"
+                maxlength="64"
+                required
+                class="mt-2 w-full squircle-control border bg-white px-3 py-2.5 text-sm text-black outline-none transition focus:border-black focus:ring-2 focus:ring-black/15 disabled:bg-black/[0.03] border-black/15"
+              />
+              <p id="signup-password-error" hidden class="mt-2 text-sm text-rose-700"></p>
+
+              <label class="mt-5 block text-sm font-semibold text-black" for="signup-password-confirm">Confirm password</label>
+              <input
+                id="signup-password-confirm"
+                type="password"
+                autocomplete="new-password"
+                maxlength="64"
+                required
+                class="mt-2 w-full squircle-control border bg-white px-3 py-2.5 text-sm text-black outline-none transition focus:border-black focus:ring-2 focus:ring-black/15 disabled:bg-black/[0.03] border-black/15"
+              />
+              <p id="signup-password-confirm-error" hidden class="mt-2 text-sm text-rose-700"></p>
+
+              <div class="mt-4">
+                <div class="flex items-center justify-between text-xs">
+                  <span class="font-semibold text-black/55">Password strength</span>
+                  <span id="strength-label" class="font-semibold text-rose-600">None</span>
+                </div>
+                <div class="mt-2 h-2 w-full overflow-hidden rounded-full bg-black/[0.06]">
+                  <div id="strength-bar" class="h-full rounded-full transition-[width,background-color] duration-300 bg-rose-600" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <div id="risk-notice" hidden class="mt-4 rounded-xl border border-black/10 bg-black/[0.02] px-4 py-3">
+                <div id="breach-block" hidden class="mb-3">
+                  <p class="text-sm text-rose-700">
+                    This password has been found in a hacked database.
+                    <button
+                      type="button"
+                      id="privacy-toggle"
+                      aria-expanded="false"
+                      aria-controls="breach-privacy-note"
+                      aria-label="How this check protects your password"
+                      class="inline-flex h-4 w-4 translate-y-[2.5px] text-black/45 transition hover:text-black focus:outline-none focus:ring-2 focus:ring-black/25"
+                    >
+                      <svg viewBox="0 0 16 16" fill="none" class="h-4 w-4" aria-hidden="true">
+                        <circle cx="8" cy="8" r="6.25" stroke="currentColor" stroke-width="1.5" />
+                        <path d="M8 7.25v3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                        <circle cx="8" cy="4.75" r="0.9" fill="currentColor" />
+                      </svg>
+                    </button>
+                  </p>
+                  <p id="breach-privacy-note" hidden class="mt-2 text-xs leading-relaxed text-black/65">
+                    Your password never leaves this page. The check sends only the first 5 characters of its scrambled
+                    fingerprint (hash) to Have I Been Pwned, which is not enough to reveal the password itself.
+                    <a
+                      href="https://www.troyhunt.com/understanding-have-i-been-pwneds-use-of-sha-1-and-k-anonymity/"
+                      target="_blank"
+                      rel="noreferrer"
+                      class="underline underline-offset-4"
+                    >
+                      How it works
+                    </a>
+                  </p>
+                </div>
+                <label class="flex items-start gap-3">
+                  <input id="risk-checkbox" type="checkbox" class="mt-0.5 h-4 w-4 shrink-0 accent-black" />
+                  <span>
+                    <span class="block text-sm font-semibold text-black">I understand the risk</span>
+                    <span id="risk-sublabel" class="mt-0.5 block text-sm leading-relaxed text-black/65">
+                      Allow this password even though it is considered weak.
+                    </span>
+                  </span>
+                </label>
+                <p id="signup-risk-error" hidden class="mt-2 text-sm text-rose-700"></p>
+              </div>
+
+              <div id="turnstile-wrap" hidden class="mt-5">
+                <div id="turnstile-container" class="min-h-[65px]" aria-label="Verification challenge"></div>
+              </div>
+              <p id="signup-turnstile-error" hidden class="mt-2 text-sm text-rose-700"></p>
+              <p id="signup-error" hidden class="mt-2 text-sm text-rose-700"></p>
+
+              <button
+                type="submit"
+                id="signup-submit"
+                class="mt-6 inline-flex w-full items-center justify-center gap-2 squircle-control border border-black bg-black px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-black/85 disabled:cursor-not-allowed disabled:border-black/20 disabled:bg-black/20"
+              >
+                <span id="signup-submit-label" class="inline-flex min-w-[9.5rem] items-center justify-center gap-2 whitespace-nowrap">Create account</span>
+              </button>
+
+              <p class="mt-4 text-xs leading-relaxed text-black/55">
+                By creating an account, you agree to the
+                <a class="underline underline-offset-4" href="%BASE_URL%terms/">Terms</a>
+                and
+                <a class="underline underline-offset-4" href="%BASE_URL%privacy/">Privacy Policy</a>.
+              </p>
+            </form>
+          </div>
+
+          <div id="alt-view" hidden></div>
+        </div>
+      </div>
+    </section>
     <script src="%BASE_URL%config.js"></script>
-    <script type="module" src="/src/main.tsx"></script>
+    <script type="module" src="/src/register.ts"></script>
   </body>
 </html>

@@ -35,8 +35,668 @@
     <meta name="theme-color" content="#ffffff" />
   </head>
   <body class="bg-white">
-    <div id="root"></div>
-    <script src="%BASE_URL%config.js"></script>
-    <script type="module" src="/src/main.tsx"></script>
+    <div class="relative min-h-screen bg-white text-black font-body">
+      <div class="pointer-events-none absolute inset-0 -z-10">
+        <div class="absolute inset-0 surface-grid opacity-60"></div>
+      </div>
+
+      <header class="sticky top-0 z-50 border-b border-black/10 bg-white/90 backdrop-blur">
+        <div class="mx-auto w-full max-w-[84rem] px-6">
+          <div class="flex h-16 items-center justify-between gap-3">
+            <a href="#top" class="flex min-w-0 items-center gap-3">
+              <img src="%BASE_URL%images/brand/axichat_logo_black.png" alt="Axichat" class="brand-logo h-14 w-14 shrink-0" />
+              <div class="truncate text-2xl leading-none tracking-[0.015em]" style="font-family: Gabarito, ui-sans-serif, system-ui; font-weight: 500">
+                Axichat
+              </div>
+            </a>
+
+            <nav class="hidden items-center gap-5 lg:flex">
+              <a href="%BASE_URL%downloads/index.html" class="text-sm text-black/70 transition hover:text-black">Downloads</a>
+              <a href="#features" class="text-sm text-black/70 transition hover:text-black">Features</a>
+              <a href="#faq" class="text-sm text-black/70 transition hover:text-black">FAQ</a>
+              <a href="#about" class="text-sm text-black/70 transition hover:text-black">Roadmap</a>
+              <a href="#contact" class="text-sm text-black/70 transition hover:text-black">Contact</a>
+            </nav>
+
+            <div class="flex items-center gap-2">
+              <a
+                href="https://github.com/axichat/axichat"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Open Axichat on GitHub"
+                class="inline-flex h-10 w-10 items-center justify-center squircle-control border border-black/15 bg-white text-black transition hover:bg-black/[0.03] focus:outline-none focus:ring-2 focus:ring-black/25"
+              >
+                <svg viewBox="0 0 24 24" fill="none" class="h-5 w-5" aria-hidden="true">
+                  <path
+                    d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.207 11.387.6.113.793-.262.793-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.089-.745.083-.73.083-.73 1.205.085 1.84 1.236 1.84 1.236 1.07 1.835 2.807 1.305 3.492.998.108-.775.418-1.305.762-1.605-2.665-.303-5.466-1.332-5.466-5.93 0-1.31.468-2.38 1.235-3.22-.123-.303-.535-1.523.117-3.176 0 0 1.008-.322 3.3 1.23a11.5 11.5 0 0 1 3.004-.404c1.02.005 2.047.138 3.004.404 2.29-1.552 3.296-1.23 3.296-1.23.653 1.653.241 2.873.118 3.176.77.84 1.234 1.91 1.234 3.22 0 4.61-2.807 5.625-5.479 5.922.43.37.823 1.096.823 2.21 0 1.594-.015 2.88-.015 3.273 0 .318.19.694.8.576C20.565 21.796 24 17.298 24 12 24 5.37 18.63 0 12 0z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </a>
+
+              <a
+                href="%BASE_URL%register/"
+                aria-label="Register an axi.im account"
+                class="hidden shrink-0 border border-black bg-black text-[10px] text-white hover:bg-black/85 lg:inline-flex lg:text-xs flex-wrap items-center justify-center gap-x-1 squircle-control px-4 py-2 font-semibold transition focus:outline-none focus:ring-2 focus:ring-black/25"
+              >
+                <span>Register</span>
+                <span class="username-shimmer">@axi.im</span>
+              </a>
+
+              <button
+                type="button"
+                id="menu-toggle"
+                aria-expanded="false"
+                aria-label="Open menu"
+                class="inline-flex items-center gap-2 squircle-control border border-black/15 bg-white px-3 py-2 text-sm font-semibold text-black transition hover:bg-black/[0.03] focus:outline-none focus:ring-2 focus:ring-black/25 lg:hidden"
+              >
+                <span>Menu</span>
+                <svg id="menu-icon-closed" viewBox="0 0 24 24" fill="none" class="h-4 w-4" aria-hidden="true">
+                  <path d="M4.5 7.25h15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                  <path d="M4.5 12h15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                  <path d="M4.5 16.75h15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                </svg>
+                <svg id="menu-icon-open" viewBox="0 0 24 24" fill="none" class="hidden h-4 w-4" aria-hidden="true">
+                  <path d="M6 6 18 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                  <path d="M18 6 6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div id="mobile-menu" class="overflow-hidden transition-[max-height,opacity,padding] duration-200 lg:hidden max-h-0 py-0 opacity-0">
+            <nav class="flex flex-col gap-1">
+              <a href="%BASE_URL%downloads/index.html" class="squircle-control px-3 py-2 text-sm text-black/75 transition hover:bg-black/[0.03] hover:text-black">Downloads</a>
+              <a href="#features" class="squircle-control px-3 py-2 text-sm text-black/75 transition hover:bg-black/[0.03] hover:text-black">Features</a>
+              <a href="#faq" class="squircle-control px-3 py-2 text-sm text-black/75 transition hover:bg-black/[0.03] hover:text-black">FAQ</a>
+              <a href="#about" class="squircle-control px-3 py-2 text-sm text-black/75 transition hover:bg-black/[0.03] hover:text-black">Roadmap</a>
+              <a href="#contact" class="squircle-control px-3 py-2 text-sm text-black/75 transition hover:bg-black/[0.03] hover:text-black">Contact</a>
+              <a
+                href="%BASE_URL%register/"
+                aria-label="Register an axi.im account"
+                class="mt-2 w-fit border border-black bg-black text-xs text-white hover:bg-black/85 inline-flex flex-wrap items-center justify-center gap-x-1 squircle-control px-4 py-2 font-semibold transition focus:outline-none focus:ring-2 focus:ring-black/25"
+              >
+                <span>Register</span>
+                <span class="username-shimmer">@axi.im</span>
+              </a>
+            </nav>
+          </div>
+        </div>
+      </header>
+
+      <main id="top">
+        <section class="border-b border-black/10 py-12 sm:py-20 lg:py-40">
+          <div class="mx-auto w-full max-w-[84rem] px-6">
+            <div class="grid items-start gap-y-7 gap-x-6 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:items-center lg:gap-y-10 lg:gap-x-[clamp(0.55rem,1.9vw,1.9rem)] xl:gap-x-[clamp(0.9rem,2.3vw,2.5rem)]">
+              <div class="mx-auto max-w-2xl text-center lg:mx-0 lg:text-left">
+                <div class="mx-auto mb-5 inline-flex flex-wrap items-center gap-x-3 gap-y-1 rounded-2xl border border-black/15 bg-white px-4 py-2.5 text-black/65 lg:mx-0">
+                  <span id="latest-version" class="font-mono text-base font-semibold text-black sm:text-lg">loading...</span>
+                  <span id="latest-release-date" class="text-xs text-black/55" hidden></span>
+                </div>
+
+                <h1 class="text-balance text-3xl font-semibold tracking-tight sm:text-4xl lg:text-5xl font-display">
+                  Replace your email, messenger, and calendar apps with Axichat
+                </h1>
+
+                <p
+                  class="mx-auto mt-10 max-w-xl sm:mt-12 lg:mx-0 text-balance text-2xl font-display font-semibold tracking-tight text-black sm:text-3xl"
+                  aria-label="Get yourname at axi.im now"
+                >
+                  <span class="text-black/80">Get </span><span class="inline-flex items-baseline gap-0"><span class="text-black/80">yourname</span><span class="username-shimmer-hero">@axi.im</span></span><span class="text-black/80"> now</span>
+                </p>
+
+                <p class="mx-auto mt-7 max-w-xl text-sm leading-relaxed text-black/60 lg:mx-0">
+                  Axichat is currently under the radar, so you must create your account here:
+                </p>
+                <a
+                  href="%BASE_URL%register/"
+                  class="mt-3 inline-flex items-center justify-center squircle-control border border-black bg-black px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-black/85 focus:outline-none focus:ring-2 focus:ring-black/25"
+                >
+                  Sign up
+                </a>
+                <p class="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-black/60 lg:mx-0">Then download the app:</p>
+
+                <div
+                  id="hero-downloads"
+                  class="mx-auto mt-3 inline-grid grid-cols-1 items-center justify-items-center gap-3 sm:grid-cols-2 lg:mx-0 lg:justify-items-start"
+                >
+                  <a
+                    href="https://play.google.com/store/apps/details?id=im.axi.axichat"
+                    target="_blank"
+                    rel="noreferrer"
+                    class="inline-block max-w-full transition focus:outline-none focus:ring-2 focus:ring-black/25"
+                    style="width: 209px"
+                  >
+                    <img src="%BASE_URL%images/platforms/google-play-badge.svg" alt="Get it on Google Play" class="block h-auto w-full max-w-full" />
+                  </a>
+
+                  <a
+                    href="https://github.com/axichat/axichat/releases/latest/download/axichat-windows-setup.exe"
+                    class="group relative box-border flex max-w-full self-center items-center justify-between gap-2 squircle-control border px-3.5 transition hover:brightness-95 focus:outline-none focus:ring-2 focus:ring-black/25"
+                    style="background-color: #2563eb; border-color: #2563eb; width: 209px; height: 62px"
+                  >
+                    <div class="flex min-w-0 items-center gap-2 text-left">
+                      <div class="grid h-8 w-8 place-items-center rounded-md border" style="border-color: rgba(255, 255, 255, 0.64); background-color: rgba(255, 255, 255, 0.96)">
+                        <img src="%BASE_URL%images/platforms/windows.svg" alt="" class="block object-contain h-[26px] w-[26px]" />
+                      </div>
+                      <div class="leading-tight text-left">
+                        <div class="whitespace-nowrap text-xs font-semibold" style="color: #ffffff">Windows</div>
+                        <div class="whitespace-nowrap text-[10px]" style="color: rgba(255, 255, 255, 0.75)">Installer .exe</div>
+                      </div>
+                    </div>
+                    <svg viewBox="0 0 24 24" fill="none" class="h-3.5 w-3.5 shrink-0 opacity-90 transition group-hover:opacity-100" aria-hidden="true">
+                      <path d="M12 4.5v9.75" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" />
+                      <path d="m8.75 11.5 3.25 3.25 3.25-3.25" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" />
+                      <path d="M5.5 18.5h13" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" />
+                    </svg>
+                  </a>
+
+                  <a
+                    href="https://github.com/axichat/axichat/releases/latest/download/axichat-x86_64.AppImage"
+                    class="group relative box-border flex max-w-full self-center items-center justify-between gap-2 squircle-control border px-3.5 transition hover:brightness-95 focus:outline-none focus:ring-2 focus:ring-black/25"
+                    style="background-color: #dc143c; border-color: #dc143c; width: 209px; height: 62px"
+                  >
+                    <div class="flex min-w-0 items-center gap-2 text-left">
+                      <div class="grid h-8 w-8 place-items-center rounded-md border" style="border-color: rgba(255, 255, 255, 0.58); background-color: rgba(255, 255, 255, 0.96)">
+                        <img src="%BASE_URL%images/platforms/linux.svg" alt="" class="block object-contain h-[26px] w-[26px]" />
+                      </div>
+                      <div class="leading-tight text-left">
+                        <div class="whitespace-nowrap text-xs font-semibold" style="color: #ffffff">Linux</div>
+                        <div class="whitespace-nowrap text-[10px]" style="color: rgba(255, 255, 255, 0.75)">AppImage</div>
+                      </div>
+                    </div>
+                    <svg viewBox="0 0 24 24" fill="none" class="h-3.5 w-3.5 shrink-0 opacity-90 transition group-hover:opacity-100" aria-hidden="true">
+                      <path d="M12 4.5v9.75" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" />
+                      <path d="m8.75 11.5 3.25 3.25 3.25-3.25" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" />
+                      <path d="M5.5 18.5h13" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" />
+                    </svg>
+                  </a>
+
+                  <div
+                    aria-disabled="true"
+                    class="relative box-border flex max-w-full self-center items-center justify-between gap-2 squircle-control border px-3.5 cursor-default"
+                    style="background-color: #c0c0c0; border-color: #c0c0c0; width: 209px; height: 62px"
+                  >
+                    <div class="flex min-w-0 items-center gap-2 text-left">
+                      <div class="grid h-8 w-8 place-items-center rounded-md border" style="border-color: rgba(17, 17, 17, 0.14); background-color: rgba(255, 255, 255, 0.92)">
+                        <img src="%BASE_URL%images/platforms/apple.svg" alt="" class="block object-contain h-[26px] w-[26px]" />
+                      </div>
+                      <div class="leading-tight text-left">
+                        <div class="whitespace-nowrap text-xs font-semibold" style="color: #111111">iOS/macOS</div>
+                        <div class="whitespace-nowrap text-[10px]" style="color: rgba(17, 17, 17, 0.72)">Coming soon</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mt-3 text-xs text-black/55 lg:text-left">You can verify checksums on GitHub Releases.</div>
+              </div>
+
+              <div class="mx-auto w-full max-w-[44rem] lg:mx-0 lg:max-w-none">
+                <div class="relative w-full overflow-hidden rounded-3xl shadow-[0_24px_60px_rgba(0,0,0,0.14)]">
+                  <video
+                    id="hero-video"
+                    class="block h-auto w-full"
+                    autoplay
+                    loop
+                    muted
+                    playsinline
+                    preload="metadata"
+                    poster="%BASE_URL%videos/hero_poster.jpg"
+                  >
+                    <source src="%BASE_URL%videos/hero.mp4" type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                  <button
+                    type="button"
+                    id="hero-video-play"
+                    hidden
+                    class="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 squircle-control border border-black bg-white px-6 py-3 text-sm font-semibold text-black"
+                  >
+                    Play Video
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="features" class="py-28 sm:py-40">
+          <div class="mx-auto w-full max-w-[84rem] px-6">
+            <div class="space-y-28">
+              <article class="grid items-start gap-12 pb-28 last:pb-0 lg:gap-8 xl:gap-10 lg:grid-cols-[minmax(0,18rem)_minmax(0,1fr)_minmax(0,18rem)] xl:grid-cols-[minmax(0,21rem)_minmax(0,1fr)_minmax(0,21rem)] 2xl:grid-cols-[minmax(0,24rem)_minmax(0,1fr)_minmax(0,24rem)] lg:items-center">
+                <div class="grid grid-cols-2 gap-4 sm:gap-6 lg:hidden">
+                  <div class="w-full aspect-[9/16]">
+                    <picture>
+                      <source srcset="%BASE_URL%images/screenshots/mobile/02.webp" type="image/webp" />
+                      <img src="%BASE_URL%images/screenshots/mobile/02.png" alt="Axichat mobile screenshot 2 showing unified inbox flow" class="h-full w-full object-contain" loading="lazy" />
+                    </picture>
+                  </div>
+                  <div class="w-full aspect-[9/16]">
+                    <picture>
+                      <source srcset="%BASE_URL%images/screenshots/mobile/01.webp" type="image/webp" />
+                      <img src="%BASE_URL%images/screenshots/mobile/01.png" alt="Axichat mobile screenshot 1 showing unified inbox flow" class="h-full w-full object-contain" loading="lazy" />
+                    </picture>
+                  </div>
+                </div>
+
+                <div class="hidden w-full max-w-full justify-self-start transition-transform duration-300 lg:block lg:-translate-x-2 xl:-translate-x-8 2xl:-translate-x-12 lg:-translate-y-2">
+                  <div class="w-full aspect-[9/16]">
+                    <picture>
+                      <source srcset="%BASE_URL%images/screenshots/mobile/02.webp" type="image/webp" />
+                      <img src="%BASE_URL%images/screenshots/mobile/02.png" alt="Axichat mobile screenshot 2 showing unified inbox flow" class="h-full w-full object-contain" loading="lazy" />
+                    </picture>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 class="text-4xl sm:text-5xl font-display font-semibold tracking-tight text-black">Breeze through email like you're texting</h3>
+                  <p class="mt-4 text-sm leading-relaxed text-black/70">Conversational email turns your traditional email threads into easy chats.</p>
+                  <ul class="mt-5 list-disc space-y-2 pl-5 text-sm text-black/75 marker:text-black/70">
+                    <li>Unified inbox for chat + email side by side</li>
+                    <li>Group chats and per-conversation settings</li>
+                    <li>Easy forwarding and replying</li>
+                    <li>Emoji reactions</li>
+                    <li>Delivery and read receipts with typing indicators</li>
+                    <li>Stream management with automatic reconnect to keep messages from dropping</li>
+                    <li>Message drafts, starred items, and pinned messages</li>
+                    <li>Rich attachments and inline previews</li>
+                    <li>Fast search across chats, mail, and calendar</li>
+                    <li>First-party push notifications and offline sync</li>
+                  </ul>
+                </div>
+
+                <div class="hidden w-full max-w-full justify-self-end transition-transform duration-300 lg:block lg:translate-x-2 xl:translate-x-8 2xl:translate-x-12 lg:translate-y-3">
+                  <div class="w-full aspect-[9/16]">
+                    <picture>
+                      <source srcset="%BASE_URL%images/screenshots/mobile/01.webp" type="image/webp" />
+                      <img src="%BASE_URL%images/screenshots/mobile/01.png" alt="Axichat mobile screenshot 1 showing unified inbox flow" class="h-full w-full object-contain" loading="lazy" />
+                    </picture>
+                  </div>
+                </div>
+              </article>
+
+              <article class="grid items-start gap-12 pb-28 last:pb-0 lg:gap-8 xl:gap-10 lg:grid-cols-[minmax(0,18rem)_minmax(0,1fr)_minmax(0,18rem)] xl:grid-cols-[minmax(0,21rem)_minmax(0,1fr)_minmax(0,21rem)] 2xl:grid-cols-[minmax(0,24rem)_minmax(0,1fr)_minmax(0,24rem)] lg:items-center">
+                <div class="grid grid-cols-2 gap-4 sm:gap-6 lg:hidden">
+                  <div class="w-full aspect-[9/16]">
+                    <picture>
+                      <source srcset="%BASE_URL%images/screenshots/mobile/05.webp" type="image/webp" />
+                      <img src="%BASE_URL%images/screenshots/mobile/05.png" alt="Axichat mobile screenshot 5 showing calendar workflow" class="h-full w-full object-contain" loading="lazy" />
+                    </picture>
+                  </div>
+                  <div class="w-full aspect-[9/16]">
+                    <picture>
+                      <source srcset="%BASE_URL%images/screenshots/mobile/04.webp" type="image/webp" />
+                      <img src="%BASE_URL%images/screenshots/mobile/04.png" alt="Axichat mobile screenshot 4 showing calendar workflow" class="h-full w-full object-contain" loading="lazy" />
+                    </picture>
+                  </div>
+                </div>
+
+                <div class="hidden w-full max-w-full justify-self-start transition-transform duration-300 lg:block lg:-translate-x-2 xl:-translate-x-8 2xl:-translate-x-12 lg:translate-y-2">
+                  <div class="w-full aspect-[9/16]">
+                    <picture>
+                      <source srcset="%BASE_URL%images/screenshots/mobile/05.webp" type="image/webp" />
+                      <img src="%BASE_URL%images/screenshots/mobile/05.png" alt="Axichat mobile screenshot 5 showing calendar workflow" class="h-full w-full object-contain" loading="lazy" />
+                    </picture>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 class="text-4xl sm:text-5xl font-display font-semibold tracking-tight text-black">Schedule your weeks in minutes</h3>
+                  <p class="mt-4 text-sm leading-relaxed text-black/70">Forget less, focus more, and keep events tied to the conversations where work actually happens.</p>
+                  <ul class="mt-5 list-disc space-y-2 pl-5 text-sm text-black/75 marker:text-black/70">
+                    <li>Drag-and-drop event editing</li>
+                    <li>Create tasks and events using natural language (without AI)</li>
+                    <li>Collaborative calendars</li>
+                    <li>One-tap add-to-calendar from simple text messages</li>
+                    <li>Tasks, reminders, and calendar in one view</li>
+                    <li>Calendar export/import for backups and migrations</li>
+                    <li>Critical paths and agenda focus to surface what's next</li>
+                  </ul>
+                </div>
+
+                <div class="hidden w-full max-w-full justify-self-end transition-transform duration-300 lg:block lg:translate-x-2 xl:translate-x-8 2xl:translate-x-12 lg:-translate-y-1">
+                  <div class="w-full aspect-[9/16]">
+                    <picture>
+                      <source srcset="%BASE_URL%images/screenshots/mobile/04.webp" type="image/webp" />
+                      <img src="%BASE_URL%images/screenshots/mobile/04.png" alt="Axichat mobile screenshot 4 showing calendar workflow" class="h-full w-full object-contain" loading="lazy" />
+                    </picture>
+                  </div>
+                </div>
+              </article>
+
+              <article class="grid items-start gap-12 pb-28 last:pb-0 lg:gap-8 xl:gap-10 lg:grid-cols-[minmax(0,18rem)_minmax(0,1fr)_minmax(0,18rem)] xl:grid-cols-[minmax(0,21rem)_minmax(0,1fr)_minmax(0,21rem)] 2xl:grid-cols-[minmax(0,24rem)_minmax(0,1fr)_minmax(0,24rem)] lg:items-center">
+                <div class="grid grid-cols-2 gap-4 sm:gap-6 lg:hidden">
+                  <div class="w-full aspect-[9/16]">
+                    <picture>
+                      <source srcset="%BASE_URL%images/screenshots/mobile/06.webp" type="image/webp" />
+                      <img src="%BASE_URL%images/screenshots/mobile/06.png" alt="Axichat mobile screenshot 6 showing mobile parity experience" class="h-full w-full object-contain" loading="lazy" />
+                    </picture>
+                  </div>
+                  <div class="w-full aspect-[9/16]">
+                    <picture>
+                      <source srcset="%BASE_URL%images/screenshots/mobile/03.webp" type="image/webp" />
+                      <img src="%BASE_URL%images/screenshots/mobile/03.png" alt="Axichat mobile screenshot 3 showing mobile parity experience" class="h-full w-full object-contain" loading="lazy" />
+                    </picture>
+                  </div>
+                </div>
+
+                <div class="hidden w-full max-w-full justify-self-start transition-transform duration-300 lg:block lg:-translate-x-2 xl:-translate-x-8 2xl:-translate-x-12 lg:-translate-y-2">
+                  <div class="w-full aspect-[9/16]">
+                    <picture>
+                      <source srcset="%BASE_URL%images/screenshots/mobile/06.webp" type="image/webp" />
+                      <img src="%BASE_URL%images/screenshots/mobile/06.png" alt="Axichat mobile screenshot 6 showing mobile parity experience" class="h-full w-full object-contain" loading="lazy" />
+                    </picture>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 class="text-4xl sm:text-5xl font-display font-semibold tracking-tight text-black">Reach anyone, even before they switch to Axichat</h3>
+                  <p class="mt-4 text-sm leading-relaxed text-black/70">Use Axichat just like you would a normal email client.</p>
+                  <ul class="mt-5 list-disc space-y-2 pl-5 text-sm text-black/75 marker:text-black/70">
+                    <li>Built on open, federated protocols</li>
+                    <li>Accessibility-friendly modals and flows (keyboard/touch/reader aware)</li>
+                    <li>Translated UI (English, Spanish, German, French, Chinese)</li>
+                    <li>Sync across all your devices (Android, Linux, Windows)</li>
+                    <li>Desktop + mobile parity with keyboard shortcuts and touch affordances</li>
+                    <li>Works without Google/Firebase; pure XMPP + SMTP/IMAP core</li>
+                  </ul>
+                </div>
+
+                <div class="hidden w-full max-w-full justify-self-end transition-transform duration-300 lg:block lg:translate-x-2 xl:translate-x-8 2xl:translate-x-12 lg:translate-y-3">
+                  <div class="w-full aspect-[9/16]">
+                    <picture>
+                      <source srcset="%BASE_URL%images/screenshots/mobile/03.webp" type="image/webp" />
+                      <img src="%BASE_URL%images/screenshots/mobile/03.png" alt="Axichat mobile screenshot 3 showing mobile parity experience" class="h-full w-full object-contain" loading="lazy" />
+                    </picture>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section id="faq" class="border-y border-black/10 py-28 sm:py-40">
+          <div class="mx-auto w-full max-w-[84rem] px-6">
+            <div class="mb-10">
+              <h2 class="mt-3 text-3xl font-semibold tracking-tight text-black sm:text-4xl font-display">FAQ</h2>
+            </div>
+            <div class="flex flex-col gap-4">
+              <div class="scroll-mt-24 rounded-2xl border border-black/10 bg-white px-5 py-4 transition-shadow">
+                <div class="text-sm font-semibold text-black">Does Axichat provide real email addresses @axi.im?</div>
+                <div class="mt-3 text-sm leading-relaxed text-black/70">
+                  <p>
+                    Yes, use it as you would any other email address, including to sign up for other online accounts. Your chat
+                    address (JID) and email address are exactly the same.
+                  </p>
+                </div>
+              </div>
+
+              <div class="scroll-mt-24 rounded-2xl border border-black/10 bg-white px-5 py-4 transition-shadow">
+                <div class="text-sm font-semibold text-black">Do I need an existing email address to sign up?</div>
+                <div class="mt-3 text-sm leading-relaxed text-black/70">
+                  <p>
+                    No. Create your account on this website with a username and password, then add a recovery method if you have
+                    one available.
+                  </p>
+                </div>
+              </div>
+
+              <div class="scroll-mt-24 rounded-2xl border border-black/10 bg-white px-5 py-4 transition-shadow">
+                <div class="text-sm font-semibold text-black">Can I still receive email from my previous address?</div>
+                <div class="mt-3 text-sm leading-relaxed text-black/70">
+                  <p>
+                    Yes, forward emails from your existing provider to your new "@axi.im" address. If you use Gmail or
+                    Outlook, here are some quick links:
+                    <a href="https://support.google.com/mail/answer/10957" target="_blank" rel="noreferrer" class="underline underline-offset-4">Gmail</a>,
+                    <a
+                      href="https://support.microsoft.com/en-us/office/turn-on-automatic-forwarding-in-outlook-7f2670a1-7fff-4475-8a3c-5822d63b0c8e"
+                      target="_blank"
+                      rel="noreferrer"
+                      class="underline underline-offset-4"
+                      >Outlook</a
+                    >.
+                  </p>
+                </div>
+              </div>
+
+              <div class="scroll-mt-24 rounded-2xl border border-black/10 bg-white px-5 py-4 transition-shadow">
+                <div class="text-sm font-semibold text-black">Is it FOSS?</div>
+                <div class="mt-3 text-sm leading-relaxed text-black/70">
+                  <p>
+                    Yes, Axichat is free and open source software as you can see on
+                    <a href="https://github.com/axichat/axichat" target="_blank" rel="noreferrer" class="underline underline-offset-4">GitHub</a>
+                    and
+                    <a href="https://gitlab.com/axichat" target="_blank" rel="noreferrer" class="underline underline-offset-4">GitLab</a>.
+                  </p>
+                </div>
+              </div>
+
+              <div class="scroll-mt-24 rounded-2xl border border-black/10 bg-white px-5 py-4 transition-shadow">
+                <div class="text-sm font-semibold text-black">Can I self-host?</div>
+                <div class="mt-3 text-sm leading-relaxed text-black/70">
+                  <p>
+                    Yes, read the
+                    <a href="https://github.com/axichat/selfhost" target="_blank" rel="noreferrer" class="underline underline-offset-4">guide</a>
+                    on using your own server with the Axichat client.
+                  </p>
+                </div>
+              </div>
+
+              <div class="scroll-mt-24 rounded-2xl border border-black/10 bg-white px-5 py-4 transition-shadow">
+                <div class="text-sm font-semibold text-black">If Axichat uses XMPP, is it federated?</div>
+                <div class="mt-3 text-sm leading-relaxed text-black/70">
+                  <p>Yes, XMPP is used for messaging other Axichat users and anyone with a valid JID.</p>
+                </div>
+              </div>
+
+              <div class="scroll-mt-24 rounded-2xl border border-black/10 bg-white px-5 py-4 transition-shadow">
+                <div class="text-sm font-semibold text-black">How does Axichat compare to Spike?</div>
+                <div class="mt-3 text-sm leading-relaxed text-black/70">
+                  <p>Both Spike and Axichat are tremendous improvements over traditional email clients. However,</p>
+                  <ul class="mt-3 list-disc space-y-2 pl-5">
+                    <li>
+                      Axichat provides a richer IM experience by using a combination of chat (XMPP) and email (SMTP) protocols.
+                      Spike limits itself to SMTP.
+                    </li>
+                    <li>
+                      Spike is more targeted to business teams, whereas Axichat works just as well for individual, family, and
+                      business use cases.
+                    </li>
+                    <li>Axichat is open source, so you can see our code.</li>
+                    <li>
+                      Axichat was made with Flutter, which provides significantly better UI and performance on all
+                      platforms.
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div id="unregister" class="scroll-mt-24 rounded-2xl border border-black/10 bg-white px-5 py-4 transition-shadow">
+                <div class="text-sm font-semibold text-black">What if I don't like Axichat?</div>
+                <div class="mt-3 text-sm leading-relaxed text-black/70">
+                  <p>
+                    <a href="https://github.com/axichat/axichat/issues" target="_blank" rel="noreferrer" class="underline underline-offset-4">Request the features you want</a>
+                    or you can export all your messages and contacts.
+                  </p>
+                  <p class="mt-3">
+                    If you want to unregister entirely, open your profile page in the app and go to <strong>Account</strong>
+                    &gt; <strong>Unregister</strong>.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="about" class="py-28 sm:py-40">
+          <div class="mx-auto w-full max-w-[84rem] px-6">
+            <div class="mb-10">
+              <h2 class="mt-3 text-3xl font-semibold tracking-tight text-black sm:text-4xl font-display">Roadmap</h2>
+            </div>
+
+            <div class="grid gap-4 md:grid-cols-2">
+              <article class="rounded-3xl border bg-white p-5 sm:p-6 border-emerald-300/60 shadow-[0_16px_42px_rgba(15,157,88,0.10)]">
+                <div class="mb-4">
+                  <h3 class="text-lg font-display font-semibold text-black">Completed</h3>
+                </div>
+                <div class="relative ml-2 space-y-3 border-l-2 border-emerald-800/40 pl-5">
+                  <div class="relative rounded-2xl border border-black/10 bg-white p-3">
+                    <span class="absolute -left-[27px] top-4 h-2.5 w-2.5 rounded-full bg-emerald-700 ring-4 ring-white"></span>
+                    <div class="mb-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-black/50">Jul 2024</div>
+                    <p class="text-sm leading-relaxed text-black/75">Basic chat: send messages, see who is online, and stay in touch</p>
+                  </div>
+                  <div class="relative rounded-2xl border border-black/10 bg-white p-3">
+                    <span class="absolute -left-[27px] top-4 h-2.5 w-2.5 rounded-full bg-emerald-700 ring-4 ring-white"></span>
+                    <div class="mb-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-black/50">Sep 2024</div>
+                    <p class="text-sm leading-relaxed text-black/75">Notifications and better message history when you come back online</p>
+                  </div>
+                  <div class="relative rounded-2xl border border-black/10 bg-white p-3">
+                    <span class="absolute -left-[27px] top-4 h-2.5 w-2.5 rounded-full bg-emerald-700 ring-4 ring-white"></span>
+                    <div class="mb-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-black/50">Oct 2025</div>
+                    <p class="text-sm leading-relaxed text-black/75">Axichat apps for Android, Linux, and Windows</p>
+                  </div>
+                  <div class="relative rounded-2xl border border-black/10 bg-white p-3">
+                    <span class="absolute -left-[27px] top-4 h-2.5 w-2.5 rounded-full bg-emerald-700 ring-4 ring-white"></span>
+                    <div class="mb-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-black/50">Nov 2025</div>
+                    <p class="text-sm leading-relaxed text-black/75">A built-in calendar and to-do list, with easy scheduling and planning</p>
+                  </div>
+                  <div class="relative rounded-2xl border border-black/10 bg-white p-3">
+                    <span class="absolute -left-[27px] top-4 h-2.5 w-2.5 rounded-full bg-emerald-700 ring-4 ring-white"></span>
+                    <div class="mb-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-black/50">Dec 2025</div>
+                    <p class="text-sm leading-relaxed text-black/75">Email built into Axichat</p>
+                  </div>
+                  <div class="relative rounded-2xl border border-black/10 bg-white p-3">
+                    <span class="absolute -left-[27px] top-4 h-2.5 w-2.5 rounded-full bg-emerald-700 ring-4 ring-white"></span>
+                    <div class="mb-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-black/50">Jan 2026</div>
+                    <p class="text-sm leading-relaxed text-black/75">Group chats, reactions, read receipts, and replies</p>
+                  </div>
+                  <div class="relative rounded-2xl border border-black/10 bg-white p-3">
+                    <span class="absolute -left-[27px] top-4 h-2.5 w-2.5 rounded-full bg-emerald-700 ring-4 ring-white"></span>
+                    <div class="mb-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-black/50">Feb 2026</div>
+                    <p class="text-sm leading-relaxed text-black/75">Sending photos, files, and other attachments in chats and email</p>
+                  </div>
+                </div>
+              </article>
+
+              <article class="rounded-3xl border bg-white p-5 sm:p-6 border-amber-400/50 shadow-[0_16px_42px_rgba(217,119,6,0.10)]">
+                <div class="mb-4">
+                  <h3 class="text-lg font-display font-semibold text-black">Upcoming</h3>
+                </div>
+                <div class="relative ml-2 space-y-3 border-l-2 border-amber-800/40 pl-5">
+                  <div class="relative rounded-2xl border border-black/10 bg-white p-3">
+                    <span class="absolute -left-[27px] top-4 h-2.5 w-2.5 rounded-full bg-amber-600 ring-4 ring-white"></span>
+                    <div class="mb-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-black/50">2026</div>
+                    <p class="text-sm leading-relaxed text-black/75">Voice and video calls</p>
+                  </div>
+                  <div class="relative rounded-2xl border border-black/10 bg-white p-3">
+                    <span class="absolute -left-[27px] top-4 h-2.5 w-2.5 rounded-full bg-amber-600 ring-4 ring-white"></span>
+                    <div class="mb-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-black/50">2026</div>
+                    <p class="text-sm leading-relaxed text-black/75">Use Axichat with your existing Gmail or Outlook account</p>
+                  </div>
+                </div>
+                <div class="mt-5">
+                  <a
+                    href="https://github.com/axichat/axichat/issues"
+                    target="_blank"
+                    rel="noreferrer"
+                    class="text-sm font-medium text-black/70 underline underline-offset-4 transition hover:text-black"
+                  >
+                    Feature requests
+                  </a>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section id="contact" class="border-t border-black/10 py-28 sm:py-40">
+          <div class="mx-auto w-full max-w-[84rem] px-6">
+            <div class="mb-10">
+              <h2 class="mt-3 text-3xl font-semibold tracking-tight text-black sm:text-4xl font-display">Contact</h2>
+              <p class="mt-3 max-w-2xl text-sm leading-relaxed text-black/70">
+                <span>Email: </span>
+                <a href="mailto:support@axi.chat" class="underline underline-offset-4">support@axi.chat</a>
+                <span>. For bugs and feature requests, use </span>
+                <a href="https://github.com/axichat/axichat/issues" target="_blank" rel="noreferrer" class="underline underline-offset-4">GitHub Issues</a>
+                <span>.</span>
+              </p>
+            </div>
+
+            <div class="inline-flex items-center gap-2 text-sm text-black/70">
+              <svg viewBox="0 0 24 24" fill="none" class="h-4 w-4" aria-hidden="true">
+                <path
+                  d="M23.955 13.257 20.732 2.66a.6.6 0 0 0-1.145 0l-2.81 8.64H7.223l-2.81-8.64a.6.6 0 0 0-1.145 0L.045 13.257a.6.6 0 0 0 .223.678L12 22.485l11.732-8.55a.6.6 0 0 0 .223-.678Z"
+                  fill="currentColor"
+                />
+              </svg>
+              <a href="https://gitlab.com/axichat/axichat" target="_blank" rel="noreferrer" class="underline underline-offset-4">https://gitlab.com/axichat/axichat</a>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="border-t border-black/10 py-12">
+        <div class="mx-auto w-full max-w-[84rem] px-6">
+          <div class="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
+            <div class="flex max-w-sm flex-col gap-2">
+              <div class="text-sm leading-relaxed text-black/65">Open-source chat, email, and calendar software from Axichat LLC.</div>
+              <div class="mt-2 text-xs text-black/60">© <span id="footer-year">2026</span> Axichat LLC</div>
+              <a href="%BASE_URL%LICENSE.txt" class="text-xs text-black/60 transition hover:text-black">AGPL-3.0</a>
+            </div>
+
+            <div class="grid gap-8 sm:grid-cols-3">
+              <div class="space-y-3">
+                <div class="flex flex-col gap-2">
+                  <a href="%BASE_URL%donate/" class="text-sm text-black/70 transition hover:text-black">Donate</a>
+                  <a href="%BASE_URL%terms/" class="text-sm text-black/70 transition hover:text-black">Terms</a>
+                  <a href="%BASE_URL%privacy/" class="text-sm text-black/70 transition hover:text-black">Privacy</a>
+                  <a href="%BASE_URL%LICENSE.txt" class="text-sm text-black/70 transition hover:text-black">License</a>
+                </div>
+              </div>
+
+              <div class="space-y-3">
+                <div class="flex flex-col gap-2">
+                  <a href="https://github.com/axichat/axichat" target="_blank" rel="noreferrer" class="inline-flex items-center gap-2 text-sm text-black/70 transition hover:text-black">
+                    <svg viewBox="0 0 24 24" fill="none" class="h-4 w-4" aria-hidden="true">
+                      <path
+                        d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.207 11.387.6.113.793-.262.793-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.089-.745.083-.73.083-.73 1.205.085 1.84 1.236 1.84 1.236 1.07 1.835 2.807 1.305 3.492.998.108-.775.418-1.305.762-1.605-2.665-.303-5.466-1.332-5.466-5.93 0-1.31.468-2.38 1.235-3.22-.123-.303-.535-1.523.117-3.176 0 0 1.008-.322 3.3 1.23a11.5 11.5 0 0 1 3.004-.404c1.02.005 2.047.138 3.004.404 2.29-1.552 3.296-1.23 3.296-1.23.653 1.653.241 2.873.118 3.176.77.84 1.234 1.91 1.234 3.22 0 4.61-2.807 5.625-5.479 5.922.43.37.823 1.096.823 2.21 0 1.594-.015 2.88-.015 3.273 0 .318.19.694.8.576C20.565 21.796 24 17.298 24 12 24 5.37 18.63 0 12 0z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                    GitHub
+                  </a>
+                  <a href="https://gitlab.com/axichat/axichat" target="_blank" rel="noreferrer" class="inline-flex items-center gap-2 text-sm text-black/70 transition hover:text-black">
+                    <svg viewBox="0 0 24 24" fill="none" class="h-4 w-4" aria-hidden="true">
+                      <path
+                        d="M23.955 13.257 20.732 2.66a.6.6 0 0 0-1.145 0l-2.81 8.64H7.223l-2.81-8.64a.6.6 0 0 0-1.145 0L.045 13.257a.6.6 0 0 0 .223.678L12 22.485l11.732-8.55a.6.6 0 0 0 .223-.678Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                    GitLab
+                  </a>
+                  <a href="https://mastodon.social/@axichat" target="_blank" rel="noreferrer" class="inline-flex items-center gap-2 text-sm text-black/70 transition hover:text-black">
+                    <img src="%BASE_URL%images/brand/mastodon_logo_purple.svg" alt="" class="h-4 w-4" aria-hidden="true" />
+                    Mastodon
+                  </a>
+                </div>
+              </div>
+
+              <div class="space-y-3">
+                <a
+                  href="%BASE_URL%register/"
+                  aria-label="Register an axi.im account"
+                  class="w-fit border border-black bg-black px-4 py-2 text-[11px] text-white hover:bg-black/85 sm:text-xs inline-flex flex-wrap items-center justify-center gap-x-1 squircle-control font-semibold transition focus:outline-none focus:ring-2 focus:ring-black/25"
+                >
+                  <span>Register</span>
+                  <span class="username-shimmer">@axi.im</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+    <script type="module" src="/src/home.ts"></script>
   </body>
 </html>

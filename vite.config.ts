@@ -1,7 +1,6 @@
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
 
 const projectRoot = dirname(fileURLToPath(import.meta.url));
 const repositoryName = process.env.GITHUB_REPOSITORY?.split("/")[1];
@@ -10,7 +9,6 @@ const base = process.env.VITE_BASE_PATH ?? (process.env.GITHUB_ACTIONS ? githubA
 const axiBackendProxyPath = "/__axi_backend";
 
 export default defineConfig({
-  plugins: [react()],
   base,
   build: {
     rollupOptions: {

@@ -168,3 +168,22 @@ main {
     background-position: 50% 50%;
   }
 }
+
+@keyframes faq-unregister-highlight {
+  0% {
+    background-color: rgba(255, 243, 199, 0);
+    box-shadow: 0 0 0 0 rgba(196, 138, 10, 0);
+  }
+  18% {
+    background-color: rgba(255, 243, 199, 0.95);
+    box-shadow: 0 0 0 10px rgba(196, 138, 10, 0.16);
+  }
+  100% {
+    background-color: rgba(255, 243, 199, 0);
+    box-shadow: 0 0 0 0 rgba(196, 138, 10, 0);
+  }
+}
+
+#unregister:target {
+  animation: faq-unregister-highlight 1.8s ease-out;
+}
