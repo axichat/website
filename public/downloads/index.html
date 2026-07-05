@@ -801,15 +801,21 @@
               </span>
               <span class="primary-download-arrow" aria-hidden="true">&#8595;</span>
             </a>
-            <span class="primary-download-button apple is-disabled" aria-disabled="true">
+            <a
+              class="primary-download-button apple"
+              href="https://github.com/axichat/axichat/releases/latest/download/axichat-macos.dmg"
+              target="_blank"
+              rel="noreferrer"
+            >
               <span class="primary-download-main">
                 <span class="primary-download-icon"><img src="../images/platforms/apple.svg" alt="" /></span>
                 <span class="primary-download-copy">
-                  <strong>iOS/macOS</strong>
-                  <span>Coming soon</span>
+                  <strong>macOS</strong>
+                  <span>DMG</span>
                 </span>
               </span>
-            </span>
+              <span class="primary-download-arrow" aria-hidden="true">&#8595;</span>
+            </a>
           </div>
           <div id="release-meta" class="release-meta">
             <strong>Loading latest release...</strong>
@@ -838,7 +844,7 @@
     <script>
       const RELEASE_API_URL = "https://api.github.com/repos/axichat/axichat/releases/latest";
       const RELEASES_PAGE_URL = "https://github.com/axichat/axichat/releases/latest";
-      const CACHE_KEY = "axichat.downloads.latest.v1";
+      const CACHE_KEY = "axichat.downloads.latest.v2";
       const CACHE_TTL_MS = 5 * 60 * 1000;
 
       const downloadsRoot = document.getElementById("downloads-root");
@@ -1018,14 +1024,16 @@
         }
 
         if (/\.(dmg|pkg)$/i.test(name) || name.includes("macos") || name.includes("darwin")) {
+          const isDmg = name.endsWith(".dmg");
+          const isPkg = name.endsWith(".pkg");
           return {
             platform: "apple",
             section: "recommended",
             order: 80,
             tag: "Apple",
-            title: name.endsWith(".pkg") ? "Mac installer" : "Mac download",
-            description: "Mac",
-            action: "Download for Mac"
+            title: isDmg ? "macOS DMG" : isPkg ? "macOS installer" : "macOS download",
+            description: isDmg ? "DMG" : isPkg ? "PKG" : "Mac",
+            action: isDmg ? "Download macOS DMG" : "Download for Mac"
           };
         }
 
@@ -1138,7 +1146,7 @@
         return entries.sort((left, right) => left.order - right.order || left.title.localeCompare(right.title));
       }
 
-      function platformDetails(platform) {
+      function platformDetails(platform, primaryEntry) {
         if (platform === "android") {
           return {
             title: "Android",
@@ -1155,6 +1163,12 @@
           return {
             title: "Linux",
             subtitle: "Desktop"
+          };
+        }
+        if (primaryEntry && primaryEntry.rawName && /\.(dmg|pkg)$/i.test(primaryEntry.rawName)) {
+          return {
+            title: "macOS",
+            subtitle: "Mac desktop"
           };
         }
         return {
@@ -1200,7 +1214,7 @@
       }
 
       function renderPlatformCard(platform, primaryEntry, secondaryEntries) {
-        const details = platformDetails(platform);
+        const details = platformDetails(platform, primaryEntry);
         const cardClass = primaryEntry ? "platform-card" : "platform-card disabled";
         const meta = primaryEntry
           ? [primaryEntry.title, primaryEntry.size].filter(Boolean).join(" • ")
