@@ -171,6 +171,24 @@
                   </a>
 
                   <a
+                    id="hero-app-store-badge"
+                    data-app-store-badge
+                    href="https://apps.apple.com/"
+                    target="_blank"
+                    rel="noreferrer"
+                    class="inline-block max-w-full transition focus:outline-none focus:ring-2 focus:ring-black/25"
+                    style="width: 186px"
+                    hidden
+                  >
+                    <img
+                      src="https://toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/black/en-us?releaseDate=1601424000&amp;kind=iossoftware&amp;bubble=ios_apps"
+                      alt="Download on the App Store"
+                      class="block h-auto w-full max-w-full"
+                    />
+                  </a>
+
+                  <a
+                    id="hero-windows-download"
                     href="https://github.com/axichat/axichat/releases/latest/download/axichat-windows-setup.exe"
                     class="group relative box-border flex max-w-full self-center items-center justify-between gap-2 squircle-control border px-3.5 transition hover:brightness-95 focus:outline-none focus:ring-2 focus:ring-black/25"
                     style="background-color: #2563eb; border-color: #2563eb; width: 209px; height: 62px"
@@ -181,28 +199,7 @@
                       </div>
                       <div class="leading-tight text-left">
                         <div class="whitespace-nowrap text-xs font-semibold" style="color: #ffffff">Windows</div>
-                        <div class="whitespace-nowrap text-[10px]" style="color: rgba(255, 255, 255, 0.75)">Installer .exe</div>
-                      </div>
-                    </div>
-                    <svg viewBox="0 0 24 24" fill="none" class="h-3.5 w-3.5 shrink-0 opacity-90 transition group-hover:opacity-100" aria-hidden="true">
-                      <path d="M12 4.5v9.75" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" />
-                      <path d="m8.75 11.5 3.25 3.25 3.25-3.25" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" />
-                      <path d="M5.5 18.5h13" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" />
-                    </svg>
-                  </a>
-
-                  <a
-                    href="https://github.com/axichat/axichat/releases/latest/download/axichat-x86_64.AppImage"
-                    class="group relative box-border flex max-w-full self-center items-center justify-between gap-2 squircle-control border px-3.5 transition hover:brightness-95 focus:outline-none focus:ring-2 focus:ring-black/25"
-                    style="background-color: #dc143c; border-color: #dc143c; width: 209px; height: 62px"
-                  >
-                    <div class="flex min-w-0 items-center gap-2 text-left">
-                      <div class="grid h-8 w-8 place-items-center rounded-md border" style="border-color: rgba(255, 255, 255, 0.58); background-color: rgba(255, 255, 255, 0.96)">
-                        <img src="%BASE_URL%images/platforms/linux.svg" alt="" class="block object-contain h-[26px] w-[26px]" />
-                      </div>
-                      <div class="leading-tight text-left">
-                        <div class="whitespace-nowrap text-xs font-semibold" style="color: #ffffff">Linux</div>
-                        <div class="whitespace-nowrap text-[10px]" style="color: rgba(255, 255, 255, 0.75)">AppImage</div>
+                        <div id="hero-windows-download-format" class="whitespace-nowrap text-[10px]" style="color: rgba(255, 255, 255, 0.75)">Installer .exe</div>
                       </div>
                     </div>
                     <svg viewBox="0 0 24 24" fill="none" class="h-3.5 w-3.5 shrink-0 opacity-90 transition group-hover:opacity-100" aria-hidden="true">
@@ -234,6 +231,28 @@
                       <path d="M5.5 18.5h13" stroke="#111111" stroke-width="1.8" stroke-linecap="round" />
                     </svg>
                   </a>
+
+                  <a
+                    href="https://github.com/axichat/axichat/releases/latest/download/axichat-x86_64.AppImage"
+                    class="group relative box-border flex max-w-full self-center items-center justify-between gap-2 squircle-control border px-3.5 transition hover:brightness-95 focus:outline-none focus:ring-2 focus:ring-black/25"
+                    style="background-color: #dc143c; border-color: #dc143c; width: 209px; height: 62px"
+                  >
+                    <div class="flex min-w-0 items-center gap-2 text-left">
+                      <div class="grid h-8 w-8 place-items-center rounded-md border" style="border-color: rgba(255, 255, 255, 0.58); background-color: rgba(255, 255, 255, 0.96)">
+                        <img src="%BASE_URL%images/platforms/linux.svg" alt="" class="block object-contain h-[26px] w-[26px]" />
+                      </div>
+                      <div class="leading-tight text-left">
+                        <div class="whitespace-nowrap text-xs font-semibold" style="color: #ffffff">Linux</div>
+                        <div class="whitespace-nowrap text-[10px]" style="color: rgba(255, 255, 255, 0.75)">AppImage</div>
+                      </div>
+                    </div>
+                    <svg viewBox="0 0 24 24" fill="none" class="h-3.5 w-3.5 shrink-0 opacity-90 transition group-hover:opacity-100" aria-hidden="true">
+                      <path d="M12 4.5v9.75" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" />
+                      <path d="m8.75 11.5 3.25 3.25 3.25-3.25" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" />
+                      <path d="M5.5 18.5h13" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" />
+                    </svg>
+                  </a>
+
                 </div>
 
                 <div class="mt-3 text-xs text-black/55 lg:text-left">You can verify checksums on GitHub Releases.</div>

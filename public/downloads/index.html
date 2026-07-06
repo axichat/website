@@ -186,12 +186,32 @@
       }
 
       .google-play-badge:hover,
+      .app-store-badge:hover,
       .primary-download-button:hover {
         transform: translateY(-1px);
         filter: brightness(0.96);
       }
 
+      .app-store-badge {
+        display: inline-flex;
+        align-items: center;
+        width: 11.625rem;
+        max-width: 100%;
+        min-height: 3.875rem;
+        transition: filter 0.18s ease, transform 0.18s ease;
+      }
+
+      .app-store-badge[hidden] {
+        display: none;
+      }
+
       .google-play-badge img {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+
+      .app-store-badge img {
         display: block;
         width: 100%;
         height: auto;
@@ -772,6 +792,21 @@
               <img src="../images/platforms/google-play-badge.svg" alt="Get it on Google Play" />
             </a>
             <a
+              id="app-store-badge"
+              data-app-store-badge
+              class="app-store-badge"
+              href="https://apps.apple.com/"
+              target="_blank"
+              rel="noreferrer"
+              hidden
+            >
+              <img
+                src="https://toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/black/en-us?releaseDate=1601424000&amp;kind=iossoftware&amp;bubble=ios_apps"
+                alt="Download on the App Store"
+              />
+            </a>
+            <a
+              id="primary-windows-download"
               class="primary-download-button windows"
               href="https://github.com/axichat/axichat/releases/latest/download/axichat-windows-setup.exe"
               target="_blank"
@@ -781,22 +816,7 @@
                 <span class="primary-download-icon"><img src="../images/platforms/windows.svg" alt="" /></span>
                 <span class="primary-download-copy">
                   <strong>Windows</strong>
-                  <span>Installer .exe</span>
-                </span>
-              </span>
-              <span class="primary-download-arrow" aria-hidden="true">&#8595;</span>
-            </a>
-            <a
-              class="primary-download-button linux"
-              href="https://github.com/axichat/axichat/releases/latest/download/axichat-x86_64.AppImage"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <span class="primary-download-main">
-                <span class="primary-download-icon"><img src="../images/platforms/linux.svg" alt="" /></span>
-                <span class="primary-download-copy">
-                  <strong>Linux</strong>
-                  <span>AppImage</span>
+                  <span id="primary-windows-download-format">Installer .exe</span>
                 </span>
               </span>
               <span class="primary-download-arrow" aria-hidden="true">&#8595;</span>
@@ -812,6 +832,21 @@
                 <span class="primary-download-copy">
                   <strong>macOS</strong>
                   <span>DMG</span>
+                </span>
+              </span>
+              <span class="primary-download-arrow" aria-hidden="true">&#8595;</span>
+            </a>
+            <a
+              class="primary-download-button linux"
+              href="https://github.com/axichat/axichat/releases/latest/download/axichat-x86_64.AppImage"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <span class="primary-download-main">
+                <span class="primary-download-icon"><img src="../images/platforms/linux.svg" alt="" /></span>
+                <span class="primary-download-copy">
+                  <strong>Linux</strong>
+                  <span>AppImage</span>
                 </span>
               </span>
               <span class="primary-download-arrow" aria-hidden="true">&#8595;</span>
@@ -844,8 +879,11 @@
     <script>
       const RELEASE_API_URL = "https://api.github.com/repos/axichat/axichat/releases/latest";
       const RELEASES_PAGE_URL = "https://github.com/axichat/axichat/releases/latest";
-      const CACHE_KEY = "axichat.downloads.latest.v2";
+      const CACHE_KEY = "axichat.downloads.latest.v3";
       const CACHE_TTL_MS = 5 * 60 * 1000;
+      const APP_STORE_BUNDLE_ID = "im.axi.axichat";
+      const APP_STORE_LOOKUP_URL = "https://itunes.apple.com/lookup?bundleId=" + encodeURIComponent(APP_STORE_BUNDLE_ID) + "&country=us";
+      const APP_STORE_LOOKUP_TIMEOUT_MS = 8000;
 
       const downloadsRoot = document.getElementById("downloads-root");
       const releaseMeta = document.getElementById("release-meta");
@@ -1298,9 +1336,28 @@
         );
       }
 
+      function syncPrimaryWindowsDownload(entries) {
+        const button = document.getElementById("primary-windows-download");
+        const format = document.getElementById("primary-windows-download-format");
+        if (!button || !format) {
+          return;
+        }
+
+        const installer = entries.find((entry) => entry.rawName && entry.rawName.toLowerCase() === "axichat-windows-setup.exe");
+        const zip = entries.find((entry) => entry.rawName && entry.rawName.toLowerCase() === "axichat-windows.zip");
+        const entry = installer || zip;
+        if (!entry || !entry.href) {
+          return;
+        }
+
+        button.href = entry.href;
+        format.textContent = installer ? "Installer .exe" : "Portable ZIP";
+      }
+
       function renderRelease(release) {
         const entries = buildReleaseEntries(release);
         const remainingEntries = entries.filter((entry) => entry.section === "advanced" || entry.section === "developer");
+        syncPrimaryWindowsDownload(entries);
 
         releaseMeta.innerHTML =
           "<strong>" + escapeHtml(release.tag_name || release.name || "Latest release") + "</strong>" +
@@ -1370,7 +1427,55 @@
         }
       }
 
+      function findAppStoreUrl(payload) {
+        if (!payload || !payload.results || !payload.results.length || payload.resultCount === 0) {
+          return "";
+        }
+        const result = payload.results.find((entry) => {
+          const isExpectedBundle = entry && entry.bundleId === APP_STORE_BUNDLE_ID;
+          const isSoftware = entry && (entry.wrapperType === "software" || entry.kind === "software");
+          return isExpectedBundle && isSoftware && typeof entry.trackViewUrl === "string";
+        });
+        return result ? result.trackViewUrl : "";
+      }
+
+      function showAppStoreBadges(url) {
+        document.querySelectorAll("[data-app-store-badge]").forEach((badge) => {
+          badge.href = url;
+          badge.hidden = false;
+        });
+      }
+
+      function loadAppStoreBadge() {
+        const callbackName = "__axichatAppStoreLookup_" + Date.now() + "_" + Math.random().toString(36).slice(2);
+        const script = document.createElement("script");
+        let settled = false;
+
+        const cleanup = () => {
+          if (settled) {
+            return;
+          }
+          settled = true;
+          window.clearTimeout(timeoutId);
+          script.remove();
+          delete window[callbackName];
+        };
+
+        const timeoutId = window.setTimeout(cleanup, APP_STORE_LOOKUP_TIMEOUT_MS);
+        window[callbackName] = (payload) => {
+          const appStoreUrl = findAppStoreUrl(payload);
+          cleanup();
+          if (appStoreUrl) {
+            showAppStoreBadges(appStoreUrl);
+          }
+        };
+        script.onerror = cleanup;
+        script.src = APP_STORE_LOOKUP_URL + "&callback=" + encodeURIComponent(callbackName);
+        document.head.appendChild(script);
+      }
+
       void loadRelease();
+      loadAppStoreBadge();
     </script>
   </body>
 </html>

@@ -90,6 +90,10 @@ main {
   background: transparent;
 }
 
+[data-app-store-badge][hidden] {
+  display: none;
+}
+
 @keyframes username-shimmer {
   0% {
     background-position: 0% 50%;
