@@ -47,7 +47,11 @@
 
         <div class="mt-6">
           <div id="signup-view">
-            <form id="signup-form" method="post">
+            <form id="signup-form">
+              <div id="signup-script-required" class="mb-5 rounded-xl border border-amber-300/70 bg-amber-50 px-4 py-3 text-sm leading-relaxed text-amber-900">
+                JavaScript is required to create an account. This form is disabled and will not send your username or password.
+                Enable JavaScript, then reload this page.
+              </div>
               <div id="config-error" hidden class="mb-5 rounded-xl border border-amber-300/70 bg-amber-50 px-4 py-3 text-sm text-amber-900"></div>
 
               <label class="block text-sm font-semibold text-black" for="signup-localpart">Username</label>
@@ -57,12 +61,12 @@
               >
                 <input
                   id="signup-localpart"
-                  name="localpart"
                   autocomplete="username"
                   minlength="4"
                   maxlength="20"
-                  pattern="[a-z][a-z0-9._-]{3,19}"
+                  pattern="[a-z][a-z0-9._\-]{3,19}"
                   required
+                  disabled
                   class="min-w-0 flex-1 bg-transparent px-3 py-2.5 text-sm text-black outline-none disabled:bg-black/[0.03]"
                 />
                 <span class="flex items-center border-l border-black/10 bg-black/[0.03] px-3 text-sm font-semibold text-black/65">
@@ -75,12 +79,12 @@
               <label class="mt-5 block text-sm font-semibold text-black" for="signup-password">Password</label>
               <input
                 id="signup-password"
-                name="password"
                 type="password"
                 autocomplete="new-password"
                 minlength="8"
                 maxlength="64"
                 required
+                disabled
                 class="mt-2 w-full squircle-control border bg-white px-3 py-2.5 text-sm text-black outline-none transition focus:border-black focus:ring-2 focus:ring-black/15 disabled:bg-black/[0.03] border-black/15"
               />
               <p id="signup-password-error" hidden class="mt-2 text-sm text-rose-700"></p>
@@ -88,12 +92,12 @@
               <label class="mt-5 block text-sm font-semibold text-black" for="signup-password-confirm">Confirm password</label>
               <input
                 id="signup-password-confirm"
-                name="password_confirmation"
                 type="password"
                 autocomplete="new-password"
                 minlength="8"
                 maxlength="64"
                 required
+                disabled
                 class="mt-2 w-full squircle-control border bg-white px-3 py-2.5 text-sm text-black outline-none transition focus:border-black focus:ring-2 focus:ring-black/15 disabled:bg-black/[0.03] border-black/15"
               />
               <p id="signup-password-confirm-error" hidden class="mt-2 text-sm text-rose-700"></p>
@@ -161,6 +165,7 @@
               <button
                 type="submit"
                 id="signup-submit"
+                disabled
                 class="axi-button-bounce mt-6 inline-flex w-full items-center justify-center gap-2 squircle-control border border-black bg-black px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-black/85 disabled:cursor-not-allowed disabled:border-black/20 disabled:bg-black/20"
               >
                 <span id="signup-submit-label" class="inline-flex min-w-[9.5rem] items-center justify-center gap-2 whitespace-nowrap">Create account</span>

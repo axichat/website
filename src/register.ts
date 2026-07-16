@@ -624,6 +624,7 @@ const headingDescription = byId<HTMLDivElement>("register-description");
 const signupView = byId<HTMLDivElement>("signup-view");
 const altView = byId<HTMLDivElement>("alt-view");
 const form = byId<HTMLFormElement>("signup-form");
+const scriptRequired = byId<HTMLDivElement>("signup-script-required");
 const configErrorBox = byId<HTMLDivElement>("config-error");
 const localpartInput = byId<HTMLInputElement>("signup-localpart");
 const localpartGroup = byId<HTMLDivElement>("signup-localpart-group");
@@ -1559,6 +1560,10 @@ async function handleSignup(event: Event) {
 }
 
 function setUpSignupForm() {
+  form.addEventListener("submit", (event) => {
+    void handleSignup(event);
+  });
+  scriptRequired.hidden = true;
   heading.hidden = true;
   form.noValidate = true;
   domainLabel.textContent = `@${config.accountDomain}`;
@@ -1618,10 +1623,6 @@ function setUpSignupForm() {
     const open = privacyToggle.getAttribute("aria-expanded") === "true";
     privacyToggle.setAttribute("aria-expanded", String(!open));
     privacyNote.hidden = open;
-  });
-
-  form.addEventListener("submit", (event) => {
-    void handleSignup(event);
   });
 }
 
