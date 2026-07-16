@@ -33,6 +33,8 @@
     <meta name="msapplication-TileColor" content="#ffffff" />
     <meta name="msapplication-TileImage" content="%BASE_URL%ms-icon-144x144.png" />
     <meta name="theme-color" content="#ffffff" />
+    <link rel="stylesheet" href="%BASE_URL%components.css" />
+    <link rel="stylesheet" href="/src/index.css" />
   </head>
   <body class="bg-white">
     <div class="relative min-h-screen bg-white text-black font-body">
@@ -41,13 +43,11 @@
       </div>
 
       <header class="sticky top-0 z-50 border-b border-black/10 bg-white/90 backdrop-blur">
-        <div class="mx-auto w-full max-w-[84rem] px-6">
+        <div class="mx-auto w-full max-w-[84rem] px-12">
           <div class="flex h-16 items-center justify-between gap-3">
-            <a href="#top" class="flex min-w-0 items-center gap-3">
-              <img src="%BASE_URL%images/brand/axichat_logo_black.png" alt="Axichat" class="brand-logo h-14 w-14 shrink-0" />
-              <div class="truncate text-2xl leading-none tracking-[0.015em]" style="font-family: Gabarito, ui-sans-serif, system-ui; font-weight: 500">
-                Axichat
-              </div>
+            <a href="#top" class="axi-title">
+              <img src="%BASE_URL%images/brand/axichat_logo_black.png" alt="" class="axi-title__logo brand-logo" />
+              <span class="axi-title__text">Axichat</span>
             </a>
 
             <nav class="hidden items-center gap-5 lg:flex">
@@ -60,111 +60,110 @@
 
             <div class="flex items-center gap-2">
               <a
+                id="github-link"
                 href="https://github.com/axichat/axichat"
                 target="_blank"
                 rel="noreferrer"
                 aria-label="Open Axichat on GitHub"
-                class="inline-flex h-10 w-10 items-center justify-center squircle-control border border-black/15 bg-white text-black transition hover:bg-black/[0.03] focus:outline-none focus:ring-2 focus:ring-black/25"
+                class="inline-flex h-10 min-w-10 items-center justify-center gap-1.5 squircle-control px-2 text-black transition hover:bg-black/[0.04] focus:outline-none focus:ring-2 focus:ring-black/25"
               >
-                <svg viewBox="0 0 24 24" fill="none" class="h-5 w-5" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" class="h-5 w-5 shrink-0" aria-hidden="true">
                   <path
                     d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.207 11.387.6.113.793-.262.793-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.089-.745.083-.73.083-.73 1.205.085 1.84 1.236 1.84 1.236 1.07 1.835 2.807 1.305 3.492.998.108-.775.418-1.305.762-1.605-2.665-.303-5.466-1.332-5.466-5.93 0-1.31.468-2.38 1.235-3.22-.123-.303-.535-1.523.117-3.176 0 0 1.008-.322 3.3 1.23a11.5 11.5 0 0 1 3.004-.404c1.02.005 2.047.138 3.004.404 2.29-1.552 3.296-1.23 3.296-1.23.653 1.653.241 2.873.118 3.176.77.84 1.234 1.91 1.234 3.22 0 4.61-2.807 5.625-5.479 5.922.43.37.823 1.096.823 2.21 0 1.594-.015 2.88-.015 3.273 0 .318.19.694.8.576C20.565 21.796 24 17.298 24 12 24 5.37 18.63 0 12 0z"
                     fill="currentColor"
                   />
                 </svg>
+                <span id="github-star-count" class="github-star-count items-center gap-0.5 text-xs font-semibold tabular-nums">
+                  <svg viewBox="0 0 24 24" class="h-3 w-3 shrink-0" aria-hidden="true">
+                    <path d="m12 2.6 2.86 5.8 6.4.93-4.63 4.51 1.09 6.37L12 17.2l-5.72 3.01 1.09-6.37-4.63-4.51 6.4-.93L12 2.6Z" fill="currentColor" />
+                  </svg>
+                  <span id="github-star-count-value"></span>
+                </span>
               </a>
 
               <a
                 href="%BASE_URL%register/"
                 aria-label="Register an axi.im account"
-                class="hidden shrink-0 border border-black bg-black text-[10px] text-white hover:bg-black/85 lg:inline-flex lg:text-xs flex-wrap items-center justify-center gap-x-1 squircle-control px-4 py-2 font-semibold transition focus:outline-none focus:ring-2 focus:ring-black/25"
+                class="axi-button-bounce hidden shrink-0 border border-black bg-black text-[10px] text-white hover:bg-black/85 lg:inline-flex lg:text-xs flex-wrap items-center justify-center gap-x-1 squircle-control px-4 py-2 font-semibold transition focus:outline-none focus:ring-2 focus:ring-black/25"
               >
                 <span>Register</span>
                 <span class="username-shimmer">@axi.im</span>
               </a>
 
-              <button
-                type="button"
-                id="menu-toggle"
-                aria-expanded="false"
-                aria-label="Open menu"
-                class="inline-flex items-center gap-2 squircle-control border border-black/15 bg-white px-3 py-2 text-sm font-semibold text-black transition hover:bg-black/[0.03] focus:outline-none focus:ring-2 focus:ring-black/25 lg:hidden"
-              >
-                <span>Menu</span>
-                <svg id="menu-icon-closed" viewBox="0 0 24 24" fill="none" class="h-4 w-4" aria-hidden="true">
-                  <path d="M4.5 7.25h15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
-                  <path d="M4.5 12h15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
-                  <path d="M4.5 16.75h15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
-                </svg>
-                <svg id="menu-icon-open" viewBox="0 0 24 24" fill="none" class="hidden h-4 w-4" aria-hidden="true">
-                  <path d="M6 6 18 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
-                  <path d="M18 6 6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
-                </svg>
-              </button>
+              <details id="mobile-navigation" class="relative lg:hidden">
+                <summary
+                  aria-label="Navigation menu"
+                  class="mobile-menu-summary inline-flex h-10 w-10 cursor-pointer items-center justify-center squircle-control text-black transition hover:bg-black/[0.04] focus:outline-none focus:ring-2 focus:ring-black/25"
+                >
+                  <svg viewBox="0 0 24 24" fill="none" class="h-6 w-6" aria-hidden="true">
+                    <path d="M4 7h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    <path d="M4 12h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    <path d="M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                  </svg>
+                </summary>
+
+                <nav class="absolute right-0 top-full mt-2 flex w-56 flex-col gap-1 rounded-2xl border border-black/10 bg-white p-3 shadow-xl">
+                  <a href="%BASE_URL%downloads/index.html" class="squircle-control px-3 py-2 text-sm text-black/75 transition hover:bg-black/[0.03] hover:text-black">Downloads</a>
+                  <a href="#features" class="squircle-control px-3 py-2 text-sm text-black/75 transition hover:bg-black/[0.03] hover:text-black">Features</a>
+                  <a href="#faq" class="squircle-control px-3 py-2 text-sm text-black/75 transition hover:bg-black/[0.03] hover:text-black">FAQ</a>
+                  <a href="#about" class="squircle-control px-3 py-2 text-sm text-black/75 transition hover:bg-black/[0.03] hover:text-black">Roadmap</a>
+                  <a href="#contact" class="squircle-control px-3 py-2 text-sm text-black/75 transition hover:bg-black/[0.03] hover:text-black">Contact</a>
+                  <a
+                    href="%BASE_URL%register/"
+                    aria-label="Register an axi.im account"
+                    class="axi-button-bounce mt-2 w-fit border border-black bg-black text-xs text-white hover:bg-black/85 inline-flex flex-wrap items-center justify-center gap-x-1 squircle-control px-4 py-2 font-semibold transition focus:outline-none focus:ring-2 focus:ring-black/25"
+                  >
+                    <span>Register</span>
+                    <span class="username-shimmer">@axi.im</span>
+                  </a>
+                </nav>
+              </details>
             </div>
-          </div>
-
-          <div id="mobile-menu" class="overflow-hidden transition-[max-height,opacity,padding] duration-200 lg:hidden max-h-0 py-0 opacity-0">
-            <nav class="flex flex-col gap-1">
-              <a href="%BASE_URL%downloads/index.html" class="squircle-control px-3 py-2 text-sm text-black/75 transition hover:bg-black/[0.03] hover:text-black">Downloads</a>
-              <a href="#features" class="squircle-control px-3 py-2 text-sm text-black/75 transition hover:bg-black/[0.03] hover:text-black">Features</a>
-              <a href="#faq" class="squircle-control px-3 py-2 text-sm text-black/75 transition hover:bg-black/[0.03] hover:text-black">FAQ</a>
-              <a href="#about" class="squircle-control px-3 py-2 text-sm text-black/75 transition hover:bg-black/[0.03] hover:text-black">Roadmap</a>
-              <a href="#contact" class="squircle-control px-3 py-2 text-sm text-black/75 transition hover:bg-black/[0.03] hover:text-black">Contact</a>
-              <a
-                href="%BASE_URL%register/"
-                aria-label="Register an axi.im account"
-                class="mt-2 w-fit border border-black bg-black text-xs text-white hover:bg-black/85 inline-flex flex-wrap items-center justify-center gap-x-1 squircle-control px-4 py-2 font-semibold transition focus:outline-none focus:ring-2 focus:ring-black/25"
-              >
-                <span>Register</span>
-                <span class="username-shimmer">@axi.im</span>
-              </a>
-            </nav>
           </div>
         </div>
       </header>
 
       <main id="top">
         <section class="border-b border-black/10 py-12 sm:py-20 lg:py-40">
-          <div class="mx-auto w-full max-w-[84rem] px-6">
-            <div class="grid items-start gap-y-7 gap-x-6 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:items-center lg:gap-y-10 lg:gap-x-[clamp(0.55rem,1.9vw,1.9rem)] xl:gap-x-[clamp(0.9rem,2.3vw,2.5rem)]">
-              <div class="mx-auto max-w-2xl text-center lg:mx-0 lg:text-left">
-                <div class="mx-auto mb-5 inline-flex flex-wrap items-center gap-x-3 gap-y-1 rounded-2xl border border-black/15 bg-white px-4 py-2.5 text-black/65 lg:mx-0">
-                  <span id="latest-version" class="font-mono text-base font-semibold text-black sm:text-lg">loading...</span>
-                  <span id="latest-release-date" class="text-xs text-black/55" hidden></span>
+          <div class="mx-auto w-full max-w-[84rem] px-12">
+            <div class="flex flex-col items-center gap-y-14 sm:gap-y-20">
+              <div class="mx-auto max-w-5xl text-center">
+                <div class="mx-auto mb-9 inline-flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-black/50 sm:mb-10">
+                  <a
+                    id="latest-version"
+                    href="https://github.com/axichat/axichat/releases/latest"
+                    target="_blank"
+                    rel="noreferrer"
+                    class="font-mono text-xs font-semibold text-black/60 underline-offset-4 hover:underline sm:text-sm"
+                  >Latest release</a>
+                  <span id="latest-release-date" class="text-[11px] text-black/45" hidden></span>
                 </div>
 
-                <h1 class="text-balance text-3xl font-semibold tracking-tight sm:text-4xl lg:text-5xl font-display">
-                  Replace your email, messenger, and calendar apps with Axichat
+                <h1 class="mx-auto max-w-[52rem] text-balance text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl font-display">
+                  The best of email, chat, and calendar in one.
                 </h1>
 
-                <p
-                  class="mx-auto mt-10 max-w-xl sm:mt-12 lg:mx-0 text-balance text-2xl font-display font-semibold tracking-tight text-black sm:text-3xl"
-                  aria-label="Claim your name at axi.im now"
-                >
-                  <span class="text-black/80">Claim your </span><span class="inline-flex items-baseline gap-0"><span class="text-black/80">name</span><span class="username-shimmer-hero">@axi.im</span></span><span class="text-black/80"> now</span>
-                </p>
-
-                <p class="mx-auto mt-7 max-w-xl text-sm leading-relaxed text-black/60 lg:mx-0">
+                <p class="mx-auto mt-10 max-w-[19rem] text-sm leading-snug text-black/60">
                   Axichat is currently under the radar, so you must create your account here:
                 </p>
                 <a
                   href="%BASE_URL%register/"
-                  class="mt-3 inline-flex items-center justify-center squircle-control border border-black bg-black px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-black/85 focus:outline-none focus:ring-2 focus:ring-black/25"
+                  aria-label="Claim your name at axi.im"
+                  class="axi-button-bounce mt-4 inline-flex min-h-[60px] max-w-full items-center justify-center squircle-control-lg border border-black bg-black px-5 py-3.5 text-base font-semibold text-white transition hover:bg-black/85 focus:outline-none focus:ring-2 focus:ring-black/25 sm:px-7 sm:text-xl"
                 >
-                  Sign up
+                  <span>Claim your name</span><span class="username-shimmer">@axi.im</span>
                 </a>
-                <p class="mx-auto mt-6 max-w-xl text-sm leading-relaxed text-black/60 lg:mx-0">Then download the app:</p>
+                <p class="mx-auto mt-8 max-w-xl text-sm leading-relaxed text-black/60">Then download the app:</p>
 
                 <div
                   id="hero-downloads"
-                  class="mx-auto mt-3 inline-grid grid-cols-1 items-center justify-items-center gap-3 sm:grid-cols-2 lg:mx-0 lg:justify-items-start"
+                  class="mx-auto mt-3 inline-grid grid-cols-1 items-center justify-items-center gap-3 sm:grid-cols-2 lg:grid-cols-3"
                 >
                   <a
                     href="https://play.google.com/store/apps/details?id=im.axi.axichat"
                     target="_blank"
                     rel="noreferrer"
-                    class="inline-block max-w-full transition focus:outline-none focus:ring-2 focus:ring-black/25"
+                    class="order-2 inline-block max-w-full transition focus:outline-none focus:ring-2 focus:ring-black/25"
                     style="width: 209px"
                   >
                     <img src="%BASE_URL%images/platforms/google-play-badge.svg" alt="Get it on Google Play" class="block h-auto w-full max-w-full" />
@@ -176,7 +175,7 @@
                     href="https://apps.apple.com/"
                     target="_blank"
                     rel="noreferrer"
-                    class="inline-block max-w-full transition focus:outline-none focus:ring-2 focus:ring-black/25"
+                    class="order-1 inline-block max-w-full transition focus:outline-none focus:ring-2 focus:ring-black/25"
                     style="width: 186px"
                     hidden
                   >
@@ -188,24 +187,34 @@
                   </a>
 
                   <a
+                    href="https://f-droid.org/packages/im.axi.axichat/"
+                    target="_blank"
+                    rel="noreferrer"
+                    class="relative order-3 inline-block h-[62px] max-w-full overflow-hidden transition focus:outline-none focus:ring-2 focus:ring-black/25 sm:order-4 lg:order-3"
+                    style="width: 209px"
+                  >
+                    <img
+                      src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
+                      alt="Get it on F-Droid"
+                      class="absolute left-0 top-0 block h-auto max-w-none"
+                      style="width: 242px; transform: translate(-17px, -16px)"
+                    />
+                  </a>
+
+                  <a
                     id="hero-windows-download"
                     href="https://github.com/axichat/axichat/releases/latest/download/axichat-windows-setup.exe"
-                    class="group relative box-border flex max-w-full self-center items-center justify-between gap-2 squircle-control border px-3.5 transition hover:brightness-95 focus:outline-none focus:ring-2 focus:ring-black/25"
-                    style="background-color: #2563eb; border-color: #2563eb; width: 209px; height: 62px"
+                    class="group order-5 box-border flex max-w-full self-center items-center justify-between gap-3 rounded-[9px] border border-[#a6a6a6] bg-black px-5 text-white transition hover:bg-black/85 focus:outline-none focus:ring-2 focus:ring-black/25"
+                    style="width: 209px; height: 62px"
                   >
-                    <div class="flex min-w-0 items-center gap-2 text-left">
-                      <div class="grid h-8 w-8 place-items-center rounded-md border" style="border-color: rgba(255, 255, 255, 0.64); background-color: rgba(255, 255, 255, 0.96)">
-                        <img src="%BASE_URL%images/platforms/windows.svg" alt="" class="block object-contain h-[26px] w-[26px]" />
-                      </div>
-                      <div class="leading-tight text-left">
-                        <div class="whitespace-nowrap text-xs font-semibold" style="color: #ffffff">Windows</div>
-                        <div id="hero-windows-download-format" class="whitespace-nowrap text-[10px]" style="color: rgba(255, 255, 255, 0.75)">Installer .exe</div>
-                      </div>
+                    <div class="min-w-0 text-left">
+                      <div class="text-[10px] font-medium leading-none text-white/70">Download the <span id="hero-windows-download-format" class="font-semibold text-white">EXE</span></div>
+                      <div class="mt-1 text-2xl font-semibold leading-none tracking-tight">Windows</div>
                     </div>
-                    <svg viewBox="0 0 24 24" fill="none" class="h-3.5 w-3.5 shrink-0 opacity-90 transition group-hover:opacity-100" aria-hidden="true">
-                      <path d="M12 4.5v9.75" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" />
-                      <path d="m8.75 11.5 3.25 3.25 3.25-3.25" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" />
-                      <path d="M5.5 18.5h13" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" />
+                    <svg viewBox="0 0 24 24" fill="none" class="h-6 w-6 shrink-0 text-white/80 transition group-hover:text-white" aria-hidden="true">
+                      <path d="M12 4.5v9.75" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                      <path d="m8.75 11.5 3.25 3.25 3.25-3.25" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                      <path d="M5.5 18.5h13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
                     </svg>
                   </a>
 
@@ -213,52 +222,42 @@
                     href="https://github.com/axichat/axichat/releases/latest/download/axichat-macos.dmg"
                     target="_blank"
                     rel="noreferrer"
-                    class="group relative box-border flex max-w-full self-center items-center justify-between gap-2 squircle-control border px-3.5 transition hover:brightness-95 focus:outline-none focus:ring-2 focus:ring-black/25"
-                    style="background-color: #c0c0c0; border-color: #c0c0c0; width: 209px; height: 62px"
+                    class="group order-4 box-border flex max-w-full self-center items-center justify-between gap-3 rounded-[9px] border border-[#a6a6a6] bg-black px-5 text-white transition hover:bg-black/85 focus:outline-none focus:ring-2 focus:ring-black/25 sm:order-3 lg:order-4"
+                    style="width: 209px; height: 62px"
                   >
-                    <div class="flex min-w-0 items-center gap-2 text-left">
-                      <div class="grid h-8 w-8 place-items-center rounded-md border" style="border-color: rgba(17, 17, 17, 0.14); background-color: rgba(255, 255, 255, 0.92)">
-                        <img src="%BASE_URL%images/platforms/apple.svg" alt="" class="block object-contain h-[26px] w-[26px]" />
-                      </div>
-                      <div class="leading-tight text-left">
-                        <div class="whitespace-nowrap text-xs font-semibold" style="color: #111111">macOS</div>
-                        <div class="whitespace-nowrap text-[10px]" style="color: rgba(17, 17, 17, 0.72)">DMG</div>
-                      </div>
+                    <div class="min-w-0 text-left">
+                      <div class="text-[10px] font-medium leading-none text-white/70">Download the <span class="font-semibold text-white">DMG</span></div>
+                      <div class="mt-1 text-2xl font-semibold leading-none tracking-tight">macOS</div>
                     </div>
-                    <svg viewBox="0 0 24 24" fill="none" class="h-3.5 w-3.5 shrink-0 opacity-90 transition group-hover:opacity-100" aria-hidden="true">
-                      <path d="M12 4.5v9.75" stroke="#111111" stroke-width="1.8" stroke-linecap="round" />
-                      <path d="m8.75 11.5 3.25 3.25 3.25-3.25" stroke="#111111" stroke-width="1.8" stroke-linecap="round" />
-                      <path d="M5.5 18.5h13" stroke="#111111" stroke-width="1.8" stroke-linecap="round" />
+                    <svg viewBox="0 0 24 24" fill="none" class="h-6 w-6 shrink-0 text-white/80 transition group-hover:text-white" aria-hidden="true">
+                      <path d="M12 4.5v9.75" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                      <path d="m8.75 11.5 3.25 3.25 3.25-3.25" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                      <path d="M5.5 18.5h13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
                     </svg>
                   </a>
 
                   <a
                     href="https://github.com/axichat/axichat/releases/latest/download/axichat-x86_64.AppImage"
-                    class="group relative box-border flex max-w-full self-center items-center justify-between gap-2 squircle-control border px-3.5 transition hover:brightness-95 focus:outline-none focus:ring-2 focus:ring-black/25"
-                    style="background-color: #dc143c; border-color: #dc143c; width: 209px; height: 62px"
+                    class="group order-6 box-border flex max-w-full self-center items-center justify-between gap-3 rounded-[9px] border border-[#a6a6a6] bg-black px-5 text-white transition hover:bg-black/85 focus:outline-none focus:ring-2 focus:ring-black/25"
+                    style="width: 209px; height: 62px"
                   >
-                    <div class="flex min-w-0 items-center gap-2 text-left">
-                      <div class="grid h-8 w-8 place-items-center rounded-md border" style="border-color: rgba(255, 255, 255, 0.58); background-color: rgba(255, 255, 255, 0.96)">
-                        <img src="%BASE_URL%images/platforms/linux.svg" alt="" class="block object-contain h-[26px] w-[26px]" />
-                      </div>
-                      <div class="leading-tight text-left">
-                        <div class="whitespace-nowrap text-xs font-semibold" style="color: #ffffff">Linux</div>
-                        <div class="whitespace-nowrap text-[10px]" style="color: rgba(255, 255, 255, 0.75)">AppImage</div>
-                      </div>
+                    <div class="min-w-0 text-left">
+                      <div class="text-[10px] font-medium leading-none text-white/70">Download the <span class="font-semibold text-white">AppImage</span></div>
+                      <div class="mt-1 text-2xl font-semibold leading-none tracking-tight">Linux</div>
                     </div>
-                    <svg viewBox="0 0 24 24" fill="none" class="h-3.5 w-3.5 shrink-0 opacity-90 transition group-hover:opacity-100" aria-hidden="true">
-                      <path d="M12 4.5v9.75" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" />
-                      <path d="m8.75 11.5 3.25 3.25 3.25-3.25" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" />
-                      <path d="M5.5 18.5h13" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" />
+                    <svg viewBox="0 0 24 24" fill="none" class="h-6 w-6 shrink-0 text-white/80 transition group-hover:text-white" aria-hidden="true">
+                      <path d="M12 4.5v9.75" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                      <path d="m8.75 11.5 3.25 3.25 3.25-3.25" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                      <path d="M5.5 18.5h13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
                     </svg>
                   </a>
 
                 </div>
 
-                <div class="mt-3 text-xs text-black/55 lg:text-left">You can verify checksums on GitHub Releases.</div>
+                <div class="mt-3 text-xs text-black/55">You can verify checksums on GitHub Releases.</div>
               </div>
 
-              <div class="mx-auto w-full max-w-[44rem] lg:mx-0 lg:max-w-none">
+              <div class="mx-auto w-full max-w-[64rem]">
                 <div class="relative w-full overflow-hidden rounded-3xl shadow-[0_24px_60px_rgba(0,0,0,0.14)]">
                   <video
                     id="hero-video"
@@ -267,6 +266,7 @@
                     loop
                     muted
                     playsinline
+                    controls
                     preload="metadata"
                     poster="%BASE_URL%videos/hero_poster.jpg"
                   >
@@ -288,7 +288,7 @@
         </section>
 
         <section id="features" class="py-28 sm:py-40">
-          <div class="mx-auto w-full max-w-[84rem] px-6">
+          <div class="mx-auto w-full max-w-[84rem] px-12">
             <div class="space-y-28">
               <article class="grid items-start gap-12 pb-28 last:pb-0 lg:gap-8 xl:gap-10 lg:grid-cols-[minmax(0,18rem)_minmax(0,1fr)_minmax(0,18rem)] xl:grid-cols-[minmax(0,21rem)_minmax(0,1fr)_minmax(0,21rem)] 2xl:grid-cols-[minmax(0,24rem)_minmax(0,1fr)_minmax(0,24rem)] lg:items-center">
                 <div class="grid grid-cols-2 gap-4 sm:gap-6 lg:hidden">
@@ -443,7 +443,7 @@
         </section>
 
         <section id="faq" class="border-y border-black/10 py-28 sm:py-40">
-          <div class="mx-auto w-full max-w-[84rem] px-6">
+          <div class="mx-auto w-full max-w-[84rem] px-12">
             <div class="mb-10">
               <h2 class="mt-3 text-3xl font-semibold tracking-tight text-black sm:text-4xl font-display">FAQ</h2>
             </div>
@@ -556,7 +556,7 @@
         </section>
 
         <section id="about" class="py-28 sm:py-40">
-          <div class="mx-auto w-full max-w-[84rem] px-6">
+          <div class="mx-auto w-full max-w-[84rem] px-12">
             <div class="mb-10">
               <h2 class="mt-3 text-3xl font-semibold tracking-tight text-black sm:text-4xl font-display">Roadmap</h2>
             </div>
@@ -637,53 +637,55 @@
         </section>
 
         <section id="contact" class="border-t border-black/10 py-28 sm:py-40">
-          <div class="mx-auto w-full max-w-[84rem] px-6">
+          <div class="mx-auto w-full max-w-[84rem] px-12">
             <div class="mb-10">
               <h2 class="mt-3 text-3xl font-semibold tracking-tight text-black sm:text-4xl font-display">Contact</h2>
               <p class="mt-3 max-w-2xl text-sm leading-relaxed text-black/70">
-                <span>Email: </span>
-                <a href="mailto:support@axi.chat" class="underline underline-offset-4">support@axi.chat</a>
-                <span>. For bugs and feature requests, use </span>
-                <a href="https://github.com/axichat/axichat/issues" target="_blank" rel="noreferrer" class="underline underline-offset-4">GitHub Issues</a>
-                <span>.</span>
+                <span class="block">
+                  <span>Email: </span>
+                  <a href="mailto:support@axi.chat" class="underline underline-offset-4">support@axi.chat</a><span>.</span>
+                </span>
+                <span class="mt-1 block">
+                  <span>For bugs and feature requests, use </span>
+                  <a href="https://github.com/axichat/axichat/issues" target="_blank" rel="noreferrer" class="underline underline-offset-4">GitHub Issues</a><span>.</span>
+                </span>
               </p>
             </div>
 
-            <div class="inline-flex items-center gap-2 text-sm text-black/70">
-              <svg viewBox="0 0 24 24" fill="none" class="h-4 w-4" aria-hidden="true">
+            <div class="inline-flex max-w-full items-start gap-2 text-sm text-black/70">
+              <svg viewBox="0 0 24 24" fill="none" class="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true">
                 <path
                   d="M23.955 13.257 20.732 2.66a.6.6 0 0 0-1.145 0l-2.81 8.64H7.223l-2.81-8.64a.6.6 0 0 0-1.145 0L.045 13.257a.6.6 0 0 0 .223.678L12 22.485l11.732-8.55a.6.6 0 0 0 .223-.678Z"
                   fill="currentColor"
                 />
               </svg>
-              <a href="https://gitlab.com/axichat/axichat" target="_blank" rel="noreferrer" class="underline underline-offset-4">https://gitlab.com/axichat/axichat</a>
+              <a href="https://gitlab.com/axichat/axichat" target="_blank" rel="noreferrer" class="break-all underline underline-offset-4">https://gitlab.com/axichat/axichat</a>
             </div>
           </div>
         </section>
       </main>
 
       <footer class="border-t border-black/10 py-12">
-        <div class="mx-auto w-full max-w-[84rem] px-6">
-          <div class="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
+        <div class="mx-auto w-full max-w-[84rem] px-12">
+          <div class="grid w-full gap-8 sm:grid-cols-[minmax(0,1fr)_auto_auto_auto] sm:items-start sm:gap-x-8">
             <div class="flex max-w-sm flex-col gap-2">
               <div class="text-sm leading-relaxed text-black/65">Open-source chat, email, and calendar software from Axichat LLC.</div>
               <div class="mt-2 text-xs text-black/60">© <span id="footer-year">2026</span> Axichat LLC</div>
               <a href="%BASE_URL%LICENSE.txt" class="text-xs text-black/60 transition hover:text-black">AGPL-3.0</a>
             </div>
 
-            <div class="grid gap-8 sm:grid-cols-3">
-              <div class="space-y-3">
-                <div class="flex flex-col gap-2">
-                  <a href="%BASE_URL%donate/" class="text-sm text-black/70 transition hover:text-black">Donate</a>
-                  <a href="%BASE_URL%terms/" class="text-sm text-black/70 transition hover:text-black">Terms</a>
-                  <a href="%BASE_URL%privacy/" class="text-sm text-black/70 transition hover:text-black">Privacy</a>
-                  <a href="%BASE_URL%LICENSE.txt" class="text-sm text-black/70 transition hover:text-black">License</a>
-                </div>
+            <div class="space-y-3">
+              <div class="flex flex-col gap-2">
+                <a href="%BASE_URL%donate/" class="text-sm text-black/70 transition hover:text-black">Donate</a>
+                <a href="%BASE_URL%terms/" class="text-sm text-black/70 transition hover:text-black">Terms</a>
+                <a href="%BASE_URL%privacy/" class="text-sm text-black/70 transition hover:text-black">Privacy</a>
+                <a href="%BASE_URL%LICENSE.txt" class="text-sm text-black/70 transition hover:text-black">License</a>
               </div>
+            </div>
 
-              <div class="space-y-3">
-                <div class="flex flex-col gap-2">
-                  <a href="https://github.com/axichat/axichat" target="_blank" rel="noreferrer" class="inline-flex items-center gap-2 text-sm text-black/70 transition hover:text-black">
+            <div class="space-y-3">
+              <div class="flex flex-col gap-2">
+                <a href="https://github.com/axichat/axichat" target="_blank" rel="noreferrer" class="inline-flex items-center gap-2 text-sm text-black/70 transition hover:text-black">
                     <svg viewBox="0 0 24 24" fill="none" class="h-4 w-4" aria-hidden="true">
                       <path
                         d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.207 11.387.6.113.793-.262.793-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.757-1.333-1.757-1.089-.745.083-.73.083-.73 1.205.085 1.84 1.236 1.84 1.236 1.07 1.835 2.807 1.305 3.492.998.108-.775.418-1.305.762-1.605-2.665-.303-5.466-1.332-5.466-5.93 0-1.31.468-2.38 1.235-3.22-.123-.303-.535-1.523.117-3.176 0 0 1.008-.322 3.3 1.23a11.5 11.5 0 0 1 3.004-.404c1.02.005 2.047.138 3.004.404 2.29-1.552 3.296-1.23 3.296-1.23.653 1.653.241 2.873.118 3.176.77.84 1.234 1.91 1.234 3.22 0 4.61-2.807 5.625-5.479 5.922.43.37.823 1.096.823 2.21 0 1.594-.015 2.88-.015 3.273 0 .318.19.694.8.576C20.565 21.796 24 17.298 24 12 24 5.37 18.63 0 12 0z"
@@ -691,8 +693,8 @@
                       />
                     </svg>
                     GitHub
-                  </a>
-                  <a href="https://gitlab.com/axichat/axichat" target="_blank" rel="noreferrer" class="inline-flex items-center gap-2 text-sm text-black/70 transition hover:text-black">
+                </a>
+                <a href="https://gitlab.com/axichat/axichat" target="_blank" rel="noreferrer" class="inline-flex items-center gap-2 text-sm text-black/70 transition hover:text-black">
                     <svg viewBox="0 0 24 24" fill="none" class="h-4 w-4" aria-hidden="true">
                       <path
                         d="M23.955 13.257 20.732 2.66a.6.6 0 0 0-1.145 0l-2.81 8.64H7.223l-2.81-8.64a.6.6 0 0 0-1.145 0L.045 13.257a.6.6 0 0 0 .223.678L12 22.485l11.732-8.55a.6.6 0 0 0 .223-.678Z"
@@ -700,24 +702,43 @@
                       />
                     </svg>
                     GitLab
-                  </a>
-                  <a href="https://mastodon.social/@axichat" target="_blank" rel="noreferrer" class="inline-flex items-center gap-2 text-sm text-black/70 transition hover:text-black">
-                    <img src="%BASE_URL%images/brand/mastodon_logo_purple.svg" alt="" class="h-4 w-4" aria-hidden="true" />
-                    Mastodon
-                  </a>
-                </div>
-              </div>
-
-              <div class="space-y-3">
-                <a
-                  href="%BASE_URL%register/"
-                  aria-label="Register an axi.im account"
-                  class="w-fit border border-black bg-black px-4 py-2 text-[11px] text-white hover:bg-black/85 sm:text-xs inline-flex flex-wrap items-center justify-center gap-x-1 squircle-control font-semibold transition focus:outline-none focus:ring-2 focus:ring-black/25"
-                >
-                  <span>Register</span>
-                  <span class="username-shimmer">@axi.im</span>
+                </a>
+                <a href="https://mastodon.social/@axichat" target="_blank" rel="noreferrer" class="inline-flex items-center gap-2 text-sm text-black/70 transition hover:text-black">
+                  <img src="%BASE_URL%images/brand/mastodon_logo_purple.svg" alt="" class="h-4 w-4" aria-hidden="true" />
+                  Mastodon
                 </a>
               </div>
+            </div>
+
+            <div class="space-y-3">
+              <a
+                href="%BASE_URL%register/"
+                aria-label="Register an axi.im account"
+                class="axi-button-bounce w-fit border border-black bg-black px-4 py-2 text-[11px] text-white hover:bg-black/85 sm:text-xs inline-flex flex-wrap items-center justify-center gap-x-1 squircle-control font-semibold transition focus:outline-none focus:ring-2 focus:ring-black/25"
+              >
+                <span>Register</span>
+                <span class="username-shimmer">@axi.im</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="mt-8 w-fit rounded-xl border border-black/10 bg-white px-3 py-2 text-xs text-black/70" aria-labelledby="server-status-title">
+            <div id="server-status-title" class="text-[10px] font-semibold uppercase tracking-[0.18em] text-black/55">Server Status</div>
+            <div class="mt-2 flex flex-col gap-2">
+              <span class="grid grid-cols-[3.5rem_auto] items-center gap-x-2">
+                <span>Email:</span>
+                <span class="inline-flex items-center gap-1">
+                  <span id="email-status-dot" class="h-2 w-2 rounded-full bg-amber-400" aria-hidden="true"></span>
+                  <span id="email-status-label" class="font-semibold text-black">Unknown</span>
+                </span>
+              </span>
+              <span class="grid grid-cols-[3.5rem_auto] items-center gap-x-2">
+                <span>Chat:</span>
+                <span class="inline-flex items-center gap-1">
+                  <span id="chat-status-dot" class="h-2 w-2 rounded-full bg-amber-400" aria-hidden="true"></span>
+                  <span id="chat-status-label" class="font-semibold text-black">Unknown</span>
+                </span>
+              </span>
             </div>
           </div>
         </div>

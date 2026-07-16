@@ -1,11 +1,18 @@
-import "./index.css";
-
 const releaseApiUrl = "https://api.github.com/repos/axichat/axichat/releases/latest";
 const releaseCacheStorageKey = "axichat.latest-release.v2";
 const releaseCacheTtlMs = 5 * 60 * 1000;
+const repositoryApiUrl = "https://api.github.com/repos/axichat/axichat";
+const githubStarCacheStorageKey = "axichat.github-stars.v1";
+const githubStarCacheTtlMs = 6 * 60 * 60 * 1000;
 const appStoreBundleId = "im.axi.axichat";
 const appStoreLookupUrl = `https://itunes.apple.com/lookup?bundleId=${encodeURIComponent(appStoreBundleId)}&country=us`;
 const appStoreLookupTimeoutMs = 8000;
+const serverStatusUrl = "https://axi.im:8443/status";
+const serverStatusRefreshMs = 30000;
+const serverStatusTimeoutMs = 10000;
+const serverStatusClientToken = "axichatpublictoken";
+
+type ServiceIndicatorState = "online" | "offline" | "unknown";
 
 type ReleaseAsset = {
   name: string;
@@ -17,6 +24,11 @@ type ReleaseCacheRecord = {
   publishedAt: string;
   fetchedAt: number;
   assets: ReleaseAsset[];
+};
+
+type GitHubStarCacheRecord = {
+  count: number;
+  fetchedAt: number;
 };
 
 type AppStoreLookupResult = {
@@ -66,6 +78,91 @@ function writeReleaseCache(entry: ReleaseCacheRecord) {
   }
 }
 
+function isGitHubStarCacheRecord(value: unknown): value is GitHubStarCacheRecord {
+  if (!value || typeof value !== "object") {
+    return false;
+  }
+  const entry = value as Partial<GitHubStarCacheRecord>;
+  return (
+    typeof entry.count === "number" &&
+    Number.isInteger(entry.count) &&
+    entry.count >= 0 &&
+    typeof entry.fetchedAt === "number" &&
+    Number.isFinite(entry.fetchedAt)
+  );
+}
+
+function readGitHubStarCache(): GitHubStarCacheRecord | null {
+  try {
+    const rawValue = window.localStorage.getItem(githubStarCacheStorageKey);
+    if (!rawValue) {
+      return null;
+    }
+    const parsed = JSON.parse(rawValue) as unknown;
+    return isGitHubStarCacheRecord(parsed) ? parsed : null;
+  } catch {
+    return null;
+  }
+}
+
+function writeGitHubStarCache(entry: GitHubStarCacheRecord) {
+  try {
+    window.localStorage.setItem(githubStarCacheStorageKey, JSON.stringify(entry));
+  } catch {
+    return;
+  }
+}
+
+function formatGitHubStarCount(count: number) {
+  try {
+    return new Intl.NumberFormat("en-US", {
+      notation: "compact",
+      maximumFractionDigits: 1,
+    }).format(count);
+  } catch {
+    return count.toLocaleString("en-US");
+  }
+}
+
+function showGitHubStarCount(count: number) {
+  const link = document.getElementById("github-link");
+  const container = document.getElementById("github-star-count");
+  const value = document.getElementById("github-star-count-value");
+  if (!link || !container || !value) {
+    return;
+  }
+  value.textContent = formatGitHubStarCount(count);
+  container.setAttribute("data-visible", "true");
+  link.setAttribute("aria-label", `Open Axichat on GitHub, ${count.toLocaleString("en-US")} stars`);
+}
+
+async function loadGitHubStarCount() {
+  const cached = readGitHubStarCache();
+  if (cached) {
+    showGitHubStarCount(cached.count);
+    if (Date.now() - cached.fetchedAt <= githubStarCacheTtlMs) {
+      return;
+    }
+  }
+  try {
+    const response = await fetch(repositoryApiUrl, {
+      headers: { Accept: "application/vnd.github+json" },
+    });
+    if (!response.ok) {
+      return;
+    }
+    const payload = (await response.json()) as { stargazers_count?: unknown };
+    if (typeof payload.stargazers_count !== "number" || !Number.isInteger(payload.stargazers_count)) {
+      return;
+    }
+    const entry = { count: payload.stargazers_count, fetchedAt: Date.now() };
+    writeGitHubStarCache(entry);
+    showGitHubStarCount(entry.count);
+  } catch {
+    return;
+  }
+}
+
 function formatReleaseDate(value: string) {
   if (!value) {
     return "";
@@ -110,7 +207,7 @@ function updateHeroWindowsDownload(assets: ReleaseAsset[]) {
   }
 
   button.href = asset.browser_download_url;
-  format.textContent = installer ? "Installer .exe" : "Portable ZIP";
+  format.textContent = installer ? "EXE" : "ZIP";
 }
 
 async function loadLatestRelease() {
@@ -182,11 +279,11 @@ function loadAppStoreBadge() {
     settled = true;
     window.clearTimeout(timeoutId);
     script.remove();
-    delete (window as Window & Record<string, unknown>)[callbackName];
+    delete (window as unknown as Record<string, unknown>)[callbackName];
   };
 
   const timeoutId = window.setTimeout(cleanup, appStoreLookupTimeoutMs);
-  (window as Window & Record<string, (payload: AppStoreLookupResponse) => void>)[callbackName] = (payload) => {
+  (window as unknown as Record<string, (payload: AppStoreLookupResponse) => void>)[callbackName] = (payload) => {
     const appStoreUrl = findAppStoreUrl(payload);
     cleanup();
     if (appStoreUrl) {
@@ -198,33 +295,6 @@ function loadAppStoreBadge() {
   document.head.appendChild(script);
 }
 
-function setUpMobileMenu() {
-  const toggle = document.getElementById("menu-toggle");
-  const panel = document.getElementById("mobile-menu");
-  const openIcon = document.getElementById("menu-icon-open");
-  const closedIcon = document.getElementById("menu-icon-closed");
-  if (!toggle || !panel || !openIcon || !closedIcon) {
-    return;
-  }
-  const openClasses = ["max-h-[32rem]", "border-t", "border-black/10", "py-4", "opacity-100"];
-  const closedClasses = ["max-h-0", "py-0", "opacity-0"];
-  const setOpen = (open: boolean) => {
-    panel.classList.remove(...(open ? closedClasses : openClasses));
-    panel.classList.add(...(open ? openClasses : closedClasses));
-    toggle.setAttribute("aria-expanded", String(open));
-    toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
-    openIcon.classList.toggle("hidden", !open);
-    closedIcon.classList.toggle("hidden", open);
-  };
-  toggle.addEventListener("click", () => {
-    setOpen(toggle.getAttribute("aria-expanded") !== "true");
-  });
-  panel.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", () => setOpen(false));
-  });
-  window.addEventListener("hashchange", () => setOpen(false));
-}
-
 function setUpHeroVideo() {
   const video = document.getElementById("hero-video") as HTMLVideoElement | null;
   const playButton = document.getElementById("hero-video-play");
@@ -233,16 +303,30 @@ function setUpHeroVideo() {
   }
   const tryPlay = () => {
     if (!video.paused) {
+      video.controls = false;
       playButton.hidden = true;
       return;
     }
-    video.play().then(
+    let playResult: Promise<void> | undefined;
+    try {
+      playResult = video.play();
+    } catch {
+      video.controls = true;
+      playButton.hidden = false;
+      return;
+    }
+    if (!playResult || typeof playResult.then !== "function") {
+      return;
+    }
+    playResult.then(
       () => {
+        video.controls = false;
         playButton.hidden = true;
       },
       (error: unknown) => {
         const errorName = typeof error === "object" && error && "name" in error ? String((error as { name?: unknown }).name) : "";
         if (errorName === "NotAllowedError") {
+          video.controls = true;
           playButton.hidden = false;
         }
       }
@@ -258,6 +342,82 @@ function setUpHeroVideo() {
   tryPlay();
 }
 
+function setUpMobileNavigation() {
+  const navigation = document.getElementById("mobile-navigation") as HTMLDetailsElement | null;
+  if (!navigation) {
+    return;
+  }
+  document.addEventListener("click", (event) => {
+    if (navigation.open && event.target instanceof Node && !navigation.contains(event.target)) {
+      navigation.open = false;
+    }
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      navigation.open = false;
+    }
+  });
+  navigation.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      navigation.open = false;
+    });
+  });
+}
+
+function toIndicatorState(value: unknown): ServiceIndicatorState {
+  return value === "online" || value === "offline" ? value : "unknown";
+}
+
+function showServerStatus(service: "email" | "chat", status: ServiceIndicatorState) {
+  const dot = document.getElementById(`${service}-status-dot`);
+  const label = document.getElementById(`${service}-status-label`);
+  if (!dot || !label) {
+    return;
+  }
+  dot.classList.remove("bg-emerald-500", "bg-rose-500", "bg-amber-400");
+  dot.classList.add(status === "online" ? "bg-emerald-500" : status === "offline" ? "bg-rose-500" : "bg-amber-400");
+  label.textContent = status === "online" ? "Online" : status === "offline" ? "Offline" : "Unknown";
+}
+
+function setUpServerStatus() {
+  let controller: AbortController | null = null;
+  let timeoutId = 0;
+
+  const load = async () => {
+    controller?.abort();
+    controller = typeof AbortController === "function" ? new AbortController() : null;
+    if (controller) {
+      timeoutId = window.setTimeout(() => controller?.abort(), serverStatusTimeoutMs);
+    }
+    try {
+      const response = await fetch(serverStatusUrl, {
+        headers: {
+          Accept: "application/json",
+          "X-Client-Token": serverStatusClientToken,
+        },
+        signal: controller?.signal,
+      });
+      if (response.status !== 200 && response.status !== 503) {
+        throw new Error(`status_lookup_${response.status}`);
+      }
+      const payload = (await response.json()) as { stalwart?: unknown; ejabberd?: unknown };
+      showServerStatus("email", toIndicatorState(payload.stalwart));
+      showServerStatus("chat", toIndicatorState(payload.ejabberd));
+    } catch {
+      showServerStatus("email", "unknown");
+      showServerStatus("chat", "unknown");
+    } finally {
+      if (timeoutId) {
+        window.clearTimeout(timeoutId);
+        timeoutId = 0;
+      }
+    }
+  };
+
+  void load();
+  window.setInterval(() => void load(), serverStatusRefreshMs);
+}
+
 function setFooterYear() {
   const yearEl = document.getElementById("footer-year");
   if (yearEl) {
@@ -266,7 +426,9 @@ function setFooterYear() {
 }
 
 void loadLatestRelease();
+void loadGitHubStarCount();
 loadAppStoreBadge();
-setUpMobileMenu();
+setUpMobileNavigation();
 setUpHeroVideo();
+setUpServerStatus();
 setFooterYear();

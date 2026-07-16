@@ -1,4 +1,3 @@
-import "./index.css";
 import { createQrSvg } from "./qr";
 
 type PublicAxiConfig = {
@@ -160,13 +159,16 @@ async function sha1HexUpper(text: string) {
 }
 
 async function isPasswordPwned(password: string): Promise<boolean> {
+  const controller = typeof AbortController === "function" ? new AbortController() : null;
+  const timeoutId = controller ? window.setTimeout(() => controller.abort(), 10000) : 0;
   try {
     const hash = await sha1HexUpper(password);
     const prefix = hash.slice(0, 5);
     const suffix = hash.slice(5);
-    const response = await fetch(`https://api.pwnedpasswords.com/range/${prefix}`, {
-      signal: AbortSignal.timeout(10000),
-    });
+    const response = await fetch(
+      `https://api.pwnedpasswords.com/range/${prefix}`,
+      controller ? { signal: controller.signal } : undefined
+    );
     if (!response.ok) {
       return false;
     }
@@ -174,6 +176,10 @@ async function isPasswordPwned(password: string): Promise<boolean> {
     return body.split(/\r?\n/).some((line) => line.split(":")[0]?.trim().toUpperCase() === suffix);
   } catch {
     return false;
+  } finally {
+    if (timeoutId) {
+      window.clearTimeout(timeoutId);
+    }
   }
 }
 
@@ -248,10 +254,9 @@ async function apiRequest<T>(
     timeoutMs?: number;
   }
 ): Promise<ApiResult<T>> {
-  const controller = new AbortController();
-  const timeoutId = window.setTimeout(() => {
-    controller.abort();
-  }, options.timeoutMs ?? 30000);
+  const controller = typeof AbortController === "function" ? new AbortController() : null;
+  let timedOut = false;
+  let timeoutId = 0;
 
   const headers = new Headers();
   if (options.body !== undefined) {
@@ -265,13 +270,21 @@ async function apiRequest<T>(
   }
 
   try {
-    const response = await fetch(`${apiBaseUrl(config)}${path}`, {
+    const request = fetch(`${apiBaseUrl(config)}${path}`, {
       method: options.method,
       credentials: "omit",
       headers,
       body: options.body === undefined ? undefined : JSON.stringify(options.body),
-      signal: controller.signal,
+      signal: controller?.signal,
     });
+    const timeout = new Promise<Response>((_, reject) => {
+      timeoutId = window.setTimeout(() => {
+        timedOut = true;
+        controller?.abort();
+        reject(new Error("request_timeout"));
+      }, options.timeoutMs ?? 30000);
+    });
+    const response = await Promise.race([request, timeout]);
     const text = await response.text();
     let payload: unknown = {};
     if (text.trim() !== "") {
@@ -290,10 +303,11 @@ async function apiRequest<T>(
     }
     return { ok: true, status: response.status, payload: payload as T };
   } catch (error) {
-    const timedOut = error instanceof DOMException && error.name === "AbortError";
     return { ok: false, error: timedOut ? "request_timeout" : "network_error", network: true, timeout: timedOut };
   } finally {
-    window.clearTimeout(timeoutId);
+    if (timeoutId) {
+      window.clearTimeout(timeoutId);
+    }
   }
 }
 
@@ -467,9 +481,9 @@ function formatCountdown(seconds: number) {
 }
 
 const primaryButtonClass =
-  "inline-flex items-center gap-2 squircle-control border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition hover:bg-black/85 disabled:cursor-not-allowed disabled:border-black/20 disabled:bg-black/20";
+  "axi-button-bounce inline-flex items-center gap-2 squircle-control border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition hover:bg-black/85 disabled:cursor-not-allowed disabled:border-black/20 disabled:bg-black/20";
 const secondaryButtonClass =
-  "inline-flex squircle-control border border-black/15 bg-white px-4 py-2 text-sm font-semibold text-black transition hover:bg-black/[0.03] disabled:cursor-not-allowed disabled:opacity-50";
+  "axi-button-bounce inline-flex squircle-control border border-black/15 bg-white px-4 py-2 text-sm font-semibold text-black transition hover:bg-black/[0.03] disabled:cursor-not-allowed disabled:opacity-50";
 
 type OtpInput = {
   root: HTMLDivElement;
@@ -1300,7 +1314,7 @@ function showSession() {
   const buttonRow = document.createElement("div");
   buttonRow.className = "flex flex-wrap items-center gap-3";
   buttonRow.innerHTML = `
-    <button type="button" id="finish-button" disabled class="inline-flex squircle-control border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition hover:bg-black/85 disabled:cursor-not-allowed disabled:border-black/20 disabled:bg-black/20">Finish setup</button>
+    <button type="button" id="finish-button" disabled class="axi-button-bounce inline-flex squircle-control border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition hover:bg-black/85 disabled:cursor-not-allowed disabled:border-black/20 disabled:bg-black/20">Finish setup</button>
     <button type="button" id="skip-button" class="${secondaryButtonClass}">Skip</button>
     <span id="finish-hint" class="text-sm text-amber-800">Recovery can be added later in the app.</span>
   `;
@@ -1545,6 +1559,8 @@ async function handleSignup(event: Event) {
 }
 
 function setUpSignupForm() {
+  heading.hidden = true;
+  form.noValidate = true;
   domainLabel.textContent = `@${config.accountDomain}`;
   if (configError) {
     configErrorBox.textContent = configError;
