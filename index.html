@@ -442,6 +442,54 @@
           </div>
         </section>
 
+        <script>
+          (() => {
+            const appStoreBadge = document.querySelector("[data-app-store-badge]");
+            if (!appStoreBadge) return;
+
+            const iosScreenshotNames = new Set(["01", "02", "05", "06"]);
+            const screenshots = [];
+
+            document.querySelectorAll("picture").forEach((picture) => {
+              const source = picture.querySelector('source[type="image/webp"]');
+              const image = picture.querySelector("img");
+              if (!source || !image) return;
+
+              const androidWebp = source.getAttribute("srcset");
+              const androidPng = image.getAttribute("src");
+              if (!androidWebp || !androidPng || !androidWebp.includes("images/screenshots/mobile/")) return;
+
+              const match = androidWebp.match(/\/(\d{2})\.webp$/);
+              if (!match || !iosScreenshotNames.has(match[1])) return;
+
+              const name = match[1];
+              const base = androidWebp.slice(0, androidWebp.lastIndexOf("/") + 1);
+              screenshots.push({
+                source,
+                image,
+                androidWebp,
+                androidPng,
+                iosWebp: `${base}ios/${name}.webp`,
+                iosPng: `${base}ios/${name}.png`,
+              });
+            });
+
+            const syncScreenshots = () => {
+              const useIos = !appStoreBadge.hidden;
+              screenshots.forEach(({ source, image, androidWebp, androidPng, iosWebp, iosPng }) => {
+                source.setAttribute("srcset", useIos ? iosWebp : androidWebp);
+                image.setAttribute("src", useIos ? iosPng : androidPng);
+              });
+            };
+
+            syncScreenshots();
+            new MutationObserver(syncScreenshots).observe(appStoreBadge, {
+              attributes: true,
+              attributeFilter: ["hidden"],
+            });
+          })();
+        </script>
+
         <section id="faq" class="border-y border-black/10 py-28 sm:py-40">
           <div class="mx-auto w-full max-w-[84rem] px-12">
             <div class="mb-10">
