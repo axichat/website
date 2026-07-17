@@ -1,0 +1,404 @@
+html:root {
+  color-scheme: dark;
+  --surface: #09090b;
+  --surface-raise: #16161a;
+  --surface-muted: rgba(255, 255, 255, 0.065);
+  --ink: #f7f7f8;
+  --ink-muted: rgba(247, 247, 248, 0.76);
+  --grid: rgba(255, 255, 255, 0.085);
+  --line: rgba(255, 255, 255, 0.16);
+  --text: #f7f7f8;
+  --text-muted: rgba(247, 247, 248, 0.76);
+  --text-faint: rgba(247, 247, 248, 0.66);
+  --shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  --theme-toggle-background: #3d3d43;
+  --theme-toggle-hover: #505057;
+  --theme-toggle-focus: rgba(255, 255, 255, 0.4);
+}
+
+html .axi-title__logo {
+  filter: invert(1);
+}
+
+html .theme-toggle,
+html .theme-toggle-visual {
+  background: #3d3d43;
+  background: var(--theme-toggle-background);
+}
+
+html .theme-toggle:hover,
+html .theme-toggle-menu:hover .theme-toggle-visual {
+  background: #505057;
+  background: var(--theme-toggle-hover);
+}
+
+html body.bg-white {
+  background:
+    radial-gradient(1200px 600px at 20% -10%, rgba(255, 255, 255, 0.085), transparent 60%),
+    radial-gradient(900px 500px at 90% 10%, rgba(255, 255, 255, 0.05), transparent 60%),
+    var(--surface);
+}
+
+html ::selection {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+html .glass-panel {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.015));
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+html .bg-white {
+  background-color: var(--surface);
+}
+
+html .rounded-xl.bg-white,
+html .rounded-2xl.bg-white,
+html .rounded-3xl.bg-white,
+html .squircle-control.bg-white {
+  background-color: var(--surface-raise);
+}
+
+html .bg-white\/90 {
+  background-color: rgba(9, 9, 11, 0.9);
+}
+
+html .bg-black {
+  background-color: #f5f5f6;
+}
+
+html [class~="bg-black/[0.02]"] {
+  background-color: rgba(255, 255, 255, 0.045);
+}
+
+html [class~="bg-black/[0.03]"] {
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+html [class~="bg-black/[0.06]"] {
+  background-color: rgba(255, 255, 255, 0.11);
+}
+
+html .text-black {
+  color: #f7f7f8;
+}
+
+html .text-black\/45 {
+  color: rgba(247, 247, 248, 0.62);
+}
+
+html .text-black\/50 {
+  color: rgba(247, 247, 248, 0.65);
+}
+
+html .text-black\/55 {
+  color: rgba(247, 247, 248, 0.68);
+}
+
+html .text-black\/60 {
+  color: rgba(247, 247, 248, 0.72);
+}
+
+html .text-black\/65 {
+  color: rgba(247, 247, 248, 0.76);
+}
+
+html .text-black\/70 {
+  color: rgba(247, 247, 248, 0.8);
+}
+
+html .text-black\/75 {
+  color: rgba(247, 247, 248, 0.84);
+}
+
+html .text-white {
+  color: #09090b;
+}
+
+html .text-white\/70 {
+  color: rgba(9, 9, 11, 0.7);
+}
+
+html .text-white\/80 {
+  color: rgba(9, 9, 11, 0.8);
+}
+
+html .border-black {
+  border-color: #f5f5f6;
+}
+
+html .border-black\/10 {
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+html .border-black\/15 {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+html .border-black\/20 {
+  border-color: rgba(255, 255, 255, 0.24);
+}
+
+html .ring-white {
+  --tw-ring-color: var(--surface);
+}
+
+html .accent-black {
+  accent-color: #f5f5f6;
+}
+
+html [class~="marker:text-black/70"] *::marker,
+html [class~="marker:text-black/70"]::marker {
+  color: rgba(247, 247, 248, 0.8);
+}
+
+html [class~="hover:bg-black/85"]:hover {
+  background-color: rgba(245, 245, 246, 0.84);
+}
+
+html [class~="hover:bg-black/[0.03]"]:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+html [class~="hover:bg-black/[0.04]"]:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+html [class~="hover:text-black"]:hover {
+  color: #ffffff;
+}
+
+html [class~="hover:text-black/75"]:hover {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+html .group:hover [class~="group-hover:text-white"] {
+  color: #09090b;
+}
+
+html #hero-downloads a:hover img {
+  filter: brightness(1.12);
+}
+
+html [class~="focus:border-black"]:focus,
+html [class~="focus-within:border-black"]:focus-within {
+  border-color: #f5f5f6;
+}
+
+html [class~="focus:ring-black/15"]:focus,
+html [class~="focus-within:ring-black/15"]:focus-within {
+  --tw-ring-color: rgba(255, 255, 255, 0.2);
+}
+
+html [class~="focus:ring-black/25"]:focus {
+  --tw-ring-color: rgba(255, 255, 255, 0.34);
+}
+
+html [class~="disabled:bg-black/20"]:disabled {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+html [class~="disabled:bg-black/[0.03]"]:disabled {
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+html [class~="disabled:border-black/20"]:disabled {
+  border-color: rgba(255, 255, 255, 0.24);
+}
+
+html .bg-amber-50 {
+  background-color: rgba(120, 89, 15, 0.34);
+}
+
+html .text-amber-800,
+html .text-amber-900 {
+  color: #fde68a;
+}
+
+html .text-rose-600,
+html .text-rose-700 {
+  color: #fda4af;
+}
+
+html input,
+html select,
+html textarea {
+  color-scheme: dark;
+}
+
+html #unregister:target {
+  animation-name: faq-unregister-highlight-dark;
+}
+
+.downloads-page {
+  background:
+    radial-gradient(1000px 520px at 10% -10%, rgba(255, 255, 255, 0.085), transparent 60%),
+    radial-gradient(900px 500px at 100% 0%, rgba(255, 255, 255, 0.05), transparent 60%),
+    var(--surface);
+}
+
+.downloads-page .site-header {
+  background: rgba(9, 9, 11, 0.9);
+}
+
+.downloads-page .header-link,
+.downloads-page .release-meta,
+.downloads-page .platform-card,
+.downloads-page .download-card,
+.downloads-page .compact-item,
+.downloads-page .button.secondary,
+.downloads-page .simple-row,
+.downloads-page .status-card {
+  background: #16161a;
+}
+
+.downloads-page .header-link.primary,
+.downloads-page .button:not(.secondary):not(.is-disabled) {
+  border-color: #f5f5f6;
+  background: #f5f5f6;
+  color: #09090b;
+}
+
+.downloads-page .header-link.primary:hover,
+.downloads-page .button:not(.secondary):not(.is-disabled):hover {
+  background: rgba(245, 245, 246, 0.84);
+}
+
+.downloads-page .platform-card.disabled {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.055), transparent 8rem),
+    #16161a;
+}
+
+.downloads-page .download-card.recommended {
+  border-color: rgba(255, 255, 255, 0.22);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.07), transparent 7rem),
+    #16161a;
+}
+
+.downloads-page .platform-figure,
+.downloads-page .platform-option,
+.downloads-page .file-row {
+  background: rgba(255, 255, 255, 0.065);
+}
+
+.downloads-page .platform-figure {
+  color: var(--text);
+}
+
+.downloads-page .platform-figure img[src$="apple.svg"],
+.downloads-page .platform-option-icon[src$="apple.svg"] {
+  filter: invert(1);
+}
+
+.downloads-page .platform-option:hover,
+.downloads-page .button.secondary:hover,
+.downloads-page .header-link:not(.primary):hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--text);
+}
+
+.downloads-page .google-play-badge:hover,
+.downloads-page .fdroid-badge:hover,
+.downloads-page .app-store-badge:hover {
+  filter: brightness(1.12);
+}
+
+.downloads-page .primary-download-button:hover {
+  background: #242429;
+}
+
+.downloads-page .tag {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(247, 247, 248, 0.84);
+}
+
+.downloads-page .download-card.recommended .tag {
+  background: #f5f5f6;
+  color: #09090b;
+}
+
+.downloads-page .file-row strong {
+  color: rgba(247, 247, 248, 0.9);
+}
+
+.downloads-page .file-row code {
+  color: rgba(247, 247, 248, 0.76);
+}
+
+.downloads-page .button.is-disabled {
+  border-color: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.legal-page {
+  background: #09090b;
+  color: #f7f7f8;
+}
+
+.legal-page .intro {
+  color: rgba(247, 247, 248, 0.78);
+}
+
+.legal-page .button {
+  border-color: #f5f5f6;
+  background: #f5f5f6;
+  color: #09090b;
+}
+
+.legal-page .button:hover {
+  background: rgba(245, 245, 246, 0.84);
+}
+
+.legal-page .link,
+.legal-page .paper {
+  border-color: rgba(255, 255, 255, 0.16);
+  background: #16161a;
+  color: #f7f7f8;
+}
+
+.legal-page .link:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.legal-page .paper {
+  box-shadow: 0 22px 70px rgba(0, 0, 0, 0.32);
+}
+
+.legal-page .meta {
+  border-color: rgba(255, 255, 255, 0.14);
+  color: rgba(247, 247, 248, 0.68);
+}
+
+.legal-page .content {
+  color: rgba(247, 247, 248, 0.9);
+}
+
+.legal-page .content h2,
+.legal-page .content h3 {
+  color: #f7f7f8;
+}
+
+.donate-page {
+  background: #09090b;
+  color: #f7f7f8;
+}
+
+.donate-page p,
+.donate-page .home-link {
+  color: rgba(247, 247, 248, 0.82);
+}
+
+.donate-page .home-link {
+  border-bottom-color: rgba(247, 247, 248, 0.42);
+}
+
+.donate-page .home-link:hover {
+  color: #ffffff;
+  border-bottom-color: rgba(247, 247, 248, 0.8);
+}
+
+.donate-page .actions a:hover img {
+  filter: brightness(1.1);
+}

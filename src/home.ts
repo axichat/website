@@ -172,7 +172,11 @@ function formatReleaseDate(value: string) {
   if (Number.isNaN(releasedAt.getTime())) {
     return "";
   }
-  return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric" }).format(releasedAt);
+  const parts = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric" }).formatToParts(releasedAt);
+  const day = parts.find((part) => part.type === "day")?.value;
+  const month = parts.find((part) => part.type === "month")?.value;
+  const year = parts.find((part) => part.type === "year")?.value;
+  return day && month && year ? `${day} ${month} ${year}` : "";
 }
 
 function showRelease(version: string, publishedAt: string) {
