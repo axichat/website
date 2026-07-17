@@ -135,15 +135,7 @@
   display: none;
 }
 
-.theme-toggle--floating {
-  position: fixed;
-  right: 1rem;
-  top: 1rem;
-  z-index: 50;
-}
-
 .register-brand-row {
-  position: relative;
   display: flex;
   min-height: 3.75rem;
   align-items: center;
@@ -152,28 +144,6 @@
 
 .register-brand-row .axi-title {
   gap: 0.75rem;
-}
-
-.register-brand-row .theme-toggle {
-  position: absolute;
-  right: -0.5rem;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.page-title-row {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
-.page-title-row > :first-child {
-  min-width: 0;
-}
-
-.page-title-row .theme-toggle {
-  margin-top: 0.25rem;
 }
 
 @supports (corner-shape: squircle) {
