@@ -1622,6 +1622,8 @@ function setUpSignupForm() {
     privacyToggle.setAttribute("aria-expanded", String(!open));
     privacyNote.hidden = open;
   });
+
+  document.documentElement.setAttribute("data-registration-ready", "");
 }
 
 setUpSignupForm();

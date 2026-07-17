@@ -72,6 +72,9 @@
                   Enable JavaScript, then reload this page.
                 </div>
               </noscript>
+              <div id="signup-startup-error" hidden role="alert" class="mb-5 rounded-xl border border-amber-300/70 bg-amber-50 px-4 py-3 text-sm leading-relaxed text-amber-900">
+                Registration couldn't start. Reload this page to try again.
+              </div>
               <div id="config-error" hidden class="mb-5 rounded-xl border border-amber-300/70 bg-amber-50 px-4 py-3 text-sm text-amber-900"></div>
 
               <label class="block text-sm font-semibold text-black" for="signup-localpart">Username</label>
@@ -205,6 +208,13 @@
       </div>
     </section>
     <script src="%BASE_URL%config.js"></script>
+    <script>
+      window.addEventListener("load", function () {
+        if (!document.documentElement.hasAttribute("data-registration-ready")) {
+          document.getElementById("signup-startup-error").hidden = false;
+        }
+      });
+    </script>
     <script type="module" src="/src/register.ts"></script>
   </body>
 </html>
