@@ -8,14 +8,40 @@
       name="description"
       content="Chat-style email with integrated calendar. Free, open source, and cross-platform."
     />
+    <link rel="canonical" href="https://axi.chat/" />
     <meta property="og:title" content="Axichat - Replace your email, messenger, and calendar" />
     <meta
       property="og:description"
       content="Chat-style email with integrated calendar. Free, open source, and cross-platform."
     />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="%BASE_URL%images/brand/axichat_banner.png" />
+    <meta property="og:url" content="https://axi.chat/" />
+    <meta property="og:image" content="https://axi.chat/images/brand/axichat_banner.png" />
     <meta property="og:image:alt" content="Axichat banner" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Axichat - Replace your email, messenger, and calendar" />
+    <meta
+      name="twitter:description"
+      content="Chat-style email with integrated calendar. Free, open source, and cross-platform."
+    />
+    <meta name="twitter:image" content="https://axi.chat/images/brand/axichat_banner.png" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "@id": "https://axi.chat/#organization",
+        "name": "Axichat LLC",
+        "alternateName": "Axichat",
+        "url": "https://axi.chat/",
+        "logo": "https://axi.chat/images/brand/axichat_icon.webp",
+        "email": "support@axi.chat",
+        "sameAs": [
+          "https://github.com/axichat",
+          "https://gitlab.com/axichat",
+          "https://mastodon.social/@axichat"
+        ]
+      }
+    </script>
     <link rel="icon" type="image/png" sizes="32x32" href="%BASE_URL%favicon-32x32.png?v=3" />
     <link rel="apple-touch-icon" sizes="57x57" href="%BASE_URL%apple-icon-57x57.png" />
     <link rel="apple-touch-icon" sizes="60x60" href="%BASE_URL%apple-icon-60x60.png" />
@@ -609,21 +635,15 @@
               <div class="scroll-mt-24 rounded-2xl border border-black/10 bg-white px-5 py-4 transition-shadow">
                 <div class="text-sm font-semibold text-black">How does Axichat compare to Spike?</div>
                 <div class="mt-3 text-sm leading-relaxed text-black/70">
-                  <p>Both Spike and Axichat are tremendous improvements over traditional email clients. However,</p>
+                  <p>Both Spike and Axichat are tremendous improvements over traditional email clients. However, Axichat goes further:</p>
                   <ul class="mt-3 list-disc space-y-2 pl-5">
                     <li>
-                      Axichat provides a richer IM experience by using a combination of chat (XMPP) and email (SMTP) protocols.
-                      Spike limits itself to SMTP.
+                      Both turn email into chat-like conversations, but Axichat also uses XMPP for Axichat-to-Axichat messaging
+                      while retaining SMTP and IMAP for email. Spike's conversational email remains email-based.
                     </li>
-                    <li>
-                      Spike is more targeted to business teams, whereas Axichat works just as well for individual, family, and
-                      business use cases.
-                    </li>
-                    <li>Axichat is open source, so you can see our code.</li>
-                    <li>
-                      Axichat was made with Flutter, which provides significantly better UI and performance on all
-                      platforms.
-                    </li>
+                    <li>Spike emphasizes team productivity, whereas Axichat works just as well for individuals, families, and businesses.</li>
+                    <li>Axichat is AGPL-3.0 open source, so you can inspect, modify, and self-host the software.</li>
+                    <li>Axichat's Flutter codebase provides a consistent experience across supported desktop and mobile platforms.</li>
                   </ul>
                 </div>
               </div>
@@ -731,25 +751,55 @@
             <div class="mb-10">
               <h2 class="mt-3 text-3xl font-semibold tracking-tight text-black sm:text-4xl font-display">Contact</h2>
               <p class="mt-3 max-w-2xl text-sm leading-relaxed text-black/70">
-                <span class="block">
-                  <span>Email: </span>
-                  <a href="mailto:support@axi.chat" class="underline underline-offset-4">support@axi.chat</a><span>.</span>
-                </span>
-                <span class="mt-1 block">
-                  <span>For bugs and feature requests, use </span>
-                  <a href="https://github.com/axichat/axichat/issues" target="_blank" rel="noreferrer" class="underline underline-offset-4">GitHub Issues</a><span>.</span>
-                </span>
+                Choose the channel that best fits your message. General support normally responds within three business days.
               </p>
             </div>
 
-            <div class="inline-flex max-w-full items-start gap-2 text-sm text-black/70">
-              <svg viewBox="0 0 24 24" fill="none" class="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true">
-                <path
-                  d="M23.955 13.257 20.732 2.66a.6.6 0 0 0-1.145 0l-2.81 8.64H7.223l-2.81-8.64a.6.6 0 0 0-1.145 0L.045 13.257a.6.6 0 0 0 .223.678L12 22.485l11.732-8.55a.6.6 0 0 0 .223-.678Z"
-                  fill="currentColor"
-                />
-              </svg>
-              <a href="https://gitlab.com/axichat/axichat" target="_blank" rel="noreferrer" class="break-all underline underline-offset-4">https://gitlab.com/axichat/axichat</a>
+            <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              <article class="rounded-2xl border border-black/10 bg-white p-5">
+                <h3 class="font-display text-base font-semibold text-black">General support</h3>
+                <p class="mt-2 text-sm leading-relaxed text-black/65">Account, setup, and product questions.</p>
+                <a href="mailto:support@axi.chat" class="mt-4 inline-block break-all text-sm font-medium text-black underline underline-offset-4">support@axi.chat</a>
+              </article>
+
+              <article class="rounded-2xl border border-black/10 bg-white p-5">
+                <h3 class="font-display text-base font-semibold text-black">Security reports</h3>
+                <p class="mt-2 text-sm leading-relaxed text-black/65">Report a vulnerability privately before public disclosure.</p>
+                <a href="mailto:security@axi.chat" class="mt-4 inline-block break-all text-sm font-medium text-black underline underline-offset-4">security@axi.chat</a>
+              </article>
+
+              <article class="rounded-2xl border border-black/10 bg-white p-5">
+                <h3 class="font-display text-base font-semibold text-black">Bugs and features</h3>
+                <p class="mt-2 text-sm leading-relaxed text-black/65">Share reproducible bugs and feature requests publicly.</p>
+                <a href="https://github.com/axichat/axichat/issues" target="_blank" rel="noreferrer" class="mt-4 inline-block text-sm font-medium text-black underline underline-offset-4">GitHub Issues</a>
+              </article>
+
+              <article class="rounded-2xl border border-black/10 bg-white p-5">
+                <h3 class="font-display text-base font-semibold text-black">Privacy and legal</h3>
+                <p class="mt-2 text-sm leading-relaxed text-black/65">Read request and correspondence details in our policies.</p>
+                <div class="mt-4 flex flex-wrap gap-x-3 gap-y-2 text-sm font-medium text-black">
+                  <a href="%BASE_URL%privacy/" class="underline underline-offset-4">Privacy</a>
+                  <a href="%BASE_URL%terms/" class="underline underline-offset-4">Terms</a>
+                </div>
+              </article>
+            </div>
+
+            <div class="mt-8 max-w-3xl rounded-2xl border border-black/10 bg-white p-5">
+              <h3 class="font-display text-base font-semibold text-black">Official domains</h3>
+              <dl class="mt-3 grid gap-3 text-sm leading-relaxed text-black/70 sm:grid-cols-[auto_1fr] sm:gap-x-5">
+                <dt class="font-mono font-semibold text-black">axi.chat</dt>
+                <dd>Website and public support</dd>
+                <dt class="font-mono font-semibold text-black">axi.im</dt>
+                <dd>Hosted accounts and services</dd>
+                <dt class="font-mono font-semibold text-black">axichat.com</dt>
+                <dd>Corporate and legal correspondence</dd>
+              </dl>
+              <p class="mt-4 text-xs leading-relaxed text-black/55">
+                Axichat source is published on
+                <a href="https://gitlab.com/axichat/axichat" target="_blank" rel="noreferrer" class="underline underline-offset-4">GitLab</a>
+                and mirrored to
+                <a href="https://github.com/axichat/axichat" target="_blank" rel="noreferrer" class="underline underline-offset-4">GitHub</a>.
+              </p>
             </div>
           </div>
         </section>

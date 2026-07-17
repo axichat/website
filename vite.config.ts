@@ -14,6 +14,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(projectRoot, "index.html"),
+        notFound: resolve(projectRoot, "404.html"),
         register: resolve(projectRoot, "register/index.html"),
       },
     },

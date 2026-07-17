@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://axi.chat/sitemap.xml

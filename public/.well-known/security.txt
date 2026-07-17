@@ -1,0 +1,4 @@
+Contact: mailto:security@axi.chat
+Expires: 2027-07-01T00:00:00Z
+Preferred-Languages: en
+Canonical: https://axi.chat/.well-known/security.txt
