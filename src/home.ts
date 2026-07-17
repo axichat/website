@@ -146,6 +146,7 @@ async function loadGitHubStarCount() {
   }
   try {
     const response = await fetch(repositoryApiUrl, {
+      cache: "no-store",
       headers: { Accept: "application/vnd.github+json" },
     });
     if (!response.ok) {
