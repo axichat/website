@@ -180,6 +180,31 @@ html #hero-downloads a:hover img {
   filter: brightness(1.12);
 }
 
+html #hero-downloads .hero-custom-download {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+html #hero-downloads .hero-custom-download:hover {
+  background-color: rgba(0, 0, 0, 0.85);
+}
+
+html #hero-downloads .hero-custom-download [class~="text-white"] {
+  color: #ffffff;
+}
+
+html #hero-downloads .hero-custom-download [class~="text-white/70"] {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+html #hero-downloads .hero-custom-download [class~="text-white/80"] {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+html #hero-downloads .hero-custom-download.group:hover [class~="group-hover:text-white"] {
+  color: #ffffff;
+}
+
 html [class~="focus:border-black"]:focus,
 html [class~="focus-within:border-black"]:focus-within {
   border-color: #f5f5f6;
@@ -241,7 +266,6 @@ html #unregister:target {
   background: rgba(9, 9, 11, 0.9);
 }
 
-.downloads-page .header-link,
 .downloads-page .release-meta,
 .downloads-page .platform-card,
 .downloads-page .download-card,
@@ -252,16 +276,20 @@ html #unregister:target {
   background: #16161a;
 }
 
-.downloads-page .header-link.primary,
+.downloads-page .register-link,
 .downloads-page .button:not(.secondary):not(.is-disabled) {
   border-color: #f5f5f6;
   background: #f5f5f6;
   color: #09090b;
 }
 
-.downloads-page .header-link.primary:hover,
+.downloads-page .register-link:hover,
 .downloads-page .button:not(.secondary):not(.is-disabled):hover {
   background: rgba(245, 245, 246, 0.84);
+}
+
+.downloads-page .register-link:focus-visible {
+  outline-color: rgba(255, 255, 255, 0.4);
 }
 
 .downloads-page .platform-card.disabled {
@@ -293,8 +321,7 @@ html #unregister:target {
 }
 
 .downloads-page .platform-option:hover,
-.downloads-page .button.secondary:hover,
-.downloads-page .header-link:not(.primary):hover {
+.downloads-page .button.secondary:hover {
   background: rgba(255, 255, 255, 0.12);
   color: var(--text);
 }

@@ -474,6 +474,31 @@ main {
   filter: brightness(1.12);
 }
 
+:root[data-theme="dark"] #hero-downloads .hero-custom-download {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+:root[data-theme="dark"] #hero-downloads .hero-custom-download:hover {
+  background-color: rgba(0, 0, 0, 0.85);
+}
+
+:root[data-theme="dark"] #hero-downloads .hero-custom-download [class~="text-white"] {
+  color: #ffffff;
+}
+
+:root[data-theme="dark"] #hero-downloads .hero-custom-download [class~="text-white/70"] {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+:root[data-theme="dark"] #hero-downloads .hero-custom-download [class~="text-white/80"] {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+:root[data-theme="dark"] #hero-downloads .hero-custom-download.group:hover [class~="group-hover:text-white"] {
+  color: #ffffff;
+}
+
 :root[data-theme="dark"] [class~="focus:border-black"]:focus,
 :root[data-theme="dark"] [class~="focus-within:border-black"]:focus-within {
   border-color: #f5f5f6;
