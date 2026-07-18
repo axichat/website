@@ -5,7 +5,6 @@
   var root = document.documentElement;
   var supportsSelectors = typeof document.querySelector === "function" && typeof document.querySelectorAll === "function";
   var darkStyles = supportsSelectors ? document.querySelector("link[data-dark-styles]") : null;
-  var systemTheme = typeof window.matchMedia === "function" ? window.matchMedia("(prefers-color-scheme: dark)") : null;
 
   function readStoredTheme() {
     try {
@@ -22,10 +21,6 @@
     } catch (error) {
       // The active theme still applies when storage is unavailable.
     }
-  }
-
-  function preferredTheme() {
-    return systemTheme && systemTheme.matches ? "dark" : "light";
   }
 
   function updateControls(theme, reveal) {
@@ -86,19 +81,13 @@
     }
   }
 
-  function handleSystemThemeChange(event) {
-    if (!readStoredTheme()) {
-      applyTheme(event.matches ? "dark" : "light", true);
-    }
-  }
-
   function handleStorage(event) {
     if (event.key === storageKey) {
-      applyTheme(readStoredTheme() || preferredTheme(), true);
+      applyTheme(readStoredTheme() || "light", true);
     }
   }
 
-  applyTheme(readStoredTheme() || preferredTheme(), false);
+  applyTheme(readStoredTheme() || "light", false);
 
   if (document.readyState === "loading") {
     if (typeof document.addEventListener === "function") {
@@ -110,17 +99,10 @@
     bindControls();
   }
 
-  if (systemTheme) {
-    if (typeof systemTheme.addEventListener === "function") {
-      systemTheme.addEventListener("change", handleSystemThemeChange);
-    } else if (typeof systemTheme.addListener === "function") {
-      systemTheme.addListener(handleSystemThemeChange);
-    }
-  }
-
   if (typeof window.addEventListener === "function") {
     window.addEventListener("storage", handleStorage);
   } else if (typeof window.attachEvent === "function") {
     window.attachEvent("onstorage", handleStorage);
   }
+
 })();
