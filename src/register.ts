@@ -72,7 +72,9 @@ type TotpStart = {
 type SignupFieldName = "localpart" | "password" | "passwordConfirmation" | "turnstile";
 type SignupFieldErrors = Partial<Record<SignupFieldName, string>>;
 
-const localpartPattern = /^[a-z][a-z0-9._-]{3,19}$/;
+const localpartPattern = /^(?=.{4,20}$)[a-z][a-z0-9_-]*(?:\.[a-z0-9_-]+)*$/;
+const localpartErrorMessage =
+  "Use 4-20 lowercase letters, numbers, underscores, hyphens, or periods. Start with a letter, and place periods only between other characters.";
 const otpCodeLength = 6;
 const passwordMaxLength = 64;
 const weakEntropyBits = 50;
@@ -321,7 +323,7 @@ function signupErrorMessage(code: string) {
     case "localpart_and_password_required":
       return "Enter a username and password.";
     case "invalid_localpart":
-      return "Use only letters, numbers, periods, underscores, and hyphens.";
+      return localpartErrorMessage;
     case "password_too_short":
       return "Use at least 8 characters for the password.";
     case "captcha_required":
@@ -380,7 +382,7 @@ function validateSignupFields({
   if (!canonicalLocalpart) {
     errors.localpart = "Enter a username.";
   } else if (!localpartPattern.test(canonicalLocalpart)) {
-    errors.localpart = "4-20 characters, starting with a letter; letters, numbers, '.', '_', '-'.";
+    errors.localpart = localpartErrorMessage;
   }
 
   if (!password) {
