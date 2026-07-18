@@ -199,8 +199,8 @@ function findReleaseAsset(assets: ReleaseAsset[], names: string[]) {
 
 function updateHeroWindowsDownload(assets: ReleaseAsset[]) {
   const button = document.getElementById("hero-windows-download") as HTMLAnchorElement | null;
-  const format = document.getElementById("hero-windows-download-format");
-  if (!button || !format) {
+  const image = document.getElementById("hero-windows-download-image") as HTMLImageElement | null;
+  if (!button || !image) {
     return;
   }
 
@@ -212,7 +212,12 @@ function updateHeroWindowsDownload(assets: ReleaseAsset[]) {
   }
 
   button.href = asset.browser_download_url;
-  format.textContent = installer ? "EXE" : "ZIP";
+  const format = installer ? "EXE" : "ZIP";
+  const imageSource = installer ? image.dataset.exeSrc : image.dataset.zipSrc;
+  if (imageSource) {
+    image.src = imageSource;
+  }
+  image.alt = `Download the Windows ${format}`;
 }
 
 async function loadLatestRelease() {

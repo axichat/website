@@ -249,10 +249,6 @@
         filter: brightness(0.96);
       }
 
-      .primary-download-button:hover {
-        background: rgba(0, 0, 0, 0.85);
-      }
-
       .app-store-badge {
         display: inline-flex;
         align-items: center;
@@ -289,21 +285,24 @@
       }
 
       .primary-download-button {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 0.75rem;
+        display: inline-block;
         width: 13.0625rem;
         max-width: 100%;
         height: 3.875rem;
-        border: 1px solid #a6a6a6;
         border-radius: 9px;
         background: #000000;
-        color: #ffffff;
-        padding: 0 1.25rem;
-        font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
         text-decoration: none;
-        transition: background-color 0.15s ease;
+        transition: opacity 0.15s ease;
+      }
+
+      .primary-download-button:hover {
+        opacity: 0.9;
+      }
+
+      .primary-download-button img {
+        display: block;
+        width: 100%;
+        height: auto;
       }
 
       .primary-download-button.is-disabled {
@@ -313,54 +312,7 @@
       .primary-download-button.is-disabled:hover {
         transform: none;
         filter: none;
-      }
-
-      .primary-download-main {
-        display: block;
-        min-width: 0;
-      }
-
-      .primary-download-copy {
-        display: block;
-        min-width: 0;
-      }
-
-      .primary-download-platform,
-      .primary-download-kicker {
-        display: block;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-      }
-
-      .primary-download-platform {
-        margin-top: 0.25rem;
-        color: #ffffff;
-        font-size: 1.5rem;
-        font-weight: 600;
-        line-height: 1;
-        letter-spacing: -0.025em;
-      }
-
-      .primary-download-kicker {
-        color: rgba(255, 255, 255, 0.7);
-        font-size: 0.625rem;
-        font-weight: 500;
-        line-height: 1;
-      }
-
-      .primary-download-kicker strong {
-        color: #ffffff;
-        font-size: inherit;
-        font-weight: 600;
-      }
-
-      .primary-download-arrow {
-        display: block;
-        width: 1.5rem;
-        height: 1.5rem;
-        flex-shrink: 0;
-        color: rgba(255, 255, 255, 0.8);
+        opacity: 1;
       }
 
       .sections {
@@ -857,10 +809,6 @@
         filter: brightness(1.12);
       }
 
-      :root[data-theme="dark"] .primary-download-button:hover {
-        background: #242429;
-      }
-
       :root[data-theme="dark"] .tag {
         background: rgba(255, 255, 255, 0.1);
         color: rgba(247, 247, 248, 0.84);
@@ -1013,17 +961,13 @@
               target="_blank"
               rel="noreferrer"
             >
-              <span class="primary-download-main">
-                <span class="primary-download-copy">
-                  <span class="primary-download-kicker">Download the <strong id="primary-windows-download-format">EXE</strong></span>
-                  <strong class="primary-download-platform">Windows</strong>
-                </span>
-              </span>
-              <svg viewBox="0 0 24 24" fill="none" class="primary-download-arrow" aria-hidden="true">
-                <path d="M12 4.5v9.75" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
-                <path d="m8.75 11.5 3.25 3.25 3.25-3.25" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
-                <path d="M5.5 18.5h13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
-              </svg>
+              <img
+                id="primary-windows-download-image"
+                src="../images/download-buttons/download-windows-exe.svg"
+                data-exe-src="../images/download-buttons/download-windows-exe.svg"
+                data-zip-src="../images/download-buttons/download-windows-zip.svg"
+                alt="Download the Windows EXE"
+              />
             </a>
             <a
               class="primary-download-button apple"
@@ -1031,17 +975,7 @@
               target="_blank"
               rel="noreferrer"
             >
-              <span class="primary-download-main">
-                <span class="primary-download-copy">
-                  <span class="primary-download-kicker">Download the <strong>DMG</strong></span>
-                  <strong class="primary-download-platform">macOS</strong>
-                </span>
-              </span>
-              <svg viewBox="0 0 24 24" fill="none" class="primary-download-arrow" aria-hidden="true">
-                <path d="M12 4.5v9.75" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
-                <path d="m8.75 11.5 3.25 3.25 3.25-3.25" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
-                <path d="M5.5 18.5h13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
-              </svg>
+              <img src="../images/download-buttons/download-macos-dmg.svg" alt="Download the macOS DMG" />
             </a>
             <a
               class="primary-download-button linux"
@@ -1049,17 +983,7 @@
               target="_blank"
               rel="noreferrer"
             >
-              <span class="primary-download-main">
-                <span class="primary-download-copy">
-                  <span class="primary-download-kicker">Download the <strong>AppImage</strong></span>
-                  <strong class="primary-download-platform">Linux</strong>
-                </span>
-              </span>
-              <svg viewBox="0 0 24 24" fill="none" class="primary-download-arrow" aria-hidden="true">
-                <path d="M12 4.5v9.75" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
-                <path d="m8.75 11.5 3.25 3.25 3.25-3.25" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
-                <path d="M5.5 18.5h13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
-              </svg>
+              <img src="../images/download-buttons/download-linux-appimage.svg" alt="Download the Linux AppImage" />
             </a>
           </div>
           <div id="release-meta" class="release-meta">
@@ -1552,8 +1476,8 @@
 
       function syncPrimaryWindowsDownload(entries) {
         const button = document.getElementById("primary-windows-download");
-        const format = document.getElementById("primary-windows-download-format");
-        if (!button || !format) {
+        const image = document.getElementById("primary-windows-download-image");
+        if (!button || !image) {
           return;
         }
 
@@ -1565,7 +1489,12 @@
         }
 
         button.href = entry.href;
-        format.textContent = installer ? "EXE" : "ZIP";
+        const format = installer ? "EXE" : "ZIP";
+        const imageSource = installer ? image.dataset.exeSrc : image.dataset.zipSrc;
+        if (imageSource) {
+          image.src = imageSource;
+        }
+        image.alt = `Download the Windows ${format}`;
       }
 
       function renderRelease(release) {

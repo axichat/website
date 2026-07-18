@@ -180,29 +180,8 @@ html #hero-downloads a:hover img {
   filter: brightness(1.12);
 }
 
-html #hero-downloads .hero-custom-download {
-  background-color: #000000;
-  color: #ffffff;
-}
-
-html #hero-downloads .hero-custom-download:hover {
-  background-color: rgba(0, 0, 0, 0.85);
-}
-
-html #hero-downloads .hero-custom-download [class~="text-white"] {
-  color: #ffffff;
-}
-
-html #hero-downloads .hero-custom-download [class~="text-white/70"] {
-  color: rgba(255, 255, 255, 0.7);
-}
-
-html #hero-downloads .hero-custom-download [class~="text-white/80"] {
-  color: rgba(255, 255, 255, 0.8);
-}
-
-html #hero-downloads .hero-custom-download.group:hover [class~="group-hover:text-white"] {
-  color: #ffffff;
+html #hero-downloads .hero-custom-download:hover img {
+  filter: none;
 }
 
 html [class~="focus:border-black"]:focus,
@@ -330,10 +309,6 @@ html #unregister:target {
 .downloads-page .fdroid-badge:hover,
 .downloads-page .app-store-badge:hover {
   filter: brightness(1.12);
-}
-
-.downloads-page .primary-download-button:hover {
-  background: #242429;
 }
 
 .downloads-page .tag {
