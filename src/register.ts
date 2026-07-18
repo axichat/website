@@ -1,3 +1,5 @@
+import { renderDownloadGridHtml } from "./download-grid";
+import { setUpDownloadGrid } from "./downloads";
 import { createQrSvg } from "./qr";
 
 type PublicAxiConfig = {
@@ -89,10 +91,6 @@ const captchaErrors = new Set(["captcha_required", "captcha_invalid", "captcha_f
 const axiBackendDevProxyPath = "/__axi_backend";
 const spinnerHtml =
   '<span aria-hidden="true" class="h-4 w-4 animate-spin rounded-full border-2 border-current border-r-transparent"></span>';
-
-function withBasePath(path: string) {
-  return `${import.meta.env.BASE_URL}${path.replace(/^\/+/, "")}`;
-}
 
 function byId<T extends HTMLElement>(id: string): T {
   const element = document.getElementById(id);
@@ -616,12 +614,11 @@ function createOtpInput(id: string, label: string): OtpInput {
 const { config, error: configError } = readConfig();
 const registrationDisabled = Boolean(configError);
 const turnstileEnabled = config.turnstileSiteKey !== "";
-const downloadsHref = withBasePath("downloads/index.html");
-
 const shell = byId<HTMLDivElement>("register-shell");
 const heading = byId<HTMLDivElement>("register-heading");
 const headingTitle = byId<HTMLHeadingElement>("register-title");
 const headingDescription = byId<HTMLDivElement>("register-description");
+const viewContainer = byId<HTMLDivElement>("register-view-container");
 const signupView = byId<HTMLDivElement>("signup-view");
 const altView = byId<HTMLDivElement>("alt-view");
 const form = byId<HTMLFormElement>("signup-form");
@@ -853,8 +850,13 @@ function secondsRemaining() {
   return session ? Math.max(0, Math.ceil((session.recoverySetupExpiresAt - Date.now()) / 1000)) : 0;
 }
 
-function showHeading(title: string, descriptionHtml: string) {
+function showHeading(title: string, descriptionHtml: string, centered = false, compact = false) {
   heading.hidden = false;
+  heading.classList.toggle("text-center", centered);
+  headingDescription.classList.toggle("mt-4", centered);
+  headingDescription.classList.toggle("mt-2", !centered);
+  viewContainer.classList.toggle("mt-3", compact);
+  viewContainer.classList.toggle("mt-6", !compact);
   headingTitle.textContent = title;
   headingDescription.innerHTML = descriptionHtml;
 }
@@ -867,25 +869,33 @@ function showAltView(html: string, wide: boolean) {
   shell.classList.toggle("max-w-md", !wide);
 }
 
+function downloadSectionHtml(spacingClass: "mt-5" | "mt-16" = "mt-5") {
+  return `
+    <div class="${spacingClass} text-center">
+      <p class="mx-auto max-w-xl text-sm leading-relaxed text-black/60">Download the app</p>
+      ${renderDownloadGridHtml(import.meta.env.BASE_URL)}
+    </div>
+  `;
+}
+
+function showDownloadGrid(content = "") {
+  showAltView(`${content}${downloadSectionHtml(content ? "mt-16" : "mt-5")}`, true);
+  setUpDownloadGrid(altView);
+}
+
 function showExpired() {
   clearSensitiveSession();
   showHeading("Recovery setup expired", "Website recovery setup is only available immediately after signup.");
-  showAltView(
-    `<a href="${downloadsHref}" class="${primaryButtonClass}">Download Axichat</a>`,
-    false
-  );
+  showDownloadGrid();
 }
 
 function showCompleted(account: { email: string; recoveryMethods: string[] }) {
-  showHeading("Account ready", `${escapeHtml(account.email)} is ready. Use the Axichat app to sign in.`);
+  showHeading("Account ready", `${escapeHtml(account.email)} is ready. Use the Axichat app to sign in.`, true, true);
   const recoveryLine =
     account.recoveryMethods.length > 0
-      ? `<p class="text-sm text-black/70">Recovery enabled: ${escapeHtml(account.recoveryMethods.join(", "))}.</p>`
-      : `<p class="text-sm text-amber-800">No recovery method was added on the website.</p>`;
-  showAltView(
-    `${recoveryLine}<a href="${downloadsHref}" class="mt-5 ${primaryButtonClass}">Download Axichat</a>`,
-    false
-  );
+      ? `<p class="text-center text-sm text-black/70">Recovery enabled: ${escapeHtml(account.recoveryMethods.join(", "))}.</p>`
+      : `<p class="text-center text-sm text-amber-800">No recovery method was added on the website.</p>`;
+  showDownloadGrid(recoveryLine);
 }
 
 function setButtonBusy(button: HTMLButtonElement, busyNow: boolean, busyText: string, idleText: string) {

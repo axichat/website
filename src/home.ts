@@ -1,12 +1,8 @@
-const releaseApiUrl = "https://api.github.com/repos/axichat/axichat/releases/latest";
-const releaseCacheStorageKey = "axichat.latest-release.v2";
-const releaseCacheTtlMs = 5 * 60 * 1000;
+import { setUpDownloadGrid } from "./downloads";
+
 const repositoryApiUrl = "https://api.github.com/repos/axichat/axichat";
 const githubStarCacheStorageKey = "axichat.github-stars.v1";
 const githubStarCacheTtlMs = 6 * 60 * 60 * 1000;
-const appStoreBundleId = "im.axi.axichat";
-const appStoreLookupUrl = `https://itunes.apple.com/lookup?bundleId=${encodeURIComponent(appStoreBundleId)}&country=us`;
-const appStoreLookupTimeoutMs = 8000;
 const serverStatusUrl = "https://axi.im:8443/status";
 const serverStatusRefreshMs = 30000;
 const serverStatusTimeoutMs = 10000;
@@ -14,69 +10,10 @@ const serverStatusClientToken = "axichatpublictoken";
 
 type ServiceIndicatorState = "online" | "offline" | "unknown";
 
-type ReleaseAsset = {
-  name: string;
-  browser_download_url?: string;
-};
-
-type ReleaseCacheRecord = {
-  version: string;
-  publishedAt: string;
-  fetchedAt: number;
-  assets: ReleaseAsset[];
-};
-
 type GitHubStarCacheRecord = {
   count: number;
   fetchedAt: number;
 };
-
-type AppStoreLookupResult = {
-  bundleId?: string;
-  trackViewUrl?: string;
-  wrapperType?: string;
-  kind?: string;
-};
-
-type AppStoreLookupResponse = {
-  resultCount?: number;
-  results?: AppStoreLookupResult[];
-};
-
-function isReleaseCacheRecord(value: unknown): value is ReleaseCacheRecord {
-  if (!value || typeof value !== "object") {
-    return false;
-  }
-  const entry = value as Partial<ReleaseCacheRecord>;
-  return (
-    typeof entry.version === "string" &&
-    typeof entry.publishedAt === "string" &&
-    typeof entry.fetchedAt === "number" &&
-    Number.isFinite(entry.fetchedAt) &&
-    Array.isArray(entry.assets)
-  );
-}
-
-function readReleaseCache(): ReleaseCacheRecord | null {
-  try {
-    const rawValue = window.localStorage.getItem(releaseCacheStorageKey);
-    if (!rawValue) {
-      return null;
-    }
-    const parsed = JSON.parse(rawValue) as unknown;
-    return isReleaseCacheRecord(parsed) ? parsed : null;
-  } catch {
-    return null;
-  }
-}
-
-function writeReleaseCache(entry: ReleaseCacheRecord) {
-  try {
-    window.localStorage.setItem(releaseCacheStorageKey, JSON.stringify(entry));
-  } catch {
-    return;
-  }
-}
 
 function isGitHubStarCacheRecord(value: unknown): value is GitHubStarCacheRecord {
   if (!value || typeof value !== "object") {
@@ -190,122 +127,6 @@ function showRelease(version: string, publishedAt: string) {
     dateEl.textContent = formatted ? `Released ${formatted}` : "";
     dateEl.hidden = !formatted;
   }
-}
-
-function findReleaseAsset(assets: ReleaseAsset[], names: string[]) {
-  const wantedNames = new Set(names.map((name) => name.toLowerCase()));
-  return assets.find((asset) => wantedNames.has(asset.name.toLowerCase()) && asset.browser_download_url);
-}
-
-function updateHeroWindowsDownload(assets: ReleaseAsset[]) {
-  const button = document.getElementById("hero-windows-download") as HTMLAnchorElement | null;
-  const image = document.getElementById("hero-windows-download-image") as HTMLImageElement | null;
-  if (!button || !image) {
-    return;
-  }
-
-  const installer = findReleaseAsset(assets, ["axichat-windows-setup.exe"]);
-  const zip = findReleaseAsset(assets, ["axichat-windows.zip"]);
-  const asset = installer ?? zip;
-  if (!asset?.browser_download_url) {
-    return;
-  }
-
-  button.href = asset.browser_download_url;
-  const format = installer ? "EXE" : "ZIP";
-  const imageSource = installer ? image.dataset.exeSrc : image.dataset.zipSrc;
-  if (imageSource) {
-    image.src = imageSource;
-  }
-  image.alt = `Download the Windows ${format}`;
-}
-
-async function loadLatestRelease() {
-  const cached = readReleaseCache();
-  if (cached) {
-    showRelease(cached.version, cached.publishedAt);
-    updateHeroWindowsDownload(cached.assets);
-    if (Date.now() - cached.fetchedAt <= releaseCacheTtlMs) {
-      return;
-    }
-  }
-  try {
-    const response = await fetch(releaseApiUrl, {
-      headers: { Accept: "application/vnd.github+json" },
-    });
-    if (!response.ok) {
-      throw new Error(`release_lookup_${response.status}`);
-    }
-    const payload = (await response.json()) as {
-      tag_name?: string;
-      name?: string;
-      published_at?: string;
-      assets?: ReleaseAsset[];
-    };
-    const entry: ReleaseCacheRecord = {
-      version: (payload.tag_name ?? payload.name ?? "").trim() || "unavailable",
-      publishedAt: payload.published_at ?? "",
-      assets: Array.isArray(payload.assets) ? payload.assets : [],
-      fetchedAt: Date.now(),
-    };
-    writeReleaseCache(entry);
-    showRelease(entry.version, entry.publishedAt);
-    updateHeroWindowsDownload(entry.assets);
-  } catch {
-    if (!cached) {
-      showRelease("unavailable", "");
-    }
-  }
-}
-
-function findAppStoreUrl(payload: AppStoreLookupResponse) {
-  if (!payload.results?.length || payload.resultCount === 0) {
-    return "";
-  }
-  const result = payload.results.find((entry) => {
-    const isExpectedBundle = entry.bundleId === appStoreBundleId;
-    const isSoftware = entry.wrapperType === "software" || entry.kind === "software";
-    return isExpectedBundle && isSoftware && typeof entry.trackViewUrl === "string";
-  });
-  return result?.trackViewUrl ?? "";
-}
-
-function showAppStoreBadges(url: string) {
-  document.querySelectorAll<HTMLAnchorElement>("[data-app-store-badge]").forEach((badge) => {
-    badge.href = url;
-    badge.hidden = false;
-  });
-  document.querySelectorAll<HTMLElement>("[data-app-store-placeholder]").forEach((placeholder) => {
-    placeholder.hidden = true;
-  });
-}
-
-function loadAppStoreBadge() {
-  const callbackName = `__axichatAppStoreLookup_${Date.now()}_${Math.random().toString(36).slice(2)}`;
-  const script = document.createElement("script");
-  let settled = false;
-
-  const cleanup = () => {
-    if (settled) {
-      return;
-    }
-    settled = true;
-    window.clearTimeout(timeoutId);
-    script.remove();
-    delete (window as unknown as Record<string, unknown>)[callbackName];
-  };
-
-  const timeoutId = window.setTimeout(cleanup, appStoreLookupTimeoutMs);
-  (window as unknown as Record<string, (payload: AppStoreLookupResponse) => void>)[callbackName] = (payload) => {
-    const appStoreUrl = findAppStoreUrl(payload);
-    cleanup();
-    if (appStoreUrl) {
-      showAppStoreBadges(appStoreUrl);
-    }
-  };
-  script.onerror = cleanup;
-  script.src = `${appStoreLookupUrl}&callback=${encodeURIComponent(callbackName)}`;
-  document.head.appendChild(script);
 }
 
 function setUpHeroVideo() {
@@ -438,9 +259,11 @@ function setFooterYear() {
   }
 }
 
-void loadLatestRelease();
+setUpDownloadGrid(document, {
+  onRelease: (release) => showRelease(release.version, release.publishedAt),
+  onReleaseUnavailable: () => showRelease("unavailable", ""),
+});
 void loadGitHubStarCount();
-loadAppStoreBadge();
 setUpMobileNavigation();
 setUpHeroVideo();
 setUpServerStatus();
