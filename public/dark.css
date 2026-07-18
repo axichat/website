@@ -156,6 +156,16 @@ html [class~="hover:bg-black/85"]:hover {
   background-color: rgba(245, 245, 246, 0.84);
 }
 
+html .account-cta {
+  background-color: #1c1c21;
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #f7f7f8;
+}
+
+html .account-cta:hover {
+  background-color: #27272d;
+}
+
 html [class~="hover:bg-black/[0.03]"]:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }

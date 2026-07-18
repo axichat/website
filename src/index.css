@@ -103,6 +103,31 @@ main {
   border: 1px solid rgba(0, 0, 0, 0.12);
 }
 
+:is(a, button, input, select, textarea).border,
+.squircle-control.border,
+.squircle-control-lg.border,
+.squircle-control-sm.border {
+  border-width: 2px;
+}
+
+.bg-black {
+  border-color: #3f3f46;
+}
+
+.rounded-xl,
+.rounded-2xl,
+.rounded-3xl {
+  border-radius: 0;
+}
+
+.interactive-surface {
+  border-radius: 1.5rem;
+}
+
+.interactive-surface.border {
+  border-width: 2px;
+}
+
 @keyframes status-pulse {
   0% {
     box-shadow: 0 0 0 0 var(--status-pulse-color);
@@ -448,6 +473,16 @@ main {
 
 :root[data-theme="dark"] [class~="hover:bg-black/85"]:hover {
   background-color: rgba(245, 245, 246, 0.84);
+}
+
+:root[data-theme="dark"] .account-cta {
+  background-color: #1c1c21;
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #f7f7f8;
+}
+
+:root[data-theme="dark"] .account-cta:hover {
+  background-color: #27272d;
 }
 
 :root[data-theme="dark"] [class~="hover:bg-black/[0.03]"]:hover {
