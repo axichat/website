@@ -1,181 +1,69 @@
 <!doctype html>
-<html lang="en" data-theme="light">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Page not found - Axichat</title>
     <meta name="description" content="The requested Axichat page could not be found." />
     <meta name="robots" content="noindex" />
-    <meta name="theme-color" content="#ffffff" media="all" data-theme-color="light" />
-    <meta name="theme-color" content="#090909" media="not all" data-theme-color="dark" />
+    <meta name="theme-color" content="#ffffff" />
     <link rel="icon" type="image/png" sizes="32x32" href="%BASE_URL%favicon-32x32.png?v=3" />
     <link rel="apple-touch-icon" sizes="180x180" href="%BASE_URL%apple-icon-180x180.png" />
     <link rel="stylesheet" href="%BASE_URL%components.css?v=3" />
     <style>
-      :root {
-        color-scheme: light;
-        --page-background: #ffffff;
-        --page-surface: #ffffff;
-        --page-text: #111111;
-        --page-muted: rgba(17, 17, 17, 0.68);
-        --page-faint: rgba(17, 17, 17, 0.5);
-        --page-line: rgba(17, 17, 17, 0.12);
-        --page-shadow: 0 28px 80px rgba(17, 17, 17, 0.1);
-      }
-
-      :root[data-theme="dark"] {
-        color-scheme: dark;
-        --page-background: #09090b;
-        --page-surface: #16161a;
-        --page-text: #f7f7f8;
-        --page-muted: rgba(247, 247, 248, 0.76);
-        --page-faint: rgba(247, 247, 248, 0.58);
-        --page-line: rgba(247, 247, 248, 0.16);
-        --page-shadow: 0 28px 80px rgba(0, 0, 0, 0.34);
-      }
-
       * {
         box-sizing: border-box;
       }
 
       body {
-        min-height: 100vh;
         margin: 0;
-        background:
-          radial-gradient(circle at 15% 0%, rgba(127, 127, 127, 0.1), transparent 36rem),
-          var(--page-background);
-        color: var(--page-text);
-        font-family: "Gabarito", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: #ffffff;
+        color: #111111;
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       }
 
-      .page-shell {
-        width: calc(100% - 2rem);
-        max-width: 74rem;
+      .page {
+        width: 100%;
+        max-width: 42rem;
         margin: 0 auto;
+        padding: 2rem;
       }
 
       .page-header {
-        display: flex;
-        min-height: 5rem;
-        align-items: center;
-        justify-content: space-between;
-        gap: 1rem;
+        margin-bottom: 5rem;
       }
 
       main {
-        display: grid;
-        min-height: calc(100vh - 5rem);
-        place-items: center;
-        padding: 3rem 0 8rem;
-      }
-
-      .error-card {
-        width: min(100%, 46rem);
-        border: 1px solid var(--page-line);
-        border-radius: 2rem;
-        padding: clamp(2rem, 6vw, 4.5rem);
-        background: var(--page-surface);
-        box-shadow: var(--page-shadow);
-        text-align: center;
-      }
-
-      .error-code {
-        margin: 0;
-        color: var(--page-faint);
-        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-        font-size: 0.75rem;
-        font-weight: 700;
-        letter-spacing: 0.2em;
-        text-transform: uppercase;
+        line-height: 1.5;
       }
 
       h1 {
-        margin: 1rem 0 0;
-        font-size: clamp(2.5rem, 8vw, 4.75rem);
-        line-height: 1;
-        letter-spacing: -0.045em;
+        margin: 0;
+        font-size: 2rem;
+        line-height: 1.2;
       }
 
-      .message {
-        max-width: 34rem;
-        margin: 1.25rem auto 0;
-        color: var(--page-muted);
-        font-size: 1.05rem;
-        line-height: 1.7;
+      p {
+        margin: 0.75rem 0 0;
       }
 
-      .actions {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 0.75rem;
-        margin-top: 2rem;
-      }
-
-      .button {
-        display: inline-flex;
-        min-height: 2.75rem;
-        align-items: center;
-        justify-content: center;
-        border: 1px solid var(--page-line);
-        border-radius: 0.875rem;
-        padding: 0.75rem 1.125rem;
-        color: var(--page-text);
-        font-size: 0.9rem;
-        font-weight: 700;
-        text-decoration: none;
-        transition: transform 160ms ease, background-color 160ms ease;
-      }
-
-      .button:hover {
-        transform: translateY(-1px);
-      }
-
-      .button--primary {
-        border-color: var(--page-text);
-        background: var(--page-text);
-        color: var(--page-background);
-      }
-
-      .secondary-links {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 0.75rem 1rem;
-        margin-top: 1.75rem;
-        font-size: 0.85rem;
-      }
-
-      .secondary-links a {
-        color: var(--page-muted);
-        text-underline-offset: 0.25rem;
-      }
-
-      .secondary-links a:hover {
-        color: var(--page-text);
+      main a {
+        color: inherit;
       }
 
       @media (max-width: 36rem) {
-        .page-shell {
-          width: calc(100% - 1.5rem);
+        .page {
+          padding: 1.5rem;
         }
 
-        .error-card {
-          border-radius: 1.5rem;
-          padding: 2.25rem 1.25rem;
-        }
-
-        .actions {
-          align-items: stretch;
-          flex-direction: column;
+        .page-header {
+          margin-bottom: 4rem;
         }
       }
     </style>
-    <link rel="stylesheet" href="%BASE_URL%dark.css?v=3" media="not all" data-dark-styles />
-    <script src="%BASE_URL%theme.js?v=3"></script>
   </head>
   <body>
-    <div class="page-shell">
+    <div class="page">
       <header class="page-header">
         <a class="axi-title" href="%BASE_URL%" aria-label="Axichat home">
           <span class="axi-title__logo-frame" aria-hidden="true">
@@ -183,35 +71,12 @@
           </span>
           <span class="axi-title__text">Axichat</span>
         </a>
-        <button type="button" class="theme-toggle" data-theme-toggle role="switch" aria-checked="false" aria-label="Dark mode" hidden>
-          <span class="theme-toggle__thumb" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" class="theme-toggle__icon theme-toggle__sun">
-              <circle cx="12" cy="12" r="3.5" stroke="currentColor" stroke-width="1.8" />
-              <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M18.7 5.3l-1.4 1.4M6.7 17.3l-1.4 1.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
-            </svg>
-            <svg viewBox="0 0 24 24" fill="none" class="theme-toggle__icon theme-toggle__moon">
-              <path d="M20 15.2A8.5 8.5 0 0 1 8.8 4a8.5 8.5 0 1 0 11.2 11.2Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
-            </svg>
-          </span>
-        </button>
       </header>
 
       <main>
-        <section class="error-card" aria-labelledby="error-title">
-          <p class="error-code">Error 404</p>
-          <h1 id="error-title">Page not found</h1>
-          <p class="message">The page may have moved, or the address may be incomplete. You can return home or continue to a common destination.</p>
-          <div class="actions">
-            <a class="button button--primary" href="%BASE_URL%">Return home</a>
-            <a class="button" href="%BASE_URL%downloads/">Downloads</a>
-          </div>
-          <nav class="secondary-links" aria-label="Helpful links">
-            <a href="%BASE_URL%#faq">FAQ</a>
-            <a href="%BASE_URL%#contact">Support</a>
-            <a href="%BASE_URL%privacy/">Privacy</a>
-            <a href="%BASE_URL%terms/">Terms</a>
-          </nav>
-        </section>
+        <h1>404</h1>
+        <p>Page not found.</p>
+        <p><a href="%BASE_URL%">Return to Axichat</a></p>
       </main>
     </div>
   </body>
