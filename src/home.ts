@@ -275,6 +275,9 @@ function showAppStoreBadges(url: string) {
     badge.href = url;
     badge.hidden = false;
   });
+  document.querySelectorAll<HTMLElement>("[data-app-store-placeholder]").forEach((placeholder) => {
+    placeholder.hidden = true;
+  });
 }
 
 function loadAppStoreBadge() {
