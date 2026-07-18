@@ -483,9 +483,9 @@ function formatCountdown(seconds: number) {
 }
 
 const primaryButtonClass =
-  "axi-button-bounce inline-flex items-center gap-2 squircle-control border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition hover:bg-black/85 disabled:cursor-not-allowed disabled:border-black/20 disabled:bg-black/20";
+  "primary-action axi-button-bounce inline-flex items-center gap-2 px-4 py-2 text-sm";
 const secondaryButtonClass =
-  "axi-button-bounce inline-flex squircle-control border border-black/15 bg-white px-4 py-2 text-sm font-semibold text-black transition hover:bg-black/[0.03] disabled:cursor-not-allowed disabled:opacity-50";
+  "secondary-action axi-button-bounce inline-flex px-4 py-2 text-sm";
 
 type OtpInput = {
   root: HTMLDivElement;
@@ -559,7 +559,7 @@ function createOtpInput(id: string, label: string): OtpInput {
     input.autocomplete = index === 0 ? "one-time-code" : "off";
     input.setAttribute("aria-label", `${label} digit ${index + 1}`);
     input.className =
-      "h-10 min-w-0 squircle-control-sm border bg-white text-center font-mono text-lg font-semibold text-black outline-none transition focus:border-black focus:ring-2 focus:ring-black/15 disabled:bg-black/[0.03] border-black/15";
+      "field-control field-control-sm h-10 min-w-0 text-center font-mono text-lg font-semibold";
     input.addEventListener("input", () => {
       const incoming = input.value;
       if (incoming === "") {
@@ -600,8 +600,7 @@ function createOtpInput(id: string, label: string): OtpInput {
     setInvalid: (invalid: boolean, describedBy?: string) =>
       inputs.forEach((input, index) => {
         input.setAttribute("aria-invalid", String(invalid));
-        input.classList.toggle("border-rose-500", invalid);
-        input.classList.toggle("border-black/15", !invalid);
+        input.classList.toggle("field-control-invalid", invalid);
         if (index === 0 && describedBy && invalid) {
           input.setAttribute("aria-describedby", describedBy);
         } else {
@@ -703,8 +702,7 @@ function paintFieldError(input: HTMLInputElement, errorEl: HTMLElement, message:
   errorEl.textContent = message;
   errorEl.hidden = !message;
   const target = borderTarget ?? input;
-  target.classList.toggle("border-rose-500", Boolean(message));
-  target.classList.toggle("border-black/15", !message);
+  target.classList.toggle("field-control-invalid", Boolean(message));
   input.setAttribute("aria-invalid", String(Boolean(message)));
   if (message) {
     input.setAttribute("aria-describedby", errorEl.id);
@@ -916,7 +914,7 @@ type PanelContext = {
 
 function renderRecoveryEmailPanel(container: HTMLElement, context: PanelContext) {
   const article = document.createElement("article");
-  article.className = "rounded-2xl border border-black/10 bg-white p-5";
+  article.className = "passive-card p-5";
   container.appendChild(article);
   let completed = false;
 
@@ -927,7 +925,7 @@ function renderRecoveryEmailPanel(container: HTMLElement, context: PanelContext)
           <h2 class="font-display text-xl font-semibold text-black">Recovery email</h2>
           <p class="mt-1 text-sm leading-relaxed text-black/65">Use an outside email address for recovery codes.</p>
         </div>
-        ${completed ? '<span class="rounded-[0.8rem] bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-800">Done</span>' : ""}
+        ${completed ? '<span class="status-badge bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-800">Done</span>' : ""}
       </div>
     `;
     const panelError = panelErrorParagraph();
@@ -944,7 +942,7 @@ function renderRecoveryEmailPanel(container: HTMLElement, context: PanelContext)
       startForm.innerHTML = `
         <label class="block text-sm font-semibold text-black" for="recovery-email">Recovery email</label>
         <input id="recovery-email" type="email" required
-          class="mt-2 w-full squircle-control border bg-white px-3 py-2.5 text-sm text-black outline-none transition focus:border-black focus:ring-2 focus:ring-black/15 disabled:bg-black/[0.03] border-black/15" />
+          class="field-control mt-2 w-full px-3 py-2.5 text-sm" />
         <p id="recovery-email-error" hidden class="mt-2 text-sm text-rose-700"></p>
         <button type="submit" class="mt-4 ${primaryButtonClass}">Send code</button>
       `;
@@ -1119,7 +1117,7 @@ function renderRecoveryEmailPanel(container: HTMLElement, context: PanelContext)
 
 function renderTotpPanel(container: HTMLElement, context: PanelContext) {
   const article = document.createElement("article");
-  article.className = "rounded-2xl border border-black/10 bg-white p-5";
+  article.className = "passive-card p-5";
   container.appendChild(article);
   let completed = false;
 
@@ -1130,7 +1128,7 @@ function renderTotpPanel(container: HTMLElement, context: PanelContext) {
           <h2 class="font-display text-xl font-semibold text-black">Authenticator app</h2>
           <p class="mt-1 text-sm leading-relaxed text-black/65">Add a time-based code from your authenticator.</p>
         </div>
-        ${completed ? '<span class="rounded-[0.8rem] bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-800">Done</span>' : ""}
+        ${completed ? '<span class="status-badge bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-800">Done</span>' : ""}
       </div>
     `;
     const panelError = panelErrorParagraph();
@@ -1198,11 +1196,11 @@ function renderTotpPanel(container: HTMLElement, context: PanelContext) {
     confirmForm.className = "mt-5";
     confirmForm.noValidate = true;
     const qrBlock = qrSvg
-      ? `<div class="w-full max-w-[14rem] overflow-hidden rounded-xl border border-black/10 bg-white p-3">${qrSvg}</div>`
+      ? `<div class="passive-card w-full max-w-[14rem] overflow-hidden p-3">${qrSvg}</div>`
       : "";
     confirmForm.innerHTML = `
       ${qrBlock}
-      <div class="mt-4 rounded-xl border border-black/10 bg-black/[0.03] px-4 py-3">
+      <div class="passive-card muted-panel mt-4 px-4 py-3">
         <div class="text-xs font-semibold uppercase tracking-[0.16em] text-black/50">Manual key</div>
         <div class="mt-2 break-all font-mono text-sm text-black">${escapeHtml(secret)}</div>
       </div>
@@ -1311,12 +1309,12 @@ function showSession() {
   showAltView('<div id="session-content" class="space-y-4"><div id="session-panels" class="space-y-4"></div></div>', true);
   const content = byId<HTMLDivElement>("session-content");
   const panels = byId<HTMLDivElement>("session-panels");
-  panels.innerHTML = '<div class="rounded-xl border border-black/10 bg-white px-4 py-3 text-sm text-black/65">Loading recovery options...</div>';
+  panels.innerHTML = '<div class="passive-card px-4 py-3 text-sm text-black/65">Loading recovery options...</div>';
 
   const buttonRow = document.createElement("div");
   buttonRow.className = "flex flex-wrap items-center gap-3";
   buttonRow.innerHTML = `
-    <button type="button" id="finish-button" disabled class="axi-button-bounce inline-flex squircle-control border border-black bg-black px-4 py-2 text-sm font-semibold text-white transition hover:bg-black/85 disabled:cursor-not-allowed disabled:border-black/20 disabled:bg-black/20">Finish setup</button>
+    <button type="button" id="finish-button" disabled class="primary-action axi-button-bounce inline-flex px-4 py-2 text-sm">Finish setup</button>
     <button type="button" id="skip-button" class="${secondaryButtonClass}">Skip</button>
     <span id="finish-hint" class="text-sm text-amber-800">Recovery can be added later in the app.</span>
   `;
@@ -1370,7 +1368,7 @@ function showSession() {
     panels.innerHTML = "";
     if (!result.ok) {
       const errorBox = document.createElement("div");
-      errorBox.className = "rounded-xl border border-amber-300/70 bg-amber-50 px-4 py-3 text-sm text-amber-900";
+      errorBox.className = "border border-amber-300/70 bg-amber-50 px-4 py-3 text-sm text-amber-900";
       errorBox.textContent = recoveryErrorMessage(result.error);
       panels.appendChild(errorBox);
       return;
@@ -1385,7 +1383,7 @@ function showSession() {
     }
     if (!emailSupported && !totpSupported) {
       const none = document.createElement("div");
-      none.className = "rounded-xl border border-black/10 bg-white px-4 py-3 text-sm text-black/65";
+      none.className = "passive-card px-4 py-3 text-sm text-black/65";
       none.textContent = "No recovery methods are available right now.";
       panels.appendChild(none);
     }
