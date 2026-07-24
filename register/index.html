@@ -176,6 +176,7 @@
 
               <section
                 id="discovery-poll"
+                hidden
                 class="passive-card mt-5 p-4"
                 aria-labelledby="discovery-poll-title"
               >
@@ -189,55 +190,127 @@
                 <fieldset class="mt-3">
                   <legend class="sr-only">How you discovered Axichat</legend>
                   <div class="discovery-poll-bars">
-                    <label class="discovery-poll-row" data-discovery-source="app_store">
-                      <input type="radio" name="discovery-source" value="app_store" disabled />
+                    <button
+                      type="button"
+                      class="discovery-poll-row"
+                      data-discovery-source="app_store"
+                      aria-pressed="false"
+                      aria-describedby="discovery-standing-app_store"
+                      disabled
+                    >
+                      <span class="discovery-poll-row__indicator" aria-hidden="true"></span>
                       <span class="discovery-poll-row__label">App Store</span>
-                      <span class="discovery-poll-row__track">
+                      <span class="discovery-poll-row__track" aria-hidden="true">
                         <span class="discovery-poll-bar__fill" data-discovery-fill aria-hidden="true"></span>
                       </span>
-                    </label>
-                    <label class="discovery-poll-row" data-discovery-source="play_store">
-                      <input type="radio" name="discovery-source" value="play_store" disabled />
+                    </button>
+                    <button
+                      type="button"
+                      class="discovery-poll-row"
+                      data-discovery-source="play_store"
+                      aria-pressed="false"
+                      aria-describedby="discovery-standing-play_store"
+                      disabled
+                    >
+                      <span class="discovery-poll-row__indicator" aria-hidden="true"></span>
                       <span class="discovery-poll-row__label">Play Store</span>
-                      <span class="discovery-poll-row__track">
+                      <span class="discovery-poll-row__track" aria-hidden="true">
                         <span class="discovery-poll-bar__fill" data-discovery-fill aria-hidden="true"></span>
                       </span>
-                    </label>
-                    <label class="discovery-poll-row" data-discovery-source="fdroid">
-                      <input type="radio" name="discovery-source" value="fdroid" disabled />
+                    </button>
+                    <button
+                      type="button"
+                      class="discovery-poll-row"
+                      data-discovery-source="fdroid"
+                      aria-pressed="false"
+                      aria-describedby="discovery-standing-fdroid"
+                      disabled
+                    >
+                      <span class="discovery-poll-row__indicator" aria-hidden="true"></span>
                       <span class="discovery-poll-row__label">F-Droid</span>
-                      <span class="discovery-poll-row__track">
+                      <span class="discovery-poll-row__track" aria-hidden="true">
                         <span class="discovery-poll-bar__fill" data-discovery-fill aria-hidden="true"></span>
                       </span>
-                    </label>
-                    <label class="discovery-poll-row" data-discovery-source="friends_family">
-                      <input type="radio" name="discovery-source" value="friends_family" disabled />
+                    </button>
+                    <button
+                      type="button"
+                      class="discovery-poll-row"
+                      data-discovery-source="friends_family"
+                      aria-pressed="false"
+                      aria-describedby="discovery-standing-friends_family"
+                      disabled
+                    >
+                      <span class="discovery-poll-row__indicator" aria-hidden="true"></span>
                       <span class="discovery-poll-row__label">Friends and family</span>
-                      <span class="discovery-poll-row__track">
+                      <span class="discovery-poll-row__track" aria-hidden="true">
                         <span class="discovery-poll-bar__fill" data-discovery-fill aria-hidden="true"></span>
                       </span>
-                    </label>
-                    <label class="discovery-poll-row" data-discovery-source="web_search">
-                      <input type="radio" name="discovery-source" value="web_search" disabled />
+                    </button>
+                    <button
+                      type="button"
+                      class="discovery-poll-row"
+                      data-discovery-source="web_search"
+                      aria-pressed="false"
+                      aria-describedby="discovery-standing-web_search"
+                      disabled
+                    >
+                      <span class="discovery-poll-row__indicator" aria-hidden="true"></span>
                       <span class="discovery-poll-row__label">Web search</span>
-                      <span class="discovery-poll-row__track">
+                      <span class="discovery-poll-row__track" aria-hidden="true">
                         <span class="discovery-poll-bar__fill" data-discovery-fill aria-hidden="true"></span>
                       </span>
-                    </label>
-                    <label class="discovery-poll-row" data-discovery-source="social_media">
-                      <input type="radio" name="discovery-source" value="social_media" disabled />
+                    </button>
+                    <button
+                      type="button"
+                      class="discovery-poll-row"
+                      data-discovery-source="social_media"
+                      aria-pressed="false"
+                      aria-describedby="discovery-standing-social_media"
+                      disabled
+                    >
+                      <span class="discovery-poll-row__indicator" aria-hidden="true"></span>
                       <span class="discovery-poll-row__label">Social media</span>
-                      <span class="discovery-poll-row__track">
+                      <span class="discovery-poll-row__track" aria-hidden="true">
                         <span class="discovery-poll-bar__fill" data-discovery-fill aria-hidden="true"></span>
                       </span>
-                    </label>
-                    <label class="discovery-poll-row" data-discovery-source="other">
-                      <input type="radio" name="discovery-source" value="other" disabled />
+                    </button>
+                    <button
+                      type="button"
+                      class="discovery-poll-row"
+                      data-discovery-source="other"
+                      aria-pressed="false"
+                      aria-describedby="discovery-standing-other"
+                      disabled
+                    >
+                      <span class="discovery-poll-row__indicator" aria-hidden="true"></span>
                       <span class="discovery-poll-row__label">Other</span>
-                      <span class="discovery-poll-row__track">
+                      <span class="discovery-poll-row__track" aria-hidden="true">
                         <span class="discovery-poll-bar__fill" data-discovery-fill aria-hidden="true"></span>
                       </span>
-                    </label>
+                    </button>
+                  </div>
+                  <div class="sr-only">
+                    <span id="discovery-standing-app_store" data-discovery-standing="app_store">
+                      Standings loading.
+                    </span>
+                    <span id="discovery-standing-play_store" data-discovery-standing="play_store">
+                      Standings loading.
+                    </span>
+                    <span id="discovery-standing-fdroid" data-discovery-standing="fdroid">
+                      Standings loading.
+                    </span>
+                    <span id="discovery-standing-friends_family" data-discovery-standing="friends_family">
+                      Standings loading.
+                    </span>
+                    <span id="discovery-standing-web_search" data-discovery-standing="web_search">
+                      Standings loading.
+                    </span>
+                    <span id="discovery-standing-social_media" data-discovery-standing="social_media">
+                      Standings loading.
+                    </span>
+                    <span id="discovery-standing-other" data-discovery-standing="other">
+                      Standings loading.
+                    </span>
                   </div>
                 </fieldset>
                 <p id="discovery-results-error" hidden class="mt-1 text-[0.7rem] leading-relaxed text-black/55">

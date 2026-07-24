@@ -99,3 +99,39 @@ test("responses from other browser origins are rejected", async () => {
   assert.equal(response.status, 403);
   assert.equal(env.DB.votes.get("web_search"), 0);
 });
+
+test("oversized responses are rejected when Content-Length is omitted", async () => {
+  const env = testEnvironment({ web_search: 0 });
+  const request = new Request("https://poll.example/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Origin: "https://axi.chat",
+    },
+    body: JSON.stringify({ source: "web_search", padding: "x".repeat(2048) }),
+  });
+
+  assert.equal(request.headers.get("Content-Length"), null);
+  const response = await worker.fetch(request, env);
+
+  assert.equal(response.status, 413);
+  assert.deepEqual(await response.json(), { error: "request_too_large" });
+  assert.equal(env.DB.votes.get("web_search"), 0);
+});
+
+test("oversized responses are rejected when Content-Length understates the body", async () => {
+  const env = testEnvironment({ other: 0 });
+  const request = new Request("https://poll.example/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Content-Length": "16",
+      Origin: "https://axi.chat",
+    },
+    body: JSON.stringify({ source: "other", padding: "x".repeat(2048) }),
+  });
+  const response = await worker.fetch(request, env);
+
+  assert.equal(response.status, 413);
+  assert.equal(env.DB.votes.get("other"), 0);
+});

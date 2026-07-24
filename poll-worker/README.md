@@ -17,6 +17,8 @@ No local Worker tooling is required.
 7. Under **Settings → Observability**, turn off persisted Workers Logs and leave traces and Logpush disabled.
 8. Copy the Worker's `https://...workers.dev` URL into `pollBaseUrl` in `public/config.js`, then rebuild and deploy the website.
 
+Enter any historical production counts directly in the D1 Console rather than storing them in source control.
+
 For a production custom domain, add `poll.axi.chat` under the Worker's **Settings → Domains & Routes → Add → Custom Domain**, then use `https://poll.axi.chat` as `pollBaseUrl`. The `axi.chat` zone must be active on Cloudflare for this option.
 
 For local development, run `npm run migrate:local` and then `npm run dev`. Add the Vite development origin to `ALLOWED_ORIGINS` if it uses a port other than 5173.

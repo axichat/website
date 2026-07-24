@@ -655,6 +655,7 @@ const { config, error: configError } = readConfig();
 const registrationDisabled = Boolean(configError);
 const turnstileEnabled = config.turnstileSiteKey !== "";
 const pollBaseUrl = validOptionalHttpsUrl(config.pollBaseUrl ?? "");
+const pollEnabled = !registrationDisabled && pollBaseUrl !== "";
 const shell = byId<HTMLDivElement>("register-shell");
 const heading = byId<HTMLDivElement>("register-heading");
 const headingTitle = byId<HTMLHeadingElement>("register-title");
@@ -687,18 +688,19 @@ const turnstileErrorEl = byId<HTMLParagraphElement>("signup-turnstile-error");
 const signupErrorEl = byId<HTMLParagraphElement>("signup-error");
 const discoveryPoll = byId<HTMLElement>("discovery-poll");
 const discoveryResultsError = byId<HTMLParagraphElement>("discovery-results-error");
-const discoveryInputs = Array.from(
-  document.querySelectorAll<HTMLInputElement>('input[name="discovery-source"]')
+const discoveryButtons = Array.from(
+  discoveryPoll.querySelectorAll<HTMLButtonElement>("button[data-discovery-source]")
 );
 const discoveryRows = new Map(
   discoveryPollOptions.map(({ source }) => {
     const row = discoveryPoll.querySelector<HTMLElement>(`[data-discovery-source="${source}"]`);
-    const input = row?.querySelector<HTMLInputElement>('input[name="discovery-source"]');
+    const button = row instanceof HTMLButtonElement ? row : null;
     const fill = row?.querySelector<HTMLElement>("[data-discovery-fill]");
-    if (!row || !input || !fill) {
+    const standing = discoveryPoll.querySelector<HTMLElement>(`[data-discovery-standing="${source}"]`);
+    if (!button || !fill || !standing) {
       throw new Error(`missing discovery poll row: ${source}`);
     }
-    return [source, { input, fill }] as const;
+    return [source, { button, fill, standing }] as const;
   })
 );
 const submitButton = byId<HTMLButtonElement>("signup-submit");
@@ -833,19 +835,29 @@ function renderDiscoveryStandings(standings: DiscoveryPollStandings | null, unav
     const ratio = ratios.get(source) ?? 0;
     const row = discoveryRows.get(source)!;
     row.fill.style.width = `${ratio.toFixed(0)}%`;
+    row.standing.textContent =
+      unavailable
+        ? "Current standing unavailable."
+        : ready
+          ? `Current standing: ${ratio.toFixed(0)} percent of the longest bar.`
+          : "Standings loading.";
   }
   discoveryPoll.setAttribute("aria-busy", String(!ready && !unavailable));
   discoveryResultsError.hidden = !unavailable;
 }
 
 function selectedDiscoverySource(): DiscoveryPollSource | null {
-  const selected = discoveryInputs.find((input) => input.checked)?.value;
+  const selected = discoveryButtons.find((button) => button.getAttribute("aria-pressed") === "true")?.dataset
+    .discoverySource;
   return discoveryPollOptions.some(({ source }) => source === selected)
     ? (selected as DiscoveryPollSource)
     : null;
 }
 
 async function loadDiscoveryStandings() {
+  if (!pollEnabled) {
+    return;
+  }
   const result = await apiRequest<DiscoveryPollStandings>(config, "", {
     method: "GET",
     baseUrl: pollBaseUrl,
@@ -859,6 +871,9 @@ async function loadDiscoveryStandings() {
 }
 
 async function submitDiscoveryPoll(source: DiscoveryPollSource) {
+  if (!pollEnabled) {
+    return;
+  }
   const result = await apiRequest<DiscoveryPollStandings>(config, "", {
     method: "POST",
     baseUrl: pollBaseUrl,
@@ -886,8 +901,8 @@ function syncDisabled() {
   passwordInput.disabled = disabled;
   confirmInput.disabled = disabled;
   riskCheckbox.disabled = disabled;
-  discoveryInputs.forEach((input) => {
-    input.disabled = disabled;
+  discoveryButtons.forEach((button) => {
+    button.disabled = disabled || !pollEnabled;
   });
   submitButton.disabled = disabled;
 }
@@ -1688,7 +1703,7 @@ async function handleSignup(event: Event) {
   riskCheckbox.checked = false;
   riskError = "";
   weakSubmittedPassword = "";
-  if (discoverySource && pollBaseUrl) {
+  if (discoverySource && pollEnabled) {
     void submitDiscoveryPoll(discoverySource);
   }
   showSession();
@@ -1705,14 +1720,26 @@ function setUpSignupForm() {
     configErrorBox.textContent = configError;
     configErrorBox.hidden = false;
   }
+  discoveryPoll.hidden = !pollEnabled;
   syncDisabled();
   setUpTurnstile();
   renderDiscoveryStandings(null);
-  if (!registrationDisabled && pollBaseUrl) {
+  if (pollEnabled) {
     void loadDiscoveryStandings();
   } else {
     renderDiscoveryStandings(null, true);
   }
+  discoveryButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const shouldSelect = button.getAttribute("aria-pressed") !== "true";
+      discoveryButtons.forEach((candidate) => {
+        candidate.setAttribute("aria-pressed", "false");
+      });
+      if (shouldSelect) {
+        button.setAttribute("aria-pressed", "true");
+      }
+    });
+  });
 
   localpartInput.addEventListener("input", () => {
     const lowered = localpartInput.value.toLowerCase();

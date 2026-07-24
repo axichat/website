@@ -32,6 +32,7 @@ export function coarseRatios(rows) {
 }
 
 const discoverySourceSet = new Set(discoverySources);
+const maxRequestBodyBytes = 2048;
 const jsonHeaders = {
   "Content-Type": "application/json; charset=utf-8",
   "X-Content-Type-Options": "nosniff",
@@ -76,19 +77,64 @@ async function currentRatios(env) {
   return { results: coarseRatios(query.results) };
 }
 
+async function readRequestBody(request, maximumBytes) {
+  if (!request.body) {
+    return { text: "" };
+  }
+
+  const reader = request.body.getReader();
+  const chunks = [];
+  let totalBytes = 0;
+
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) {
+      break;
+    }
+    totalBytes += value.byteLength;
+    if (totalBytes > maximumBytes) {
+      try {
+        await reader.cancel();
+      } catch {
+        // The size has already been established, so cancellation errors do not change the response.
+      }
+      return { tooLarge: true };
+    }
+    chunks.push(value);
+  }
+
+  const bytes = new Uint8Array(totalBytes);
+  let offset = 0;
+  for (const chunk of chunks) {
+    bytes.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+  return { text: new TextDecoder().decode(bytes) };
+}
+
 async function handlePost(request, env) {
   const origin = request.headers.get("Origin") ?? "";
   if (!allowedOrigins(env).has(origin)) {
     return jsonResponse(request, env, { error: "origin_not_allowed" }, 403);
   }
   const contentLength = Number(request.headers.get("Content-Length") ?? 0);
-  if (Number.isFinite(contentLength) && contentLength > 2048) {
+  if (Number.isFinite(contentLength) && contentLength > maxRequestBodyBytes) {
+    return jsonResponse(request, env, { error: "request_too_large" }, 413);
+  }
+
+  let body;
+  try {
+    body = await readRequestBody(request, maxRequestBodyBytes);
+  } catch {
+    return jsonResponse(request, env, { error: "bad_json" }, 400);
+  }
+  if (body.tooLarge) {
     return jsonResponse(request, env, { error: "request_too_large" }, 413);
   }
 
   let payload;
   try {
-    payload = await request.json();
+    payload = JSON.parse(body.text);
   } catch {
     return jsonResponse(request, env, { error: "bad_json" }, 400);
   }

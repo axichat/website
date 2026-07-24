@@ -4,10 +4,10 @@ CREATE TABLE IF NOT EXISTS discovery_poll_counts (
 );
 
 INSERT OR IGNORE INTO discovery_poll_counts (source, votes) VALUES
-  ('app_store', 1),
-  ('play_store', 5),
-  ('fdroid', 30),
-  ('friends_family', 20),
-  ('web_search', 1),
+  ('app_store', 0),
+  ('play_store', 0),
+  ('fdroid', 0),
+  ('friends_family', 0),
+  ('web_search', 0),
   ('social_media', 0),
   ('other', 0);
