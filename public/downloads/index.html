@@ -6,18 +6,18 @@
     <title>Axichat Downloads</title>
     <meta
       name="description"
-      content="Axichat downloads for Android, Windows, and macOS, with Linux and iOS coming soon."
+      content="Axichat downloads for iOS, Android, Windows, and macOS, with Linux coming soon."
     />
     <link rel="canonical" href="https://axi.chat/downloads/" />
     <meta property="og:title" content="Axichat Downloads" />
-    <meta property="og:description" content="Axichat downloads for Android, Windows, and macOS, with Linux and iOS coming soon." />
+    <meta property="og:description" content="Axichat downloads for iOS, Android, Windows, and macOS, with Linux coming soon." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://axi.chat/downloads/" />
     <meta property="og:image" content="https://axi.chat/images/brand/axichat_banner.png" />
     <meta property="og:image:alt" content="Axichat banner" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Axichat Downloads" />
-    <meta name="twitter:description" content="Axichat downloads for Android, Windows, and macOS, with Linux and iOS coming soon." />
+    <meta name="twitter:description" content="Axichat downloads for iOS, Android, Windows, and macOS, with Linux coming soon." />
     <meta name="twitter:image" content="https://axi.chat/images/brand/axichat_banner.png" />
     <meta name="theme-color" content="#ffffff" media="all" data-theme-color="light" />
     <meta name="theme-color" content="#090909" media="not all" data-theme-color="dark" />
@@ -252,14 +252,16 @@
       .app-store-badge {
         display: inline-flex;
         align-items: center;
-        width: 11.625rem;
+        width: 13.0625rem;
         max-width: 100%;
-        height: 3.875rem;
         transition: filter 0.18s ease;
       }
 
-      .app-store-badge[hidden] {
-        display: none;
+      .app-store-slot {
+        display: flex;
+        width: 13.0625rem;
+        max-width: 100%;
+        justify-content: center;
       }
 
       .google-play-badge img {
@@ -284,13 +286,30 @@
         height: auto;
       }
 
+      @media (min-width: 31rem) {
+        .app-store-badge {
+          width: 11.625rem;
+          height: 3.875rem;
+        }
+      }
+
       .primary-download-button {
-        display: inline-block;
+        position: relative;
+        display: flex;
+        box-sizing: border-box;
         width: 13.0625rem;
         max-width: 100%;
         height: 3.875rem;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        border: 1px solid #a6a6a6;
         border-radius: 9px;
         background: #000000;
+        padding: 0 3.25rem 0 1.25rem;
+        color: #ffffff;
+        font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+        text-align: left;
         text-decoration: none;
         transition: opacity 0.15s ease;
       }
@@ -299,10 +318,42 @@
         opacity: 0.9;
       }
 
-      .primary-download-button img {
-        display: block;
-        width: 100%;
-        height: auto;
+      .platform-download__meta {
+        display: flex;
+        gap: 0.25rem;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 0.625rem;
+        font-weight: 500;
+        line-height: 1;
+        white-space: nowrap;
+      }
+
+      .platform-download__format {
+        color: #ffffff;
+        font-weight: 600;
+      }
+
+      .platform-download__platform {
+        margin-top: 0.25rem;
+        font-size: 1.5rem;
+        font-weight: 600;
+        line-height: 1;
+        letter-spacing: -0.025em;
+        white-space: nowrap;
+      }
+
+      .platform-download__icon {
+        position: absolute;
+        top: 50%;
+        right: 1.25rem;
+        width: 1.5rem;
+        height: 1.5rem;
+        transform: translateY(-50%);
+        color: #cccccc;
+        stroke: currentColor;
+        stroke-width: 1.8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
       }
 
       .primary-download-button.is-disabled {
@@ -335,10 +386,6 @@
         cursor: not-allowed;
       }
 
-      .coming-soon-download.ios {
-        width: 13.0625rem;
-      }
-
       .coming-soon-download.linux {
         width: 13.0625rem;
       }
@@ -356,10 +403,6 @@
         font-weight: 600;
         line-height: 1;
         letter-spacing: -0.025em;
-      }
-
-      [data-app-store-placeholder][hidden] {
-        display: none;
       }
 
       .sections {
@@ -876,20 +919,19 @@
             >
               <img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" alt="Get it on F-Droid" />
             </a>
-            <a
-              id="app-store-badge"
-              data-app-store-badge
-              class="app-store-badge"
-              href="https://apps.apple.com/"
-              target="_blank"
-              rel="noreferrer"
-              hidden
-            >
-              <img
-                src="https://toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/black/en-us?releaseDate=1601424000&amp;kind=iossoftware&amp;bubble=ios_apps"
-                alt="Download on the App Store"
-              />
-            </a>
+            <div class="app-store-slot">
+              <a
+                class="app-store-badge"
+                href="https://apps.apple.com/us/app/axichat/id6785619773"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <img
+                  src="https://toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/black/en-us?releaseDate=1601424000&amp;kind=iossoftware&amp;bubble=ios_apps"
+                  alt="Download on the App Store"
+                />
+              </a>
+            </div>
             <a
               id="primary-windows-download"
               class="primary-download-button windows"
@@ -897,13 +939,14 @@
               target="_blank"
               rel="noreferrer"
             >
-              <img
-                id="primary-windows-download-image"
-                src="../images/download-buttons/download-windows-exe.svg"
-                data-exe-src="../images/download-buttons/download-windows-exe.svg"
-                data-zip-src="../images/download-buttons/download-windows-zip.svg"
-                alt="Download the Windows EXE"
-              />
+              <span class="platform-download__meta">
+                <span>Download the</span>
+                <span id="primary-windows-download-format" class="platform-download__format">EXE</span>
+              </span>
+              <span class="platform-download__platform">Windows</span>
+              <svg class="platform-download__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M12 4.5v9.75M8.75 11.5 12 14.75l3.25-3.25M5.5 18.5h13" />
+              </svg>
             </a>
             <a
               class="primary-download-button apple"
@@ -911,15 +954,18 @@
               target="_blank"
               rel="noreferrer"
             >
-              <img src="../images/download-buttons/download-macos-dmg.svg" alt="Download the macOS DMG" />
+              <span class="platform-download__meta">
+                <span>Download the</span>
+                <span class="platform-download__format">DMG</span>
+              </span>
+              <span class="platform-download__platform">macOS</span>
+              <svg class="platform-download__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M12 4.5v9.75M8.75 11.5 12 14.75l3.25-3.25M5.5 18.5h13" />
+              </svg>
             </a>
             <button type="button" class="coming-soon-download linux" disabled>
               <span class="coming-soon-download-kicker">Coming soon</span>
               <span class="coming-soon-download-platform">Linux</span>
-            </button>
-            <button type="button" class="coming-soon-download ios" data-app-store-placeholder disabled>
-              <span class="coming-soon-download-kicker">Coming soon</span>
-              <span class="coming-soon-download-platform">iOS</span>
             </button>
           </div>
           <div id="release-meta" class="release-meta">
@@ -955,10 +1001,6 @@
       const RELEASES_PAGE_URL = "https://github.com/axichat/axichat/releases/latest";
       const CACHE_KEY = "axichat.downloads.latest.v3";
       const CACHE_TTL_MS = 5 * 60 * 1000;
-      const APP_STORE_BUNDLE_ID = "im.axi.axichat";
-      const APP_STORE_LOOKUP_URL = "https://itunes.apple.com/lookup?bundleId=" + encodeURIComponent(APP_STORE_BUNDLE_ID) + "&country=us";
-      const APP_STORE_LOOKUP_TIMEOUT_MS = 8000;
-
       const downloadsRoot = document.getElementById("downloads-root");
       const releaseMeta = document.getElementById("release-meta");
       const yearNode = document.getElementById("year");
@@ -1412,8 +1454,8 @@
 
       function syncPrimaryWindowsDownload(entries) {
         const button = document.getElementById("primary-windows-download");
-        const image = document.getElementById("primary-windows-download-image");
-        if (!button || !image) {
+        const formatLabel = document.getElementById("primary-windows-download-format");
+        if (!button || !formatLabel) {
           return;
         }
 
@@ -1425,12 +1467,7 @@
         }
 
         button.href = entry.href;
-        const format = installer ? "EXE" : "ZIP";
-        const imageSource = installer ? image.dataset.exeSrc : image.dataset.zipSrc;
-        if (imageSource) {
-          image.src = imageSource;
-        }
-        image.alt = `Download the Windows ${format}`;
+        formatLabel.textContent = installer ? "EXE" : "ZIP";
       }
 
       function renderRelease(release) {
@@ -1506,58 +1543,7 @@
         }
       }
 
-      function findAppStoreUrl(payload) {
-        if (!payload || !payload.results || !payload.results.length || payload.resultCount === 0) {
-          return "";
-        }
-        const result = payload.results.find((entry) => {
-          const isExpectedBundle = entry && entry.bundleId === APP_STORE_BUNDLE_ID;
-          const isSoftware = entry && (entry.wrapperType === "software" || entry.kind === "software");
-          return isExpectedBundle && isSoftware && typeof entry.trackViewUrl === "string";
-        });
-        return result ? result.trackViewUrl : "";
-      }
-
-      function showAppStoreBadges(url) {
-        document.querySelectorAll("[data-app-store-badge]").forEach((badge) => {
-          badge.href = url;
-          badge.hidden = false;
-        });
-        document.querySelectorAll("[data-app-store-placeholder]").forEach((placeholder) => {
-          placeholder.hidden = true;
-        });
-      }
-
-      function loadAppStoreBadge() {
-        const callbackName = "__axichatAppStoreLookup_" + Date.now() + "_" + Math.random().toString(36).slice(2);
-        const script = document.createElement("script");
-        let settled = false;
-
-        const cleanup = () => {
-          if (settled) {
-            return;
-          }
-          settled = true;
-          window.clearTimeout(timeoutId);
-          script.remove();
-          delete window[callbackName];
-        };
-
-        const timeoutId = window.setTimeout(cleanup, APP_STORE_LOOKUP_TIMEOUT_MS);
-        window[callbackName] = (payload) => {
-          const appStoreUrl = findAppStoreUrl(payload);
-          cleanup();
-          if (appStoreUrl) {
-            showAppStoreBadges(appStoreUrl);
-          }
-        };
-        script.onerror = cleanup;
-        script.src = APP_STORE_LOOKUP_URL + "&callback=" + encodeURIComponent(callbackName);
-        document.head.appendChild(script);
-      }
-
       void loadRelease();
-      loadAppStoreBadge();
     </script>
   </body>
 </html>

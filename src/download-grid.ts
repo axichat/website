@@ -1,7 +1,7 @@
 export const downloadGridTemplate = `
   <div
     id="hero-downloads"
-    class="mx-auto mt-3 inline-grid grid-cols-1 items-center justify-items-center gap-3 sm:grid-cols-2 lg:grid-cols-3"
+    class="mx-auto mt-3 inline-grid items-center justify-items-center gap-3"
     role="group"
     aria-label="Download Axichat"
   >
@@ -15,33 +15,20 @@ export const downloadGridTemplate = `
       <img src="%BASE_URL%images/platforms/google-play-badge.svg" alt="Get it on Google Play" class="block h-auto w-full max-w-full" />
     </a>
 
-    <a
-      id="hero-app-store-badge"
-      data-app-store-badge
-      href="https://apps.apple.com/"
-      target="_blank"
-      rel="noreferrer"
-      class="order-1 inline-block max-w-full transition focus:outline-none focus:ring-2 focus:ring-black/25"
-      style="width: 186px; height: 62px"
-      hidden
-    >
-      <img
-        src="https://toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/black/en-us?releaseDate=1601424000&amp;kind=iossoftware&amp;bubble=ios_apps"
-        alt="Download on the App Store"
-        class="block h-auto w-full max-w-full"
-      />
-    </a>
-
-    <button
-      type="button"
-      class="coming-soon-download order-7"
-      style="width: 209px"
-      data-app-store-placeholder
-      disabled
-    >
-      <span class="coming-soon-download__kicker">Coming soon</span>
-      <span class="coming-soon-download__platform">iOS</span>
-    </button>
+    <div class="order-1 flex w-[209px] max-w-full justify-center sm:w-[186px]">
+      <a
+        href="https://apps.apple.com/us/app/axichat/id6785619773"
+        target="_blank"
+        rel="noreferrer"
+        class="inline-block w-[209px] max-w-full transition focus:outline-none focus:ring-2 focus:ring-black/25 sm:w-[186px]"
+      >
+        <img
+          src="https://toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/black/en-us?releaseDate=1601424000&amp;kind=iossoftware&amp;bubble=ios_apps"
+          alt="Download on the App Store"
+          class="block h-auto w-full max-w-full"
+        />
+      </a>
+    </div>
 
     <a
       href="https://f-droid.org/packages/im.axi.axichat/"
@@ -61,31 +48,32 @@ export const downloadGridTemplate = `
     <a
       id="hero-windows-download"
       href="https://github.com/axichat/axichat/releases/latest/download/axichat-windows-setup.exe"
-      class="hero-custom-download order-5 block max-w-full self-center rounded-[9px] transition-opacity hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-black/25"
-      style="width: 209px; height: 62px"
+      class="hero-custom-download platform-download hero-windows-download order-5 self-center transition-opacity hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-black/25"
     >
-      <img
-        id="hero-windows-download-image"
-        src="%BASE_URL%images/download-buttons/download-windows-exe.svg"
-        data-exe-src="%BASE_URL%images/download-buttons/download-windows-exe.svg"
-        data-zip-src="%BASE_URL%images/download-buttons/download-windows-zip.svg"
-        alt="Download the Windows EXE"
-        class="block h-auto w-full max-w-full"
-      />
+      <span class="platform-download__meta">
+        <span>Download the</span>
+        <span id="hero-windows-download-format" class="platform-download__format">EXE</span>
+      </span>
+      <span class="platform-download__platform">Windows</span>
+      <svg class="platform-download__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M12 4.5v9.75M8.75 11.5 12 14.75l3.25-3.25M5.5 18.5h13" />
+      </svg>
     </a>
 
     <a
       href="https://github.com/axichat/axichat/releases/latest/download/axichat-macos.dmg"
       target="_blank"
       rel="noreferrer"
-      class="hero-custom-download order-4 block max-w-full self-center rounded-[9px] transition-opacity hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-black/25 sm:order-3 lg:order-4"
-      style="width: 209px; height: 62px"
+      class="hero-custom-download platform-download hero-macos-download order-4 self-center transition-opacity hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-black/25 sm:order-3 lg:order-4"
     >
-      <img
-        src="%BASE_URL%images/download-buttons/download-macos-dmg.svg"
-        alt="Download the macOS DMG"
-        class="block h-auto w-full max-w-full"
-      />
+      <span class="platform-download__meta">
+        <span>Download the</span>
+        <span class="platform-download__format">DMG</span>
+      </span>
+      <span class="platform-download__platform">macOS</span>
+      <svg class="platform-download__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M12 4.5v9.75M8.75 11.5 12 14.75l3.25-3.25M5.5 18.5h13" />
+      </svg>
     </a>
 
     <button

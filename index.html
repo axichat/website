@@ -413,11 +413,7 @@
 
         <script>
           (() => {
-            const appStoreBadge = document.querySelector("[data-app-store-badge]");
-            if (!appStoreBadge) return;
-
             const iosScreenshotNames = new Set(["01", "02", "05", "06"]);
-            const screenshots = [];
 
             document.querySelectorAll("picture").forEach((picture) => {
               const source = picture.querySelector('source[type="image/webp"]');
@@ -432,29 +428,10 @@
               if (!match || !iosScreenshotNames.has(match[1])) return;
 
               const name = match[1];
-              const base = androidWebp.slice(0, androidWebp.lastIndexOf("/") + 1);
-              screenshots.push({
-                source,
-                image,
-                androidWebp,
-                androidPng,
-                iosWebp: `${base}ios/${name}.webp`,
-                iosPng: `${base}ios/${name}.png`,
-              });
-            });
-
-            const syncScreenshots = () => {
-              const useIos = !appStoreBadge.hidden;
-              screenshots.forEach(({ source, image, androidWebp, androidPng, iosWebp, iosPng }) => {
-                source.setAttribute("srcset", useIos ? iosWebp : androidWebp);
-                image.setAttribute("src", useIos ? iosPng : androidPng);
-              });
-            };
-
-            syncScreenshots();
-            new MutationObserver(syncScreenshots).observe(appStoreBadge, {
-              attributes: true,
-              attributeFilter: ["hidden"],
+              const webpBase = androidWebp.slice(0, androidWebp.lastIndexOf("/") + 1);
+              const pngBase = androidPng.slice(0, androidPng.lastIndexOf("/") + 1);
+              source.setAttribute("srcset", `${webpBase}ios/${name}.webp`);
+              image.setAttribute("src", `${pngBase}ios/${name}.png`);
             });
           })();
         </script>
@@ -764,7 +741,7 @@
           </div>
 
           <a
-            href="https://axichat.betteruptime.com"
+            href="https://status.axi.chat"
             target="_blank"
             rel="noreferrer"
             class="passive-card mt-8 block w-fit px-3 py-2 text-xs text-black/70"
