@@ -225,11 +225,13 @@
       }
 
       .google-play-badge {
+        position: relative;
         display: inline-flex;
         align-items: center;
-        width: 13rem;
+        width: 13.0625rem;
         max-width: 100%;
-        min-height: 3.875rem;
+        height: 3.875rem;
+        overflow: visible;
         transition: filter 0.18s ease;
       }
 
@@ -254,6 +256,7 @@
         align-items: center;
         width: 13.0625rem;
         max-width: 100%;
+        aspect-ratio: 119.66407 / 40;
         transition: filter 0.18s ease;
       }
 
@@ -265,8 +268,12 @@
       }
 
       .google-play-badge img {
+        position: absolute;
+        top: -1rem;
+        left: -1.0625rem;
         display: block;
-        width: 100%;
+        width: 15.125rem;
+        max-width: none;
         height: auto;
       }
 
@@ -289,7 +296,6 @@
       @media (min-width: 31rem) {
         .app-store-badge {
           width: 11.625rem;
-          height: 3.875rem;
         }
       }
 
@@ -909,7 +915,12 @@
               target="_blank"
               rel="noreferrer"
             >
-              <img src="../images/platforms/google-play-badge.svg" alt="Get it on Google Play" />
+              <img
+                src="../images/platforms/google-play-badge.png"
+                alt="Get it on Google Play"
+                width="646"
+                height="250"
+              />
             </a>
             <a
               class="fdroid-badge"
@@ -917,7 +928,12 @@
               target="_blank"
               rel="noreferrer"
             >
-              <img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" alt="Get it on F-Droid" />
+              <img
+                src="../images/platforms/fdroid-badge.png"
+                alt="Get it on F-Droid"
+                width="646"
+                height="250"
+              />
             </a>
             <div class="app-store-slot">
               <a
@@ -927,7 +943,7 @@
                 rel="noreferrer"
               >
                 <img
-                  src="https://toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/black/en-us?releaseDate=1601424000&amp;kind=iossoftware&amp;bubble=ios_apps"
+                  src="../images/platforms/app-store-badge.svg"
                   alt="Download on the App Store"
                 />
               </a>

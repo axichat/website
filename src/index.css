@@ -192,6 +192,10 @@ main {
   }
 }
 
+.app-store-download {
+  aspect-ratio: 119.66407 / 40;
+}
+
 .platform-download {
   position: relative;
   display: flex;

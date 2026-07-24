@@ -9,10 +9,17 @@ export const downloadGridTemplate = `
       href="https://play.google.com/store/apps/details?id=im.axi.axichat"
       target="_blank"
       rel="noreferrer"
-      class="order-2 inline-block max-w-full transition focus:outline-none focus:ring-2 focus:ring-black/25"
+      class="relative order-2 inline-block h-[62px] max-w-full overflow-visible transition focus:outline-none focus:ring-2 focus:ring-black/25"
       style="width: 209px"
     >
-      <img src="%BASE_URL%images/platforms/google-play-badge.svg" alt="Get it on Google Play" class="block h-auto w-full max-w-full" />
+      <img
+        src="%BASE_URL%images/platforms/google-play-badge.png"
+        alt="Get it on Google Play"
+        width="646"
+        height="250"
+        class="absolute left-0 top-0 block h-auto max-w-none"
+        style="width: 242px; transform: translate(-17px, -16px)"
+      />
     </a>
 
     <div class="order-1 flex w-[209px] max-w-full justify-center sm:w-[186px]">
@@ -20,10 +27,10 @@ export const downloadGridTemplate = `
         href="https://apps.apple.com/us/app/axichat/id6785619773"
         target="_blank"
         rel="noreferrer"
-        class="inline-block w-[209px] max-w-full transition focus:outline-none focus:ring-2 focus:ring-black/25 sm:w-[186px]"
+        class="app-store-download inline-block w-[209px] max-w-full transition focus:outline-none focus:ring-2 focus:ring-black/25 sm:w-[186px]"
       >
         <img
-          src="https://toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/black/en-us?releaseDate=1601424000&amp;kind=iossoftware&amp;bubble=ios_apps"
+          src="%BASE_URL%images/platforms/app-store-badge.svg"
           alt="Download on the App Store"
           class="block h-auto w-full max-w-full"
         />
@@ -38,8 +45,10 @@ export const downloadGridTemplate = `
       style="width: 209px"
     >
       <img
-        src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
+        src="%BASE_URL%images/platforms/fdroid-badge.png"
         alt="Get it on F-Droid"
+        width="646"
+        height="250"
         class="absolute left-0 top-0 block h-auto max-w-none"
         style="width: 242px; transform: translate(-17px, -16px)"
       />
