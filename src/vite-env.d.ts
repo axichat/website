@@ -4,6 +4,7 @@ type AxiPublicConfig = {
   backendBaseUrl: string;
   accountDomain: string;
   turnstileSiteKey: string;
+  pollBaseUrl?: string;
 };
 
 type TurnstileRenderOptions = {

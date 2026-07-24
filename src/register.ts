@@ -6,6 +6,7 @@ type PublicAxiConfig = {
   backendBaseUrl: string;
   accountDomain: string;
   turnstileSiteKey: string;
+  pollBaseUrl?: string;
 };
 
 type ApiSuccess<T> = {
@@ -69,6 +70,25 @@ type TotpStart = {
   challenge_id: string;
   secret: string;
   otpauth_uri: string;
+};
+
+const discoveryPollOptions = [
+  { source: "app_store", label: "App Store" },
+  { source: "play_store", label: "Play Store" },
+  { source: "fdroid", label: "F-Droid" },
+  { source: "friends_family", label: "Friends and family" },
+  { source: "web_search", label: "Web search" },
+  { source: "social_media", label: "Social media" },
+  { source: "other", label: "Other" },
+] as const;
+
+type DiscoveryPollSource = (typeof discoveryPollOptions)[number]["source"];
+
+type DiscoveryPollStandings = {
+  results?: Array<{
+    source?: string;
+    ratio?: number;
+  }>;
 };
 
 type SignupFieldName = "localpart" | "password" | "passwordConfirmation" | "turnstile";
@@ -189,12 +209,18 @@ function isPlaceholder(value: string) {
 }
 
 function readConfig(): { config: PublicAxiConfig; error: string | null } {
-  const fallback: PublicAxiConfig = { backendBaseUrl: "", accountDomain: "axi.im", turnstileSiteKey: "" };
+  const fallback: PublicAxiConfig = {
+    backendBaseUrl: "",
+    accountDomain: "axi.im",
+    turnstileSiteKey: "",
+    pollBaseUrl: "",
+  };
   const config = typeof window !== "undefined" && window.AXI_CONFIG ? window.AXI_CONFIG : fallback;
   const normalized = {
     backendBaseUrl: String(config.backendBaseUrl ?? "").replace(/\/+$/, ""),
     accountDomain: String(config.accountDomain ?? "axi.im").trim() || "axi.im",
     turnstileSiteKey: String(config.turnstileSiteKey ?? "").trim(),
+    pollBaseUrl: String(config.pollBaseUrl ?? "").replace(/\/+$/, ""),
   };
 
   if (isPlaceholder(normalized.backendBaseUrl) || isPlaceholder(normalized.accountDomain)) {
@@ -243,11 +269,25 @@ function apiBaseUrl(config: PublicAxiConfig) {
   return config.backendBaseUrl;
 }
 
+function validOptionalHttpsUrl(value: string) {
+  if (!value || isPlaceholder(value)) {
+    return "";
+  }
+  try {
+    const url = new URL(value);
+    const localHttp = url.protocol === "http:" && /^(localhost|127\.0\.0\.1|\[::1\])$/.test(url.hostname);
+    return url.protocol === "https:" || localHttp ? value : "";
+  } catch {
+    return "";
+  }
+}
+
 async function apiRequest<T>(
   config: PublicAxiConfig,
   path: string,
   options: {
     method: "GET" | "POST";
+    baseUrl?: string;
     body?: unknown;
     idempotencyKey?: string;
     recoverySetupToken?: string;
@@ -270,7 +310,7 @@ async function apiRequest<T>(
   }
 
   try {
-    const request = fetch(`${apiBaseUrl(config)}${path}`, {
+    const request = fetch(`${options.baseUrl ?? apiBaseUrl(config)}${path}`, {
       method: options.method,
       credentials: "omit",
       headers,
@@ -614,6 +654,7 @@ function createOtpInput(id: string, label: string): OtpInput {
 const { config, error: configError } = readConfig();
 const registrationDisabled = Boolean(configError);
 const turnstileEnabled = config.turnstileSiteKey !== "";
+const pollBaseUrl = validOptionalHttpsUrl(config.pollBaseUrl ?? "");
 const shell = byId<HTMLDivElement>("register-shell");
 const heading = byId<HTMLDivElement>("register-heading");
 const headingTitle = byId<HTMLHeadingElement>("register-title");
@@ -644,6 +685,22 @@ const turnstileWrap = byId<HTMLDivElement>("turnstile-wrap");
 const turnstileContainer = byId<HTMLDivElement>("turnstile-container");
 const turnstileErrorEl = byId<HTMLParagraphElement>("signup-turnstile-error");
 const signupErrorEl = byId<HTMLParagraphElement>("signup-error");
+const discoveryPoll = byId<HTMLElement>("discovery-poll");
+const discoveryResultsError = byId<HTMLParagraphElement>("discovery-results-error");
+const discoveryInputs = Array.from(
+  document.querySelectorAll<HTMLInputElement>('input[name="discovery-source"]')
+);
+const discoveryRows = new Map(
+  discoveryPollOptions.map(({ source }) => {
+    const row = discoveryPoll.querySelector<HTMLElement>(`[data-discovery-source="${source}"]`);
+    const input = row?.querySelector<HTMLInputElement>('input[name="discovery-source"]');
+    const fill = row?.querySelector<HTMLElement>("[data-discovery-fill]");
+    if (!row || !input || !fill) {
+      throw new Error(`missing discovery poll row: ${source}`);
+    }
+    return [source, { input, fill }] as const;
+  })
+);
 const submitButton = byId<HTMLButtonElement>("signup-submit");
 const submitLabel = byId<HTMLSpanElement>("signup-submit-label");
 
@@ -751,6 +808,68 @@ function paintSignupError(message: string) {
   signupErrorEl.hidden = !message;
 }
 
+function renderDiscoveryStandings(standings: DiscoveryPollStandings | null, unavailable = false) {
+  const ratios = new Map<DiscoveryPollSource, number>();
+  for (const option of discoveryPollOptions) {
+    ratios.set(option.source, 0);
+  }
+
+  let ready = false;
+  if (standings) {
+    for (const result of Array.isArray(standings.results) ? standings.results : []) {
+      const option = discoveryPollOptions.find(({ source }) => source === result.source);
+      const ratio =
+        typeof result.ratio === "number" && Number.isFinite(result.ratio)
+          ? Math.max(0, Math.min(100, result.ratio))
+          : null;
+      if (option && ratio !== null) {
+        ratios.set(option.source, ratio);
+        ready = true;
+      }
+    }
+  }
+
+  for (const { source } of discoveryPollOptions) {
+    const ratio = ratios.get(source) ?? 0;
+    const row = discoveryRows.get(source)!;
+    row.fill.style.width = `${ratio.toFixed(0)}%`;
+  }
+  discoveryPoll.setAttribute("aria-busy", String(!ready && !unavailable));
+  discoveryResultsError.hidden = !unavailable;
+}
+
+function selectedDiscoverySource(): DiscoveryPollSource | null {
+  const selected = discoveryInputs.find((input) => input.checked)?.value;
+  return discoveryPollOptions.some(({ source }) => source === selected)
+    ? (selected as DiscoveryPollSource)
+    : null;
+}
+
+async function loadDiscoveryStandings() {
+  const result = await apiRequest<DiscoveryPollStandings>(config, "", {
+    method: "GET",
+    baseUrl: pollBaseUrl,
+    timeoutMs: 10000,
+  });
+  if (!result.ok) {
+    renderDiscoveryStandings(null, true);
+    return;
+  }
+  renderDiscoveryStandings(result.payload);
+}
+
+async function submitDiscoveryPoll(source: DiscoveryPollSource) {
+  const result = await apiRequest<DiscoveryPollStandings>(config, "", {
+    method: "POST",
+    baseUrl: pollBaseUrl,
+    body: { source },
+    timeoutMs: 10000,
+  });
+  if (result.ok) {
+    renderDiscoveryStandings(result.payload);
+  }
+}
+
 function paintSubmit() {
   if (busy) {
     submitLabel.innerHTML = `${spinnerHtml}Creating account...`;
@@ -767,6 +886,9 @@ function syncDisabled() {
   passwordInput.disabled = disabled;
   confirmInput.disabled = disabled;
   riskCheckbox.disabled = disabled;
+  discoveryInputs.forEach((input) => {
+    input.disabled = disabled;
+  });
   submitButton.disabled = disabled;
 }
 
@@ -1494,6 +1616,7 @@ async function handleSignup(event: Event) {
   if (turnstileEnabled) {
     body.turnstile_token = currentAttempt.turnstileToken;
   }
+  const discoverySource = selectedDiscoverySource();
 
   const result = await apiRequest<SignupSuccess>(config, "/api/signup", {
     method: "POST",
@@ -1565,6 +1688,9 @@ async function handleSignup(event: Event) {
   riskCheckbox.checked = false;
   riskError = "";
   weakSubmittedPassword = "";
+  if (discoverySource && pollBaseUrl) {
+    void submitDiscoveryPoll(discoverySource);
+  }
   showSession();
 }
 
@@ -1581,6 +1707,12 @@ function setUpSignupForm() {
   }
   syncDisabled();
   setUpTurnstile();
+  renderDiscoveryStandings(null);
+  if (!registrationDisabled && pollBaseUrl) {
+    void loadDiscoveryStandings();
+  } else {
+    renderDiscoveryStandings(null, true);
+  }
 
   localpartInput.addEventListener("input", () => {
     const lowered = localpartInput.value.toLowerCase();

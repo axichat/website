@@ -1,0 +1,12 @@
+{
+  "name": "axichat-discovery-poll",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "dev": "npx wrangler@latest dev",
+    "deploy": "npx wrangler@latest deploy",
+    "migrate:local": "npx wrangler@latest d1 migrations apply DB --local",
+    "migrate:remote": "npx wrangler@latest d1 migrations apply DB --remote"
+  }
+}
